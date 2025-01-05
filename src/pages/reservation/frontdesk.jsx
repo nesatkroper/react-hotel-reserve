@@ -138,7 +138,7 @@ const FrontDesk = () => {
                   {Array.from({ length: DAYS_IN_MONTH }, (_, index) => {
                     const date = new Date(
                       new Date().getFullYear(),
-                      new Date().getMonth(),
+                      new Date().getMonth() + thisMonth - 1,
                       index + 1
                     );
                     return (
