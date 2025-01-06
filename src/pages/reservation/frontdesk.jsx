@@ -12,25 +12,26 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import axios from "@/providers/axiosInstance";
 
-// @THIS IS LOCAL VARIABLE
+//! THIS IS LOCAL VARIABLE
 const SINGLE_ROOM = 12;
 const DOUBLE_ROOM = 9;
 
-//@ Function to format numbers with leading zero
+//! Function to format numbers with leading zero
 const F_NUM = (num) => {
   return num.toString().padStart(2, "0");
 };
 
-// @ THIS IS MAIN FUNC
+//! THIS IS MAIN FUNC
 const FrontDesk = () => {
-  // @ THIS IS STATE MANAGEMENT
+  //! THIS IS STATE MANAGEMENT
   const [thisMonth, setThisMonth] = useState(1);
   const [reserve, setReserve] = useState(false);
   const [booked, setBooked] = useState([]);
   const [available, setAvailable] = useState([]);
 
-  const [ctd, setCTD] = useState(
+  const [currentMonth, setCurrentMonth] = useState(
     new Date().toLocaleDateString("en-US", { month: "long" })
   );
 
@@ -40,19 +41,19 @@ const FrontDesk = () => {
     0
   ).getDate();
 
-  // @ THIS IS A FUNC USE FOR ALLOW RESERVATION
+  // ! THIS IS A FUNC USE FOR ALLOW RESERVATION
   const handleReservation = () => {
     setReserve(!reserve);
   };
 
-  //@ THIS IS A FUNC USE FOR HANDLE CHECKBOX CHANGING
+  //! THIS IS A FUNC USE FOR HANDLE CHECKBOX CHANGING
   const handleCheckboxChange = (roomType, roomNumber, day) => {
     console.log(
       `Room Type: ${roomType}, Room Number: ${roomNumber}, Date: ${day}`
     );
   };
 
-  // @ THIS IS A FUNC USE FOR HANDLE SUBMITION
+  //! THIS IS A FUNC USE FOR HANDLE SUBMITION
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -72,16 +73,44 @@ const FrontDesk = () => {
       }
     });
 
+    //! HANDLE POST REQUEST TO SERVER FOR RESERVATION
+    await axios
+      .post("/reserve", {
+        room_id: 3,
+        customer_id: 1,
+        checkin_date: "2025-01-05",
+        checkout_date: "2025-05-05",
+        is_checkin: "true",
+        is_checkout: "false",
+        reservation_type: "booked",
+        adults: 7,
+        children: 4,
+        payment_status: "paid",
+        payment_method: "cash",
+        memo: "hello",
+        is_hidden: "false",
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    //! Update state with new booked and available arrays
     setBooked(bookedByDay);
     setAvailable(availableByDay);
   };
 
-  // @ THIS IS A FUNC USE FOR UPDATING DATE
+  //! THIS IS A FUNC USE FOR UPDATING DATE
   useEffect(() => {
     const date = new Date();
     date.setMonth(date.getMonth() + thisMonth - 1);
-    setCTD(date.toLocaleDateString("en-US", { month: "long" }));
+    setCurrentMonth(date.toLocaleDateString("en-US", { month: "long" }));
   }, [thisMonth]);
+
+  console.log(thisMonth);
+  console.log(currentMonth);
 
   return (
     <>
@@ -113,7 +142,7 @@ const FrontDesk = () => {
               <TableHeader>
                 <TableRow>
                   <TableHead className="text-center">
-                    <p>{ctd}</p>
+                    <p>{currentMonth}</p>
                     <div className="flex justify-between p-1">
                       <Button
                         onClick={() => {
