@@ -60,7 +60,7 @@ const Room = () => {
                 <TableBody>
                   <TableRow>
                     <TableCell>Paid</TableCell>
-                    <TableCell>Paid</TableCell>
+                    <TableCell>Paid66</TableCell>
                     <TableCell>Paid</TableCell>
                     <TableCell>Paid</TableCell>
                     <TableCell>Paid</TableCell>
