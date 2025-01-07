@@ -7,18 +7,20 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import axios from "@/providers/axiosInstance";
+import Details from "./reservation-detail";
 
 //! THIS IS LOCAL VARIABLE
 const SINGLE_ROOM = 12;
 const DOUBLE_ROOM = 9;
 
-//! Function to format numbers with leading zero
+//! FUNCTION TO FORMAT NUMBERS WITH LEADING ZERO
 const F_NUM = (num) => {
   return num.toString().padStart(2, "0");
 };
@@ -30,7 +32,6 @@ const FrontDesk = () => {
   const [reserve, setReserve] = useState(false);
   const [booked, setBooked] = useState([]);
   const [available, setAvailable] = useState([]);
-
   const [currentMonth, setCurrentMonth] = useState(
     new Date().toLocaleDateString("en-US", { month: "long" })
   );
@@ -57,14 +58,14 @@ const FrontDesk = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    //! Create arrays with  days (matching your table columns)
+    //! CREATE ARRAYS WITH DAYS (MATCHING YOUR TABLE COLUMNS)
     const bookedByDay = Array(DAYS_IN_MONTH).fill(0);
     const availableByDay = Array(DAYS_IN_MONTH).fill(SINGLE_ROOM + DOUBLE_ROOM);
 
-    //! Get all checkboxes
+    //! GET ALL CHECKBOXES
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
 
-    //! Count bookings for each day
+    //! COUNT BOOKINGS FOR EACH DAY
     checkboxes.forEach((checkbox, index) => {
       if (checkbox.checked) {
         const dayIndex = index % DAYS_IN_MONTH;
@@ -128,12 +129,19 @@ const FrontDesk = () => {
                 >
                   <Label>Reserve</Label>
                 </Button>
-                <Button
-                  variant="outline"
-                  className="py-0 h-[30px] bg-green-500"
-                >
-                  Check
-                </Button>
+                <Dialog>
+                  <DialogTrigger>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="py-0 h-[30px] bg-green-500"
+                    >
+                      Check
+                    </Button>
+                  </DialogTrigger>
+                  {/* //! RESERVATION DETAILS INFORMATION */}
+                  <Details />
+                </Dialog>
               </div>
             </div>
           </CardHeader>

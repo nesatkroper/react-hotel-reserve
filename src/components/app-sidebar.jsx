@@ -1,8 +1,6 @@
 import {
-  AudioWaveform,
   BookOpen,
   Bot,
-  Command,
   Frame,
   GalleryVerticalEnd,
   Map,
@@ -33,22 +31,40 @@ const data = {
   },
   teams: [
     {
-      name: "Acme Inc",
+      name: "Hotel Reservation",
       logo: GalleryVerticalEnd,
       plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
     },
   ],
   navMain: [
     {
+      title: "Category",
+      url: "#",
+      icon: BookOpen,
+      isActive: true,
+      items: [
+        {
+          title: "Room",
+          url: "/room",
+        },
+        {
+          title: "Group Pictures",
+          url: "group-picture",
+        },
+        {
+          title: "Department",
+          url: "department",
+        },
+        {
+          title: "Position",
+          url: "position",
+        },
+      ],
+    },
+    {
       title: "Playground",
       url: "#",
       icon: SquareTerminal,
-      isActive: true,
       items: [
         {
           title: "History",
@@ -84,29 +100,6 @@ const data = {
       ],
     },
     {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
-    {
       title: "Settings",
       url: "#",
       icon: Settings2,
@@ -132,7 +125,7 @@ const data = {
   ],
   projects: [
     {
-      name: "Design Engineering",
+      name: "Home",
       url: "/",
       icon: Frame,
     },
@@ -156,8 +149,8 @@ export function AppSidebar({ ...props }) {
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
         <NavProjects projects={data.projects} />
+        <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />

@@ -1,13 +1,27 @@
-import { NavLink, RouterProvider, createBrowserRouter } from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { useAuth } from "@/providers/auth-provider";
 import { ProtectedRoute } from "@/routes/protect-route";
 import Dashboard from "@/pages/dashboard/dashboard";
 import Reservation from "@/pages/reservation/reservation";
+import Layout from "@/components/app/layout";
+import NotFound from "@/pages/404/not-found";
+import Room from "@/pages/room/room";
+import Department from "@/pages/department/department";
+import Position from "@/pages/position/position";
+import GroupPicture from "@/pages/group-picture/group-picture";
 
 const Routes = () => {
   const { token } = useAuth();
 
   const routesForPublic = [
+    {
+      path: "/",
+      element: <Layout />,
+    },
+    {
+      path: "*",
+      element: <NotFound />,
+    },
     {
       path: "/dashboard",
       element: <Dashboard />,
@@ -17,13 +31,20 @@ const Routes = () => {
       element: <Reservation />,
     },
     {
-      path: "/",
-      element: (
-        <div>
-          <div>About Us</div>
-          <NavLink to="/reservation">Reserve</NavLink>
-        </div>
-      ),
+      path: "/room",
+      element: <Room />,
+    },
+    {
+      path: "/department",
+      element: <Department />,
+    },
+    {
+      path: "/position",
+      element: <Position />,
+    },
+    {
+      path: "/group-picture",
+      element: <GroupPicture />,
     },
   ];
 
@@ -32,17 +53,13 @@ const Routes = () => {
       path: "/",
       element: <ProtectedRoute />,
       children: [
+        {
+          path: "*",
+          element: <NotFound />,
+        },
         // {
         //   path: "admin",
         //   element: <Dashboard />,
-        // },
-        // {
-        //   path: "auth",
-        //   element: <Navigate to="/" />,
-        // },
-        // {
-        //   path: "*",
-        //   element: <NotFound />,
         // },
       ],
     },
