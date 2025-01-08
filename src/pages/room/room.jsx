@@ -1,6 +1,9 @@
 import Layout from "@/components/app/layout";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { Plus } from "lucide-react";
+import RoomDialog from "./room-dialog";
 import {
   Card,
   CardContent,
@@ -16,9 +19,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import { Plus } from "lucide-react";
-import RoomDialog from "./room-dialog";
 
 const Room = () => {
   return (
