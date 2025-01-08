@@ -30,12 +30,12 @@ const Department = () => {
             <CardHeader className="p-4">
               <div className="flex flex-row justify-between">
                 <div>
-                  <CardTitle>Room Tables</CardTitle>
+                  <CardTitle>Department  Tables</CardTitle>
                   <CardDescription>Card Description</CardDescription>
                 </div>
                 <DialogTrigger>
                   <Button className="h-[30px]">
-                    <Plus /> Add Room
+                    <Plus /> Add Department 
                   </Button>
                 </DialogTrigger>
               </div>
