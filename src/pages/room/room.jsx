@@ -2,6 +2,7 @@ import Layout from "@/components/app/layout";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Plus } from "lucide-react";
 import RoomDialog from "./room-dialog";
 import {
@@ -19,8 +20,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getRooms } from "@/app/reducer/roomSlice";
 
 const Room = () => {
+  const dispatch = useDispatch();
+  const rooms = useSelector((state) => state?.rooms?.data);
+  console.log(rooms);
+
+  useEffect(() => {
+    if (!rooms) dispatch(getRooms());
+  }, [rooms]);
   return (
     <>
       <Layout>
@@ -58,18 +69,34 @@ const Room = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  <TableRow>
-                    <TableCell>Paid</TableCell>
-                    <TableCell>Paid66</TableCell>
-                    <TableCell>Paid</TableCell>
-                    <TableCell>Paid</TableCell>
-                    <TableCell>Paid</TableCell>
-                    <TableCell>Paid</TableCell>
-                    <TableCell>Paid</TableCell>
-                    <TableCell>Paid</TableCell>
-                    <TableCell>Paid</TableCell>
-                    <TableCell>.00</TableCell>
-                  </TableRow>
+                  {rooms?.map((item, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{index + 1}</TableCell>
+                      <TableCell>{item.picture}</TableCell>
+                      <TableCell>{item.room_name}</TableCell>
+                      <TableCell>{item.room_type}</TableCell>
+                      <TableCell>${item.price}</TableCell>
+                      <TableCell>
+                        {item.is_ac == "true" ? (
+                          <Checkbox checked disabled />
+                        ) : (
+                          <Checkbox disabled />
+                        )}
+                      </TableCell>
+                      <TableCell>{item.capacity} People</TableCell>
+                      <TableCell>{item.size} m²</TableCell>
+                      <TableCell>{item.discount_rate} %</TableCell>
+                      <TableCell>
+                        {item.status == "available" ? (
+                          <p className="text-green-600">Available</p>
+                        ) : item.status == "maintenance" ? (
+                          <p className="text-yellow-600">Maintenance</p>
+                        ) : (
+                          <p className="text-red-600">OutofService</p>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
                 </TableBody>
               </Table>
             </CardContent>
