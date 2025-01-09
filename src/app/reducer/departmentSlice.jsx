@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const getDepartments = createAsyncThunk("getDepartments", async () => {
   const res = await axios.get("/department");
-  return res.data;
+  return res?.data;
 });
 
 const departmentSlice = createSlice({

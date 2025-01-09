@@ -3,11 +3,11 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const getPositions = createAsyncThunk("getPositions", async () => {
   const res = await axios.get("/positions");
-  return res.data;
+  return res?.data;
 });
 
 const positionSlice = createSlice({
-  name: "departments",
+  name: "positions",
   initialState: [],
   reducers: {},
   extraReducers: (builder) => {
