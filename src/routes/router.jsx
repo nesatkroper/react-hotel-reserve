@@ -9,6 +9,11 @@ import Room from "@/pages/room/room";
 import Department from "@/pages/department/department";
 import Position from "@/pages/position/position";
 import GroupPicture from "@/pages/group-picture/group-picture";
+import Customer from "@/pages/customer/customer";
+import Employee from "@/pages/employee/employee";
+import POS from "@/pages/pos/pos";
+import Item from "@/pages/item/item";
+import ItemCategory from "@/pages/item-category/item-category";
 
 const Routes = () => {
   const { token } = useAuth();
@@ -43,7 +48,27 @@ const Routes = () => {
       element: <Position />,
     },
     {
-      path: "/group-picture",
+      path: "/customer",
+      element: <Customer />,
+    },
+    {
+      path: "/employee",
+      element: <Employee />,
+    },
+    {
+      path: "/pos",
+      element: <POS />,
+    },
+    {
+      path: "/item",
+      element: <Item />,
+    },
+    {
+      path: "/icategory",
+      element: <ItemCategory />,
+    },
+    {
+      path: "/rpicture",
       element: <GroupPicture />,
     },
   ];

@@ -7,6 +7,7 @@ import {
   PieChart,
   Settings2,
   SquareTerminal,
+  ClipboardPen,
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -44,20 +45,36 @@ const data = {
       isActive: true,
       items: [
         {
+          title: "Employee",
+          url: "/employee",
+        },
+        {
+          title: "Customer",
+          url: "/customer",
+        },
+        {
           title: "Room",
           url: "/room",
         },
         {
-          title: "Group Pictures",
-          url: "group-picture",
+          title: "Room Pictures",
+          url: "/rpicture",
         },
         {
           title: "Department",
-          url: "department",
+          url: "/department",
         },
         {
           title: "Position",
-          url: "position",
+          url: "/position",
+        },
+        {
+          title: "Item",
+          url: "/item",
+        },
+        {
+          title: "Item Category",
+          url: "/rcatogory",
         },
       ],
     },
@@ -128,6 +145,11 @@ const data = {
       name: "Home",
       url: "/",
       icon: Frame,
+    },
+    {
+      name: "POS",
+      url: "/pos",
+      icon: ClipboardPen,
     },
     {
       name: "Dashboard",
