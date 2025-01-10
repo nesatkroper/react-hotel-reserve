@@ -12,8 +12,8 @@ import GroupPicture from "@/pages/group-picture/group-picture";
 import Customer from "@/pages/customer/customer";
 import Employee from "@/pages/employee/employee";
 import POS from "@/pages/pos/pos";
-import Item from "@/pages/item/item";
-import ItemCategory from "@/pages/item-category/item-category";
+import Product from "@/pages/product/product";
+import ProductCategory from "@/pages/item-category/item-category";
 
 const Routes = () => {
   const { token } = useAuth();
@@ -61,11 +61,11 @@ const Routes = () => {
     },
     {
       path: "/item",
-      element: <Item />,
+      element: <Product />,
     },
     {
       path: "/icategory",
-      element: <ItemCategory />,
+      element: <ProductCategory />,
     },
     {
       path: "/rpicture",

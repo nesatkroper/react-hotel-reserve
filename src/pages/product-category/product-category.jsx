@@ -1,6 +1,6 @@
 import Layout from "@/components/app/layout";
 
-const ItemCategory = () => {
+const ProductCategory = () => {
   return (
     <>
       <Layout></Layout>
@@ -8,4 +8,4 @@ const ItemCategory = () => {
   );
 };
 
-export default ItemCategory;
+export default ProductCategory;
