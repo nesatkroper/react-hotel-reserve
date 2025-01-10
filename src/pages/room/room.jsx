@@ -4,7 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Plus } from "lucide-react";
-import RoomDialog from "./room-dialog";
+import RoomAdd from "./room-add";
 import {
   Card,
   CardContent,
@@ -20,23 +20,41 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import axios from "@/providers/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getRooms } from "@/app/reducer/roomSlice";
+import TableOption from "@/components/table-option";
 
 const Room = () => {
   const dispatch = useDispatch();
   const rooms = useSelector((state) => state?.rooms?.data);
-  console.log(rooms);
+
+  const [empty, setEmpty] = useState(false);
+
+  const handleDelete = (id) => {
+    axios
+      .delete(`/room/${id}`)
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    dispatch(getRooms());
+  };
 
   useEffect(() => {
-    if (!rooms) dispatch(getRooms());
+    if (!rooms) {
+      if (rooms !== undefined) setEmpty(true);
+      dispatch(getRooms());
+    }
   }, [rooms]);
   return (
     <>
       <Layout>
         <Dialog>
-          <RoomDialog />
+          <RoomAdd />
           <Card>
             <CardHeader className="p-4">
               <div className="flex flex-row justify-between">
@@ -66,6 +84,7 @@ const Room = () => {
                     <TableHead>Size</TableHead>
                     <TableHead>Discount</TableHead>
                     <TableHead>Status</TableHead>
+                    <TableHead></TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -74,8 +93,16 @@ const Room = () => {
                       <TableCell>{index + 1}</TableCell>
                       <TableCell>{item.picture}</TableCell>
                       <TableCell>{item.room_name}</TableCell>
-                      <TableCell>{item.room_type}</TableCell>
-                      <TableCell>${item.price}</TableCell>
+                      <TableCell>
+                        {item.room_type == "single" ? (
+                          <p>Single Room</p>
+                        ) : item.room_type == "double" ? (
+                          <p>Double Room</p>
+                        ) : (
+                          <p>Suite Room</p>
+                        )}
+                      </TableCell>
+                      <TableCell>$ {item.price}</TableCell>
                       <TableCell>
                         {item.is_ac == "true" ? (
                           <Checkbox checked disabled />
@@ -95,8 +122,23 @@ const Room = () => {
                           <p className="text-red-600">OutofService</p>
                         )}
                       </TableCell>
+                      <TableCell>
+                        <TableOption
+                          optionID={item.room_id}
+                          onDelete={handleDelete}
+                        />
+                      </TableCell>
                     </TableRow>
                   ))}
+                  {!empty ? (
+                    <TableRow>
+                      <TableCell colspan={10} className="text-center font-bold">
+                        No Data Here 😢
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    ""
+                  )}
                 </TableBody>
               </Table>
             </CardContent>

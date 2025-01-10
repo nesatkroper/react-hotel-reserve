@@ -13,7 +13,7 @@ import Customer from "@/pages/customer/customer";
 import Employee from "@/pages/employee/employee";
 import POS from "@/pages/pos/pos";
 import Product from "@/pages/product/product";
-import ProductCategory from "@/pages/item-category/item-category";
+import ProductCategory from "@/pages/product-category/product-category";
 
 const Routes = () => {
   const { token } = useAuth();
