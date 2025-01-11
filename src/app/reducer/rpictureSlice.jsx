@@ -2,7 +2,7 @@ import axios from "@/providers/axiosInstance";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const getRpicture = createAsyncThunk("getRpicture", async () => {
-  const res = await axios.get("/rpicture");
+  const res = await axios.get("/room-picture");
   return res?.data;
 });
 

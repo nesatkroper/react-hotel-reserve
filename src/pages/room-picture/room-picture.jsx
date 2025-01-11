@@ -22,36 +22,39 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Layout from "@/components/app/layout";
-import RoomAdd from "../room-picture/room-picture-add";
+import RoomPictureAdd from "./room-picture-add";
 import axios from "@/providers/axiosInstance";
-import RoomUpdate from "./room-update";
+
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Plus, Ellipsis, ListCollapse, Pen, Trash } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import { getRpicture } from "@/app/reducer/rpictureSlice";
 import { getRooms } from "@/app/reducer/roomSlice";
 
-const Room = () => {
+const RoomPicture = () => {
   const dispatch = useDispatch();
-  const rooms = useSelector((state) => state?.rooms?.data);
+  const rpicture = useSelector((state) => state?.rpicture?.data);
+
   const [load, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!rooms) {
-      if (rooms !== undefined) setLoading(false);
+    if (!rpicture) {
+      if (rpicture !== undefined) setLoading(false);
+      dispatch(getRpicture());
       dispatch(getRooms());
     }
-  }, [rooms]);
+  }, [rpicture]);
+  console.log("hello");
 
   const handleDelete = async (id) => {
     await axios
-      .delete(`/room/${id}`)
+      .delete(`/room-picture/${id}`)
       .then((res) => {
         console.log(res);
-        dispatch(getRooms());
+        dispatch(getRpicture());
       })
       .catch((error) => {
         console.log(error);
@@ -66,16 +69,16 @@ const Room = () => {
       <Layout>
         <Card>
           <Dialog>
-            <RoomAdd />
+            <RoomPictureAdd />
             <CardHeader className="p-4">
               <div className="flex flex-row justify-between">
                 <div>
-                  <CardTitle>Room Tables</CardTitle>
+                  <CardTitle>Room Picture Tables</CardTitle>
                   <CardDescription>Card Description</CardDescription>
                 </div>
                 <DialogTrigger>
                   <Button className="h-[30px]">
-                    <Plus /> Add Room
+                    <Plus /> Add Room Picture
                   </Button>
                 </DialogTrigger>
               </div>
@@ -86,58 +89,24 @@ const Room = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>No</TableHead>
-                  <TableHead>Picture</TableHead>
+                  <TableHead className="w-[70px]">No</TableHead>
+                  <TableHead className="w-[150px]">Picture</TableHead>
                   <TableHead>Room Number</TableHead>
-                  <TableHead>Room Type</TableHead>
-                  <TableHead>Price</TableHead>
-                  <TableHead>AC</TableHead>
-                  <TableHead>Capacity</TableHead>
-                  <TableHead>Size</TableHead>
-                  <TableHead>Discount</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead></TableHead>
+                  <TableHead>Picture Name</TableHead>
+                  <TableHead className="w-[50px]"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {rooms?.map((item, index) => (
+                {rpicture?.map((item, index) => (
                   <TableRow key={index}>
                     <TableCell>{index + 1}</TableCell>
                     <TableCell>{item.picture}</TableCell>
                     <TableCell>{item.room_name}</TableCell>
-                    <TableCell>
-                      {item.room_type == "single" ? (
-                        <p>Single Room</p>
-                      ) : item.room_type == "double" ? (
-                        <p>Double Room</p>
-                      ) : (
-                        <p>Suite Room</p>
-                      )}
-                    </TableCell>
-                    <TableCell>$ {item.price}</TableCell>
-                    <TableCell>
-                      {item.is_ac == "true" ? (
-                        <Checkbox checked disabled />
-                      ) : (
-                        <Checkbox disabled />
-                      )}
-                    </TableCell>
-                    <TableCell>{item.capacity} People</TableCell>
-                    <TableCell>{item.size} m²</TableCell>
-                    <TableCell>{item.discount_rate} %</TableCell>
-                    <TableCell>
-                      {item.status == "available" ? (
-                        <p className="text-green-600">Available</p>
-                      ) : item.status == "maintenance" ? (
-                        <p className="text-yellow-600">Maintenance</p>
-                      ) : (
-                        <p className="text-red-600">OutofService</p>
-                      )}
-                    </TableCell>
+                    <TableCell>{item.picture_name}</TableCell>
                     <Dialog>
                       <TableCell>
                         {/* THIS IS UPDATE PAGES */}
-                        <RoomUpdate optionID={item.room_id} />
+                        {/* <RoomUpdate optionID={item.room_id} /> */}
                         <DropdownMenu>
                           <DropdownMenuTrigger>
                             <Ellipsis />
@@ -188,4 +157,4 @@ const Room = () => {
   );
 };
 
-export default Room;
+export default RoomPicture;

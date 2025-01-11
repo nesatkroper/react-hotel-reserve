@@ -1,6 +1,5 @@
 import { AppSidebar } from "@/components/app-sidebar";
 import { Separator } from "@/components/ui/separator";
-import NotificationPopover from "./notification-popover";
 import {
   SidebarInset,
   SidebarProvider,
@@ -9,10 +8,11 @@ import {
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Popover, PopoverTrigger } from "@/components/ui/popover";
+import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import { BellRing, Search } from "lucide-react";
 import { ModeToggle } from "../mode-toggle";
 import { useState } from "react";
+import NotificationSheet from "./notification-sheet";
 
 export default function Layout({ children }) {
   const [date, setDate] = useState(
@@ -55,14 +55,15 @@ export default function Layout({ children }) {
               </Button>
             </form>
             <ModeToggle />
-            <Popover className="me-2 rounded-lg">
-              <PopoverTrigger>
+            <Sheet>
+              {/* THIS IS NOTIFICATION SHEET */}
+              <NotificationSheet />
+              <SheetTrigger>
                 <Button variant="icon" className="p-2">
                   <BellRing size={28} />
                 </Button>
-              </PopoverTrigger>
-              <NotificationPopover />
-            </Popover>
+              </SheetTrigger>
+            </Sheet>
           </div>
         </header>
         <Separator />

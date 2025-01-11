@@ -16,24 +16,32 @@ import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "@/providers/axiosInstance";
 import { useDispatch } from "react-redux";
 import { getRooms } from "@/app/reducer/roomSlice";
 
-const RoomUpdate = () => {
+const RoomUpdate = ({ optionID }) => {
   const dispatch = useDispatch();
-  const [data, setData] = useState({
-    room_name: "",
-    room_type: "single",
-    is_ac: "true",
-    price: 0,
-    capacity: 4,
-    size: 25,
-    discount_rate: 0,
-    is_booked: "false",
-    status: "available",
-  });
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    handleGetSpecificRoom();
+  }, [optionID]);
+
+  const handleGetSpecificRoom = async () => {
+    await axios
+      .get(`/room/${optionID}`)
+      .then((respone) => {
+        const res = respone?.data?.data;
+        setData({ ...res });
+        dispatch(getRooms());
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
@@ -42,8 +50,8 @@ const RoomUpdate = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     await axios
-      .post("/room", data)
-      .then((res) => {
+      .put(`/room/${optionID}`, data)
+      .then(() => {
         dispatch(getRooms());
       })
       .catch((error) => {
@@ -56,7 +64,7 @@ const RoomUpdate = () => {
       <DialogContent>
         <form onSubmit={handleFormSubmit}>
           <DialogHeader className="mb-3">
-            <DialogTitle>Reservation Details Information.</DialogTitle>
+            <DialogTitle>Update Reservation Details Information.</DialogTitle>
           </DialogHeader>
           <Separator />
           <div className="flex justify-between mb-2 mt-2">
@@ -66,6 +74,7 @@ const RoomUpdate = () => {
                 onChange={handleChange}
                 name="room_name"
                 type="number"
+                value={data?.room_name?.split("-")[1] || ""}
                 placeholder="Room-101"
                 className="w-[250px]"
               />
@@ -76,6 +85,7 @@ const RoomUpdate = () => {
                 onValueChange={(value) =>
                   setData({ ...data, room_type: value })
                 }
+                value={data?.room_type}
               >
                 <SelectTrigger className="w-[250px]">
                   <SelectValue placeholder="Single Room" />
@@ -95,6 +105,11 @@ const RoomUpdate = () => {
                 onChange={handleChange}
                 name="price"
                 type="number"
+                value={
+                  typeof data?.price === "string"
+                    ? data.price.replace("$", "").trim() || 0
+                    : data.price
+                }
                 placeholder="$39,99"
                 className="w-[250px]"
                 step="0.01"
@@ -107,6 +122,7 @@ const RoomUpdate = () => {
                 onChange={handleChange}
                 name="discount_rate"
                 type="number"
+                value={data.discount_rate}
                 placeholder="5%"
                 className="w-[250px]"
                 step="0.01"
@@ -122,6 +138,7 @@ const RoomUpdate = () => {
                 onChange={handleChange}
                 name="size"
                 type="number"
+                value={data.size}
                 placeholder="25 m²"
                 className="w-[250px]"
                 min="0"
@@ -133,6 +150,7 @@ const RoomUpdate = () => {
                 onChange={handleChange}
                 name="capacity"
                 type="number"
+                value={data.capacity}
                 placeholder="4 people"
                 className="w-[250px]"
                 min="1"
@@ -144,6 +162,7 @@ const RoomUpdate = () => {
               <Label>Air Conditional*</Label>
               <RadioGroup
                 onValueChange={(value) => setData({ ...data, is_ac: value })}
+                value={data.is_ac}
                 defaultValue="true"
                 className="flex pt-2"
               >
