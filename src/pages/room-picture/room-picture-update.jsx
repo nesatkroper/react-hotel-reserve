@@ -30,7 +30,7 @@ import testPic from "@/public/images/test.jpg";
 import { getRooms } from "@/app/reducer/roomSlice";
 import { getRpicture } from "@/app/reducer/rpictureSlice";
 
-const RoomPictureAdd = () => {
+const RoomPictureUpdate = ({ optionID }) => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
@@ -39,12 +39,26 @@ const RoomPictureAdd = () => {
   const [data, setData] = useState({
     room_id: 0,
     picture_name: "",
-    picture: "true",
+    picture: "",
   });
 
   useEffect(() => {
     if (!rooms) dispatch(getRooms());
   });
+
+  const handleGetSpecificData = async () => {
+    await axios
+      .get(`/room-picture/${optionID}`)
+      .then((res) => {
+        setData(res);
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  console.log(data);
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
@@ -176,4 +190,4 @@ const RoomPictureAdd = () => {
   );
 };
 
-export default RoomPictureAdd;
+export default RoomPictureUpdate;

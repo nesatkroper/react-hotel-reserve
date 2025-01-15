@@ -32,28 +32,28 @@ import { Plus, Ellipsis, ListCollapse, Pen, Trash } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getRpicture } from "@/app/reducer/rpictureSlice";
-import { getRooms } from "@/app/reducer/roomSlice";
+import { apiUrl } from "@/providers/api-url";
+import defimg from "@/public/default.png";
+import RoomPictureUpdate from "./room-picture-update";
 
 const RoomPicture = () => {
   const dispatch = useDispatch();
-  const rpicture = useSelector((state) => state?.rpicture?.data);
-
+  const rpicture = useSelector((state) => state?.rpictures?.data);
+  const local = apiUrl.split("/api").join("");
   const [load, setLoading] = useState(true);
 
   useEffect(() => {
     if (!rpicture) {
-      if (rpicture !== undefined) setLoading(false);
       dispatch(getRpicture());
-      dispatch(getRooms());
     }
   }, [rpicture]);
-  console.log("hello");
+
+  console.log(rpicture);
 
   const handleDelete = async (id) => {
     await axios
       .delete(`/room-picture/${id}`)
-      .then((res) => {
-        console.log(res);
+      .then(() => {
         dispatch(getRpicture());
       })
       .catch((error) => {
@@ -99,14 +99,21 @@ const RoomPicture = () => {
               <TableBody>
                 {rpicture?.map((item, index) => (
                   <TableRow key={index}>
-                    <TableCell>{index + 1}</TableCell>
-                    <TableCell>{item.picture}</TableCell>
-                    <TableCell>{item.room_name}</TableCell>
-                    <TableCell>{item.picture_name}</TableCell>
+                    <TableCell className="font-bold">{index + 1}</TableCell>
+                    <TableCell>
+                      <img
+                        src={`${local}/images/rooms/${item.picture}`}
+                        onError={(e) => (e.target.src = defimg)}
+                        alt="room"
+                        className="h-[80px] rounded-lg"
+                      />
+                    </TableCell>
+                    <TableCell>{item?.rooms?.room_name || "N/A"}</TableCell>
+                    <TableCell>{item.picture_name || "Unnamed"}</TableCell>
                     <Dialog>
                       <TableCell>
                         {/* THIS IS UPDATE PAGES */}
-                        {/* <RoomUpdate optionID={item.room_id} /> */}
+                        <RoomPictureUpdate optionID={item.room_id} />
                         <DropdownMenu>
                           <DropdownMenuTrigger>
                             <Ellipsis />

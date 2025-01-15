@@ -11,14 +11,10 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import axios from "@/providers/axiosInstance";
 import ReservationDetails from "./reservation-detail";
-
-//! THIS IS LOCAL VARIABLE
-const SINGLE_ROOM = 12;
-const DOUBLE_ROOM = 9;
+import { useDispatch, useSelector } from "react-redux";
+import { getRooms } from "@/app/reducer/roomSlice";
 
 //! FUNCTION TO FORMAT NUMBERS WITH LEADING ZERO
 const F_NUM = (num) => {
@@ -27,14 +23,25 @@ const F_NUM = (num) => {
 
 //! THIS IS MAIN FUNC
 const FrontDesk = () => {
-  //! THIS IS STATE MANAGEMENT
+  const dispatch = useDispatch();
   const [thisMonth, setThisMonth] = useState(1);
   const [reserve, setReserve] = useState(false);
   const [booked, setBooked] = useState([]);
   const [available, setAvailable] = useState([]);
+  const rooms = useSelector((state) => state?.rooms?.data);
   const [currentMonth, setCurrentMonth] = useState(
     new Date().toLocaleDateString("en-US", { month: "long" })
   );
+
+  useEffect(() => {
+    if (!rooms) dispatch(getRooms());
+  }, rooms);
+
+  const singleRoom = rooms?.filter((room) => room.room_type === "single");
+  const doubleRoom = rooms?.filter((room) => room.room_type === "double");
+  const suiteRoom = rooms?.filter((room) => room.room_type === "suite");
+
+  console.log(doubleRoom);
 
   const DAYS_IN_MONTH = new Date(
     new Date().getFullYear(),
@@ -52,8 +59,8 @@ const FrontDesk = () => {
     e.preventDefault();
 
     //! CREATE ARRAYS WITH DAYS (MATCHING YOUR TABLE COLUMNS)
-    const bookedByDay = Array(DAYS_IN_MONTH).fill(0);
-    const availableByDay = Array(DAYS_IN_MONTH).fill(SINGLE_ROOM + DOUBLE_ROOM);
+    const bookedByDay = Array(DAYS_IN_MONTH)?.fill(0);
+    const availableByDay = Array(DAYS_IN_MONTH)?.fill(singleRoom + doubleRoom);
 
     // //! GET ALL CHECKBOXES
     // const checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -183,41 +190,44 @@ const FrontDesk = () => {
                     Single Room
                   </TableCell>
                 </TableRow>
-                {Array.from({ length: SINGLE_ROOM }, (_, index) => {
-                  return (
-                    <TableRow key={index}>
-                      <TableCell className="text-center p-0 font-semibold whitespace-nowrap">
-                        Room-2{F_NUM(index + 1)}
-                      </TableCell>
-                      {Array.from({ length: DAYS_IN_MONTH }, (__, step) => {
-                        return (
-                          <TableCell
-                            key={step}
-                            className="text-center p-0 h-[25px]"
-                          >
-                            <Button
-                              onDoubleClick={() => {
-                                handleReservation(index, step, "single");
-                                setReserve(true);
-                              }}
-                              id={`r${index}d${step}`}
-                              variant="outline"
-                              className="h-[25px] min-w-[38px]  w-full rounded-none p-0 relative "
+                {Array.from(
+                  { length: singleRoom !== undefined ? singleRoom?.length : 0 },
+                  (_, index) => {
+                    return (
+                      <TableRow key={index}>
+                        <TableCell className="text-center p-0 font-semibold whitespace-nowrap">
+                          Room-3{F_NUM(index + 1)}
+                        </TableCell>
+                        {Array.from({ length: DAYS_IN_MONTH }, (__, step) => {
+                          return (
+                            <TableCell
+                              key={step}
+                              className="text-center p-0 h-[25px]"
                             >
-                              <div
-                                className={
-                                  reserve
-                                    ? "w-full h-full p-0 m-0 border-none bg-yellow-500 absolute left-[40%]"
-                                    : "w-full h-full p-0 m-0 border-none"
-                                }
-                              />
-                            </Button>
-                          </TableCell>
-                        );
-                      })}
-                    </TableRow>
-                  );
-                })}
+                              <Button
+                                onDoubleClick={() => {
+                                  handleReservation(index, step, "single");
+                                  setReserve(true);
+                                }}
+                                id={`r${index}d${step}`}
+                                variant="outline"
+                                className="h-[25px] min-w-[38px]  w-full rounded-none p-0 relative "
+                              >
+                                <div
+                                  className={
+                                    reserve
+                                      ? "w-full h-full p-0 m-0 border-none bg-yellow-500 absolute left-[40%]"
+                                      : "w-full h-full p-0 m-0 border-none"
+                                  }
+                                />
+                              </Button>
+                            </TableCell>
+                          );
+                        })}
+                      </TableRow>
+                    );
+                  }
+                )}
 
                 <TableRow className="font-semibold bg-muted">
                   <TableCell
@@ -227,28 +237,64 @@ const FrontDesk = () => {
                     Double Room
                   </TableCell>
                 </TableRow>
-                {Array.from({ length: DOUBLE_ROOM }, (_, index) => {
-                  return (
-                    <TableRow key={index}>
-                      <TableCell className="text-center p-0 font-semibold whitespace-nowrap">
-                        Room-1{F_NUM(index + 1)}
-                      </TableCell>
-                      {Array.from({ length: DAYS_IN_MONTH }, (__, step) => {
-                        return (
-                          <TableCell
-                            key={step}
-                            className="text-center p-0 h-[25px]"
-                          >
-                            <Button
-                              variant="outline"
-                              className="h-[25px] min-w-[38px] w-full rounded-none"
-                            />
-                          </TableCell>
-                        );
-                      })}
-                    </TableRow>
-                  );
-                })}
+                {Array.from(
+                  { length: doubleRoom !== undefined ? doubleRoom?.length : 0 },
+                  (_, index) => {
+                    return (
+                      <TableRow key={index}>
+                        <TableCell className="text-center p-0 font-semibold whitespace-nowrap">
+                          Room-2{F_NUM(index + 1)}
+                        </TableCell>
+                        {Array.from({ length: DAYS_IN_MONTH }, (__, step) => {
+                          return (
+                            <TableCell
+                              key={step}
+                              className="text-center p-0 h-[25px]"
+                            >
+                              <Button
+                                variant="outline"
+                                className="h-[25px] min-w-[38px] w-full rounded-none"
+                              />
+                            </TableCell>
+                          );
+                        })}
+                      </TableRow>
+                    );
+                  }
+                )}
+                <TableRow className="font-semibold bg-muted">
+                  <TableCell
+                    colspan={DAYS_IN_MONTH + 1}
+                    className="text-center py-1"
+                  >
+                    Suite Room
+                  </TableCell>
+                </TableRow>
+                {Array.from(
+                  { length: suiteRoom !== undefined ? suiteRoom?.length : 0 },
+                  (_, index) => {
+                    return (
+                      <TableRow key={index}>
+                        <TableCell className="text-center p-0 font-semibold whitespace-nowrap">
+                          Room-1{F_NUM(index + 1)}
+                        </TableCell>
+                        {Array.from({ length: DAYS_IN_MONTH }, (__, step) => {
+                          return (
+                            <TableCell
+                              key={step}
+                              className="text-center p-0 h-[25px]"
+                            >
+                              <Button
+                                variant="outline"
+                                className="h-[25px] min-w-[38px] w-full rounded-none"
+                              />
+                            </TableCell>
+                          );
+                        })}
+                      </TableRow>
+                    );
+                  }
+                )}
                 <TableRow>
                   <TableCell
                     colspan={DAYS_IN_MONTH + 1}

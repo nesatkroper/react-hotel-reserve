@@ -60,11 +60,11 @@ const Routes = () => {
       element: <POS />,
     },
     {
-      path: "/item",
+      path: "/product",
       element: <Product />,
     },
     {
-      path: "/icategory",
+      path: "/pcategory",
       element: <ProductCategory />,
     },
     {

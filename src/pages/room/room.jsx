@@ -22,7 +22,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Layout from "@/components/app/layout";
-import RoomAdd from "../room-picture/room-picture-add";
+import RoomAdd from "./room-add";
 import axios from "@/providers/axiosInstance";
 import RoomUpdate from "./room-update";
 import { Button } from "@/components/ui/button";
@@ -33,9 +33,12 @@ import { Plus, Ellipsis, ListCollapse, Pen, Trash } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getRooms } from "@/app/reducer/roomSlice";
+import { apiUrl } from "@/providers/api-url";
+import defimg from "@/public/default.png";
 
 const Room = () => {
   const dispatch = useDispatch();
+  const local = apiUrl.split("/api").join("");
   const rooms = useSelector((state) => state?.rooms?.data);
   const [load, setLoading] = useState(true);
 
@@ -49,8 +52,7 @@ const Room = () => {
   const handleDelete = async (id) => {
     await axios
       .delete(`/room/${id}`)
-      .then((res) => {
-        console.log(res);
+      .then(() => {
         dispatch(getRooms());
       })
       .catch((error) => {
@@ -102,8 +104,15 @@ const Room = () => {
               <TableBody>
                 {rooms?.map((item, index) => (
                   <TableRow key={index}>
-                    <TableCell>{index + 1}</TableCell>
-                    <TableCell>{item.picture}</TableCell>
+                    <TableCell className="font-bold">{index + 1}</TableCell>
+                    <TableCell>
+                      <img
+                        src={`${local}/images/rooms/${item?.room_pictures[0]?.picture}`}
+                        alt="room"
+                        onError={(e) => (e.target.src = defimg)}
+                        className="h-[80px] rounded-lg"
+                      />
+                    </TableCell>
                     <TableCell>{item.room_name}</TableCell>
                     <TableCell>
                       {item.room_type == "single" ? (

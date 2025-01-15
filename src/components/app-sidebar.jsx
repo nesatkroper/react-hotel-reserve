@@ -39,10 +39,26 @@ const data = {
   ],
   navMain: [
     {
+      title: "Product",
+      url: "#",
+      icon: SquareTerminal,
+      isActive: true,
+      items: [
+        {
+          title: "All Product",
+          url: "product",
+        },
+        {
+          title: "Product Category",
+          url: "pcategory",
+        },
+      ],
+    },
+    {
       title: "Category",
       url: "#",
       icon: BookOpen,
-      isActive: true,
+
       items: [
         {
           title: "Employee",
@@ -67,33 +83,6 @@ const data = {
         {
           title: "Position",
           url: "/position",
-        },
-        {
-          title: "Item",
-          url: "/item",
-        },
-        {
-          title: "Item Category",
-          url: "/rcatogory",
-        },
-      ],
-    },
-    {
-      title: "Playground",
-      url: "#",
-      icon: SquareTerminal,
-      items: [
-        {
-          title: "History",
-          url: "#",
-        },
-        {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
         },
       ],
     },

@@ -8,6 +8,8 @@ import employeeReduce from "@/app/reducer/employeeSlice";
 import rdetailReduce from "@/app/reducer/rdetailSlice";
 import reservationReduce from "@/app/reducer/reservationSlice";
 import rpictureReduce from "@/app/reducer/rpictureSlice";
+import pcategoryReduce from "@/app/reducer/pcategorySlicce";
+import productReduce from "@/app/reducer/productSlicce";
 
 export default configureStore({
   reducer: {
@@ -19,6 +21,8 @@ export default configureStore({
     employees: employeeReduce,
     rdetails: rdetailReduce,
     rpictures: rpictureReduce,
-    reservations: rpictureReduce,
+    reservations: reservationReduce,
+    pcategories: pcategoryReduce,
+    products: productReduce,
   },
 });

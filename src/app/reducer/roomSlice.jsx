@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const getRooms = createAsyncThunk("getRooms", async () => {
   const res = await axios.get("/room");
-  return res.data;
+  return res?.data;
 });
 
 const roomSlice = createSlice({
