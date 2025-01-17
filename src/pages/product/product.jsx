@@ -60,7 +60,7 @@ const Product = () => {
 
   const handleDelete = async (id) => {
     await axios
-      .delete(`/product/${id}`)
+      .delete(`/products/${id}`)
       .then(() => {
         dispatch(getProduct());
       })
@@ -136,7 +136,7 @@ const Product = () => {
                       <TableCell className="font-bold">{index + 1}</TableCell>
                       <TableCell>
                         <img
-                          src={`${local}/images/products/${item?.picture}`}
+                          src={`${local}/images/product/${item?.picture}`}
                           alt="product"
                           onError={(e) => (e.target.src = defimg)}
                           className="h-[80px] rounded-lg"

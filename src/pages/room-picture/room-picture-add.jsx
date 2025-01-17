@@ -26,15 +26,15 @@ import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import axios from "@/providers/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
-import testPic from "@/public/images/test.jpg";
 import { getRooms } from "@/app/reducer/roomSlice";
 import { getRpicture } from "@/app/reducer/rpictureSlice";
+import { defimg, formData, resizeCropImage } from "@/utils/resize-crop-image";
 
 const RoomPictureAdd = () => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
-  const [imagePreview, setImagePreview] = useState(testPic);
+  const [imagePreview, setImagePreview] = useState(defimg);
   const rooms = useSelector((state) => state?.rooms?.data);
   const [data, setData] = useState({
     room_id: 0,
@@ -46,24 +46,35 @@ const RoomPictureAdd = () => {
     if (!rooms) dispatch(getRooms());
   });
 
+  const filtedRoom = rooms?.map(({ room_id, room_name }) => ({
+    room_id,
+    room_name,
+  }));
+
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = () => setImagePreview(reader.result);
-      reader.readAsDataURL(file);
+      try {
+        const resizedImage = await resizeCropImage(
+          file,
+          setImagePreview,
+          3 / 2
+        );
+        setData({ ...data, picture: resizedImage });
+      } catch (error) {
+        console.error("Image processing error:", error);
+      }
     }
-    setData({ ...data, picture: file });
   };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     await axios
-      .post("/room-picture", data)
+      .post("/room-picture", formData(data))
       .then(() => {
         dispatch(getRpicture());
       })
@@ -92,8 +103,9 @@ const RoomPictureAdd = () => {
                     className="w-[250px] justify-between"
                   >
                     {value
-                      ? rooms?.find((room) => room?.room_id === value)
-                          ?.room_name
+                      ? filtedRoom?.find(
+                          (room) => String(room?.room_id) === value
+                        )?.room_name
                       : "Select Room Number..."}
                     <ChevronsUpDown className="opacity-50" />
                   </Button>
@@ -107,19 +119,20 @@ const RoomPictureAdd = () => {
                     <CommandList>
                       <CommandEmpty>No Room found.</CommandEmpty>
                       <CommandGroup>
-                        {rooms?.map((room) => (
+                        {filtedRoom?.map((room) => (
                           <CommandItem
                             key={room.room_id}
-                            value={room.room_id}
+                            value={String(room.room_id)}
                             onSelect={(currentValue) => {
-                              setValue(
-                                currentValue === value ? "" : currentValue
-                              );
-                              setData({ ...data, room_id: room.room_id });
+                              setValue(currentValue);
                               setOpen(false);
+                              setData((prevData) => ({
+                                ...prevData,
+                                room_id: Number(currentValue),
+                              }));
                             }}
                           >
-                            {room?.room_name}
+                            {room.room_name}
                             <Check
                               className={cn(
                                 "ml-auto",

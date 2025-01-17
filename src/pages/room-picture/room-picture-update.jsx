@@ -58,7 +58,7 @@ const RoomPictureUpdate = ({ optionID }) => {
       });
   };
 
-  console.log(data);
+  // console.log(data);
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });

@@ -42,9 +42,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getPcategory } from "@/app/reducer/pcategorySlicce.jsx";
 import axios from "@/providers/axiosInstance.js";
+import defimg from "@/public/default.png";
+import { apiUrl } from "@/providers/api-url";
 
 const ProductCategory = () => {
   const dispatch = useDispatch();
+  const local = apiUrl.split("/api").join("");
   const pcategories = useSelector((state) => state?.pcategories?.data);
   const [load, setLoading] = useState(true);
 
@@ -94,6 +97,7 @@ const ProductCategory = () => {
               <TableHeader>
                 <TableRow>
                   <TableHead>No</TableHead>
+                  <TableHead>Picture</TableHead>
                   <TableHead>Category Name</TableHead>
                   <TableHead>Category Code</TableHead>
                   <TableHead>Description</TableHead>
@@ -128,6 +132,14 @@ const ProductCategory = () => {
                         </AlertDialogFooter>
                       </AlertDialogContent>
                       <TableCell className="font-bold">{index + 1}</TableCell>
+                      <TableCell>
+                        <img
+                          src={`${local}/images/category/${item?.picture}`}
+                          alt="product"
+                          onError={(e) => (e.target.src = defimg)}
+                          className="h-[80px] rounded-lg"
+                        />
+                      </TableCell>
                       <TableCell>{item.category_name || "N/A"}</TableCell>
                       <TableCell>{item.category_code || "CAT-N/A"}</TableCell>
                       <TableCell>{item.memo || "N/A"}</TableCell>

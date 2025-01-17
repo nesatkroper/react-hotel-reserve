@@ -48,8 +48,6 @@ const RoomPicture = () => {
     }
   }, [rpicture]);
 
-  console.log(rpicture);
-
   const handleDelete = async (id) => {
     await axios
       .delete(`/room-picture/${id}`)

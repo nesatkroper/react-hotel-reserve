@@ -8,6 +8,7 @@ import {
   Settings2,
   SquareTerminal,
   ClipboardPen,
+  BedDouble,
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -39,10 +40,25 @@ const data = {
   ],
   navMain: [
     {
+      title: "Room",
+      url: "#",
+      icon: BedDouble,
+      isActive: true,
+      items: [
+        {
+          title: "All Rooms",
+          url: "room",
+        },
+        {
+          title: "Room Picture",
+          url: "rpicture",
+        },
+      ],
+    },
+    {
       title: "Product",
       url: "#",
       icon: SquareTerminal,
-      isActive: true,
       items: [
         {
           title: "All Product",
@@ -67,14 +83,6 @@ const data = {
         {
           title: "Customer",
           url: "/customer",
-        },
-        {
-          title: "Room",
-          url: "/room",
-        },
-        {
-          title: "Room Pictures",
-          url: "/rpicture",
         },
         {
           title: "Department",
