@@ -13,7 +13,11 @@ import { useState } from "react";
 import axios from "@/providers/axiosInstance";
 import { useDispatch } from "react-redux";
 import { getPcategory } from "@/app/reducer/pcategorySlicce";
-import { formData, resizeCropImage, defimg } from "@/utils/resize-crop-image";
+import {
+  imgFormData,
+  resizeCropImage,
+  defimg,
+} from "@/utils/resize-crop-image";
 
 const ProductCategoryAdd = () => {
   const dispatch = useDispatch();
@@ -49,7 +53,7 @@ const ProductCategoryAdd = () => {
     e.preventDefault();
 
     await axios
-      .post("/product-category", formData(data))
+      .post("/product-category", imgFormData(data))
       .then(() => {
         dispatch(getPcategory());
       })
@@ -57,7 +61,7 @@ const ProductCategoryAdd = () => {
         console.log("Error submitting form:", error);
       });
 
-    return formData(data);
+    return imgFormData(data);
   };
 
   return (

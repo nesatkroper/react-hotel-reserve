@@ -28,7 +28,11 @@ import axios from "@/providers/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { getPcategory } from "@/app/reducer/pcategorySlicce";
 import { getProduct } from "@/app/reducer/productSlicce";
-import { defimg, formData, resizeCropImage } from "@/utils/resize-crop-image";
+import {
+  defimg,
+  imgFormData,
+  resizeCropImage,
+} from "@/utils/resize-crop-image";
 
 const ProductAdd = () => {
   const dispatch = useDispatch();
@@ -82,7 +86,7 @@ const ProductAdd = () => {
     e.preventDefault();
 
     await axios
-      .post("/products", formData(data))
+      .post("/products", imgFormData(data))
       .then(() => {
         dispatch(getProduct());
       })

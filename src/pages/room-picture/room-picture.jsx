@@ -31,7 +31,7 @@ import { getRpicture } from "@/app/reducer/rpictureSlice";
 import { apiUrl } from "@/providers/api-url";
 import { defimg } from "@/utils/resize-crop-image";
 import Layout from "@/components/app/layout";
-// import RoomPictureAdd from "./components/room-picture-add";
+import RoomPictureAdd from "./components/room-picture-add";
 import axios from "@/providers/axiosInstance";
 import RoomPictureUpdate from "./components/room-picture-update";
 import NoData from "@/components/app/no-data";
@@ -62,7 +62,7 @@ const RoomPicture = () => {
       <Layout>
         <Card>
           <Dialog>
-            {/* <RoomPictureAdd /> */}
+            <RoomPictureAdd />
             <CardHeader className="p-4">
               <div className="flex flex-row justify-between">
                 <div>
