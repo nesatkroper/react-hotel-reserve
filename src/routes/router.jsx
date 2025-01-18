@@ -3,7 +3,6 @@ import { useAuth } from "@/providers/auth-provider";
 import { ProtectedRoute } from "@/routes/protect-route";
 import Dashboard from "@/pages/dashboard/dashboard";
 import Reservation from "@/pages/reservation/reservation";
-import Layout from "@/components/app/layout";
 import NotFound from "@/pages/404/not-found";
 import Room from "@/pages/room/room";
 import Department from "@/pages/department/department";
@@ -20,15 +19,11 @@ const Routes = () => {
 
   const routesForPublic = [
     {
-      path: "/",
-      element: <Layout />,
-    },
-    {
       path: "*",
       element: <NotFound />,
     },
     {
-      path: "/dashboard",
+      path: "/",
       element: <Dashboard />,
     },
     {

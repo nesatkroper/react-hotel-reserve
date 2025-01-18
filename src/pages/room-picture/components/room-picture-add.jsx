@@ -50,11 +50,6 @@ const RoomPictureAdd = () => {
     dispatch(getRooms());
   }, [dispatch]);
 
-  // const filtedRoom = data?.map(({ room_id, room_name }) => ({
-  //   room_id,
-  //   room_name,
-  // }));
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -86,6 +81,8 @@ const RoomPictureAdd = () => {
         console.error(error);
       });
   };
+
+  console.log(imgFormData(formData));
 
   return (
     <>

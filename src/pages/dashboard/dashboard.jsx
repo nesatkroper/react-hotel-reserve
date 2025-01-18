@@ -1,18 +1,22 @@
 import Layout from "@/components/app/layout";
-import { Calendar } from "@/components/ui/calendar";
-import { useState } from "react";
+import MyBigBarChartInteractive from "./components/big-bar-chart-interactive";
+import MyAreaChart from "./components/area-chart-gradient";
+import MyBarChart from "./components/bar-chart-multiple";
+import MyPieChart from "./components/pie-chart-donut";
+import MyBigAreaChartInteractive from "./components/big-area-chart-interactive";
 
 const Dashboard = () => {
-  const [date, setDate] = useState(new Date());
   return (
     <>
       <Layout>
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={setDate}
-          className="rounded-md border"
-        />
+        <MyBigBarChartInteractive />
+        <div className="grid grid-cols-4 gap-3">
+          <MyAreaChart />
+          <MyBarChart />
+          <MyPieChart />
+          <MyBarChart />
+        </div>
+        <MyBigAreaChartInteractive />
       </Layout>
     </>
   );

@@ -30,6 +30,7 @@ import { useEffect } from "react";
 import { getRpicture } from "@/app/reducer/rpictureSlice";
 import { apiUrl } from "@/providers/api-url";
 import { defimg } from "@/utils/resize-crop-image";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import Layout from "@/components/app/layout";
 import RoomPictureAdd from "./components/room-picture-add";
 import axios from "@/providers/axiosInstance";
@@ -63,7 +64,7 @@ const RoomPicture = () => {
         <Card>
           <Dialog>
             <RoomPictureAdd />
-            <CardHeader className="p-4">
+            <CardHeader className="pb-0">
               <div className="flex flex-row justify-between">
                 <div>
                   <CardTitle>Room Picture Tables</CardTitle>
@@ -80,71 +81,73 @@ const RoomPicture = () => {
           </Dialog>
           <CardContent className="p-1">
             <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[70px]">No</TableHead>
-                  <TableHead className="w-[150px]">Picture</TableHead>
-                  <TableHead>Room Number</TableHead>
-                  <TableHead>Picture Name</TableHead>
-                  <TableHead className="w-[50px]"></TableHead>
-                </TableRow>
-              </TableHeader>
-              {loading ? (
-                <AppLoading cols={1} />
-              ) : (
-                <TableBody>
-                  {data?.map((item, index) => (
-                    <TableRow key={index}>
-                      <TableCell className="font-bold">{index + 1}</TableCell>
-                      <TableCell>
-                        <img
-                          src={`${local}/images/rooms/${item.picture}`}
-                          onError={(e) => (e.target.src = defimg)}
-                          alt="room"
-                          className="h-[80px] rounded-lg"
-                        />
-                      </TableCell>
-                      <TableCell>{item?.rooms?.room_name || "N/A"}</TableCell>
-                      <TableCell>{item.picture_name || "Unnamed"}</TableCell>
-                      <Dialog>
+              <ScrollArea className="h-[80vh] w-full rounded-lg">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-[70px]">No</TableHead>
+                    <TableHead className="w-[150px]">Picture</TableHead>
+                    <TableHead>Room Number</TableHead>
+                    <TableHead>Picture Name</TableHead>
+                    <TableHead className="w-[50px]"></TableHead>
+                  </TableRow>
+                </TableHeader>
+                {loading ? (
+                  <AppLoading cols={1} />
+                ) : (
+                  <TableBody>
+                    {data?.map((item, index) => (
+                      <TableRow key={index}>
+                        <TableCell className="font-bold">{index + 1}</TableCell>
                         <TableCell>
-                          {/* THIS IS UPDATE PAGES */}
-                          <RoomPictureUpdate optionID={item.room_id} />
-                          <DropdownMenu>
-                            <DropdownMenuTrigger>
-                              <Ellipsis />
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent>
-                              <DropdownMenuLabel className="text-center">
-                                Options
-                              </DropdownMenuLabel>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem className="text-blue-600">
-                                <ListCollapse />
-                                Detail
-                              </DropdownMenuItem>
-                              <DialogTrigger className="w-full">
-                                <DropdownMenuItem className="text-yellow-600">
-                                  <Pen />
-                                  Update
-                                </DropdownMenuItem>
-                              </DialogTrigger>
-                              <DropdownMenuItem
-                                onClick={() => handleDelete(item.room_id)}
-                                className="text-red-600"
-                              >
-                                <Trash />
-                                Delete
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
+                          <img
+                            src={`${local}/images/rooms/${item.picture}`}
+                            onError={(e) => (e.target.src = defimg)}
+                            alt="room"
+                            className="h-[80px] rounded-lg"
+                          />
                         </TableCell>
-                      </Dialog>
-                    </TableRow>
-                  ))}
-                  {data ? "" : <NoData cols={4} />}
-                </TableBody>
-              )}
+                        <TableCell>{item?.rooms?.room_name || "N/A"}</TableCell>
+                        <TableCell>{item.picture_name || "Unnamed"}</TableCell>
+                        <Dialog>
+                          <TableCell>
+                            {/* THIS IS UPDATE PAGES */}
+                            <RoomPictureUpdate item={item} />
+                            <DropdownMenu>
+                              <DropdownMenuTrigger>
+                                <Ellipsis />
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent>
+                                <DropdownMenuLabel className="text-center">
+                                  Options
+                                </DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem className="text-blue-600">
+                                  <ListCollapse />
+                                  Detail
+                                </DropdownMenuItem>
+                                <DialogTrigger className="w-full">
+                                  <DropdownMenuItem className="text-yellow-600">
+                                    <Pen />
+                                    Update
+                                  </DropdownMenuItem>
+                                </DialogTrigger>
+                                <DropdownMenuItem
+                                  onClick={() => handleDelete(item.room_id)}
+                                  className="text-red-600"
+                                >
+                                  <Trash />
+                                  Delete
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </TableCell>
+                        </Dialog>
+                      </TableRow>
+                    ))}
+                    {data ? "" : <NoData cols={4} />}
+                  </TableBody>
+                )}
+              </ScrollArea>
             </Table>
           </CardContent>
         </Card>
