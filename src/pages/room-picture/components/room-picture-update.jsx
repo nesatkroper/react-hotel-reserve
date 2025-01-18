@@ -26,15 +26,15 @@ import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import axios from "@/providers/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
-import testPic from "@/public/images/test.jpg";
 import { getRooms } from "@/app/reducer/roomSlice";
 import { getRpicture } from "@/app/reducer/rpictureSlice";
+import { defimg } from "@/utils/resize-crop-image";
 
 const RoomPictureUpdate = ({ optionID }) => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
-  const [imagePreview, setImagePreview] = useState(testPic);
+  const [imagePreview, setImagePreview] = useState(defimg);
   const rooms = useSelector((state) => state?.rooms?.data);
   const [data, setData] = useState({
     room_id: 0,

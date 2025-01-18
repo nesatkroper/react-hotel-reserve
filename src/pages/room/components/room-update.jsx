@@ -21,41 +21,29 @@ import axios from "@/providers/axiosInstance";
 import { useDispatch } from "react-redux";
 import { getRooms } from "@/app/reducer/roomSlice";
 
-const RoomUpdate = ({ optionID }) => {
+const RoomUpdate = ({ item }) => {
   const dispatch = useDispatch();
   const [data, setData] = useState({});
 
   useEffect(() => {
-    handleGetSpecificRoom();
-  }, [optionID]);
-
-  const handleGetSpecificRoom = async () => {
-    await axios
-      .get(`/room/${optionID}`)
-      .then((respone) => {
-        const res = respone?.data?.data;
-        setData({ ...res });
-        dispatch(getRooms());
-        console.log(res);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+    setData(item);
+  }, [item]);
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
   const handleFormSubmit = async (e) => {
+    console.log(data);
     e.preventDefault();
     await axios
-      .put(`/room/${optionID}`, data)
-      .then(() => {
+      .put(`/room/${data.room_id}`, data)
+      .then((res) => {
+        // console.log(res);
         dispatch(getRooms());
       })
       .catch((error) => {
-        console.error(error);
+        console.log(error);
       });
   };
 
@@ -75,7 +63,6 @@ const RoomUpdate = ({ optionID }) => {
                 name="room_name"
                 type="number"
                 value={data?.room_name?.split("-")[1] || ""}
-                placeholder="Room-101"
                 className="w-[250px]"
               />
             </div>
@@ -162,7 +149,7 @@ const RoomUpdate = ({ optionID }) => {
               <Label>Air Conditional*</Label>
               <RadioGroup
                 onValueChange={(value) => setData({ ...data, is_ac: value })}
-                value={data.is_ac}
+                value={data?.is_ac}
                 defaultValue="true"
                 className="flex pt-2"
               >

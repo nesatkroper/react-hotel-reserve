@@ -136,7 +136,7 @@ const ProductAdd = () => {
                       ? filtedCate?.find(
                           (room) => String(room.product_category_id) === value
                         )?.category_name
-                      : "Select Room Number..."}
+                      : "Select Product Category..."}
                     <ChevronsUpDown className="opacity-50" />
                   </Button>
                 </PopoverTrigger>

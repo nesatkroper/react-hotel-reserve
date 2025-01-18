@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/table";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
-import PositionDialog from "./position-dialog";
+import PositionDialog from "./components/position-dialog";
 
 const Position = () => {
   return (

@@ -34,29 +34,27 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import Layout from "@/components/app/layout";
-import ProductAdd from "./product-add.jsx";
+import ProductAdd from "./components/product-add.jsx";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Plus, Ellipsis, ListCollapse, Pen, Trash } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import axios from "@/providers/axiosInstance.js";
+import { useEffect } from "react";
 import { apiUrl } from "@/providers/api-url";
-import defimg from "@/public/default.png";
 import { getProduct } from "@/app/reducer/productSlicce.jsx";
+import { defimg } from "@/utils/resize-crop-image.js";
+import axios from "@/providers/axiosInstance.js";
+import AppLoading from "@/components/app/app-loading.jsx";
 
 const Product = () => {
   const dispatch = useDispatch();
   const local = apiUrl.split("/api").join("");
-  const products = useSelector((state) => state?.products?.data);
-  const [load, setLoading] = useState(true);
+  const { data, loading, error } = useSelector((state) => state?.products);
 
   useEffect(() => {
-    if (!products) {
-      dispatch(getProduct());
-    }
-  }, [products]);
+    dispatch(getProduct());
+  }, [dispatch]);
 
   const handleDelete = async (id) => {
     await axios
@@ -66,9 +64,6 @@ const Product = () => {
       })
       .catch((error) => {
         console.log(error);
-      })
-      .finally(() => {
-        setLoading(true);
       });
   };
 
@@ -78,7 +73,7 @@ const Product = () => {
         <Card>
           <Dialog>
             <ProductAdd />
-            <CardHeader className="p-4">
+            <CardHeader className="pb-0">
               <div className="flex flex-row justify-between">
                 <div>
                   <CardTitle>Product Tables</CardTitle>
@@ -108,100 +103,97 @@ const Product = () => {
                   <TableHead></TableHead>
                 </TableRow>
               </TableHeader>
-              <TableBody>
-                {products?.map((item, index) => (
-                  <TableRow key={index}>
-                    <AlertDialog>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>
-                            Are you absolutely sure to Delete this?
-                          </AlertDialogTitle>
-                          <AlertDialogDescription>
-                            This action cannot be undone. This will permanently
-                            delete your data and remove your data from our
-                            servers.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction
-                            onClick={() => handleDelete(item.product_id)}
-                            className="bg-red-500"
-                          >
-                            Continue
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                      <TableCell className="font-bold">{index + 1}</TableCell>
-                      <TableCell>
-                        <img
-                          src={`${local}/images/product/${item?.picture}`}
-                          alt="product"
-                          onError={(e) => (e.target.src = defimg)}
-                          className="h-[80px] rounded-lg"
-                        />
-                      </TableCell>
-                      <TableCell>{item.product_name || "N/A"}</TableCell>
-                      <TableCell>{item.product_code || "N/A"}</TableCell>
-                      <TableCell>
-                        {item.categories?.category_name || "N/A"}
-                      </TableCell>
-                      <TableCell>$ {item.price || "0.99"}</TableCell>
-                      <TableCell>{item.discount || "0"} %</TableCell>
-                      <TableCell>
-                        {item.status == "true" ? (
-                          <Checkbox checked disabled />
-                        ) : (
-                          <Checkbox disabled />
-                        )}
-                      </TableCell>
-                      <Dialog>
+              {!loading ? (
+                <TableBody>
+                  {data?.map((item, index) => (
+                    <TableRow key={index}>
+                      <AlertDialog>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>
+                              Are you absolutely sure to Delete this?
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This action cannot be undone. This will
+                              permanently delete your data and remove your data
+                              from our servers.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => handleDelete(item.product_id)}
+                              className="bg-red-500"
+                            >
+                              Continue
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                        <TableCell className="font-bold">{index + 1}</TableCell>
                         <TableCell>
-                          {/* THIS IS UPDATE PAGES */}
-                          {/* <RoomUpdate optionID={item.room_id} /> */}
-                          <DropdownMenu>
-                            <DropdownMenuTrigger>
-                              <Ellipsis />
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent>
-                              <DropdownMenuLabel className="text-center">
-                                Options
-                              </DropdownMenuLabel>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem className="text-blue-600">
-                                <ListCollapse />
-                                Detail
-                              </DropdownMenuItem>
-                              <DialogTrigger className="w-full">
-                                <DropdownMenuItem className="text-yellow-600">
-                                  <Pen />
-                                  Update
-                                </DropdownMenuItem>
-                              </DialogTrigger>
-                              <AlertDialogTrigger className="w-full">
-                                <DropdownMenuItem className="text-red-600">
-                                  <Trash />
-                                  Delete
-                                </DropdownMenuItem>
-                              </AlertDialogTrigger>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
+                          <img
+                            src={`${local}/images/product/${item?.picture}`}
+                            alt="product"
+                            onError={(e) => (e.target.src = defimg)}
+                            className="h-[80px] rounded-lg"
+                          />
                         </TableCell>
-                      </Dialog>
-                    </AlertDialog>
-                  </TableRow>
-                ))}
-                {!load ? (
-                  <TableRow>
-                    <TableCell colspan={10} className="text-center font-bold">
-                      No Data Here 😢
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  ""
-                )}
-              </TableBody>
+                        <TableCell>{item.product_name || "N/A"}</TableCell>
+                        <TableCell>{item.product_code || "N/A"}</TableCell>
+                        <TableCell>
+                          {item.categories?.category_name || "N/A"}
+                        </TableCell>
+                        <TableCell>$ {item.price || "0.99"}</TableCell>
+                        <TableCell>{item.discount || "0"} %</TableCell>
+                        <TableCell>
+                          {item.status == "true" ? (
+                            <Checkbox checked disabled />
+                          ) : (
+                            <Checkbox disabled />
+                          )}
+                        </TableCell>
+                        <Dialog>
+                          <TableCell>
+                            {/* THIS IS UPDATE PAGES */}
+                            {/* <RoomUpdate optionID={item.room_id} /> */}
+                            <DropdownMenu>
+                              <DropdownMenuTrigger>
+                                <Ellipsis />
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent>
+                                <DropdownMenuLabel className="text-center">
+                                  Options
+                                </DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem className="text-blue-600">
+                                  <ListCollapse />
+                                  Detail
+                                </DropdownMenuItem>
+                                <DialogTrigger className="w-full">
+                                  <DropdownMenuItem className="text-yellow-600">
+                                    <Pen />
+                                    Update
+                                  </DropdownMenuItem>
+                                </DialogTrigger>
+                                <AlertDialogTrigger className="w-full">
+                                  <DropdownMenuItem className="text-red-600">
+                                    <Trash />
+                                    Delete
+                                  </DropdownMenuItem>
+                                </AlertDialogTrigger>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </TableCell>
+                        </Dialog>
+                      </AlertDialog>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              ) : (
+                <TableBody>
+                  <AppLoading className="h-[200px]" />
+                </TableBody>
+              )}
             </Table>
           </CardContent>
         </Card>

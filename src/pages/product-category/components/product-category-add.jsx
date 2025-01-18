@@ -33,7 +33,11 @@ const ProductCategoryAdd = () => {
     const file = e.target.files[0];
     if (file) {
       try {
-        const resizedImage = await resizeCropImage(file, setImagePreview, 1);
+        const resizedImage = await resizeCropImage(
+          file,
+          setImagePreview,
+          3 / 2
+        );
         setData({ ...data, picture: resizedImage });
       } catch (error) {
         console.error("Image processing error:", error);

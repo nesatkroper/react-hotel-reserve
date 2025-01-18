@@ -1,4 +1,4 @@
-import defimg from "@/public/default.png";
+import defimg from "@/assets/images/default.png";
 
 export { defimg };
 
@@ -55,7 +55,7 @@ export const resizeCropImage = (file, callback, aspect) => {
   });
 };
 
-export const formData = (data) => {
+export const imgFormData = (data) => {
   const formData = new FormData();
   Object.keys(data).forEach((key) => {
     if (key === "picture" && data[key] instanceof Blob)

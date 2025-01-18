@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/table";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
-import DepartmentDialog from "./department-dialog";
+import DepartmentDialog from "./components/department-dialog";
 
 const Department = () => {
   return (
@@ -30,12 +30,12 @@ const Department = () => {
             <CardHeader className="p-4">
               <div className="flex flex-row justify-between">
                 <div>
-                  <CardTitle>Department  Tables</CardTitle>
+                  <CardTitle>Department Tables</CardTitle>
                   <CardDescription>Card Description</CardDescription>
                 </div>
                 <DialogTrigger>
                   <Button className="h-[30px]">
-                    <Plus /> Add Department 
+                    <Plus /> Add Department
                   </Button>
                 </DialogTrigger>
               </div>

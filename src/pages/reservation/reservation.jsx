@@ -8,7 +8,7 @@
  * ```
  */
 import Layout from "@/components/app/layout";
-import FrontDesk from "./reservation-frontdesk2";
+import FrontDesk from "./components/reservation-frontdesk2";
 
 const Resevation = () => {
   return (
