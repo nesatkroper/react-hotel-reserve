@@ -10,11 +10,11 @@ const Dashboard = () => {
     <>
       <Layout>
         <MyBigBarChartInteractive />
-        <div className="grid grid-cols-4 gap-3">
+        <div className="grid grid-cols-3 gap-3">
           <MyAreaChart />
           <MyBarChart />
           <MyPieChart />
-          <MyBarChart />
+          {/* <MyBarChart /> */}
         </div>
         <MyBigAreaChartInteractive />
       </Layout>

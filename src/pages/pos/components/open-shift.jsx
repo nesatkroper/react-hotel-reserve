@@ -19,11 +19,11 @@ import { getBanknote } from "@/app/reducer/bankNoteSlicce";
 const OpenShift = ({ setShift }) => {
   const dispatch = useDispatch();
   const [shiftCode, setShiftCode] = useState();
-  const openshifts = useSelector((state) => state?.openshifts?.data);
-  const banknotes = useSelector((state) => state?.banknotes?.data);
+  const openshifts = useSelector((state) => state?.openshifts?.data) || 0;
+  const banknotes = useSelector((state) => state?.banknotes?.data) || 0;
   const [data, setData] = useState({
-    khmer_riel: 0,
-    us_dollar: 0,
+    open_khmer_riel: 0,
+    open_us_dollar: 0,
     shift_code: 0,
     employee_id: 1,
     bank_note_id: 0,
@@ -159,7 +159,7 @@ const OpenShift = ({ setShift }) => {
                     style: "decimal",
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
-                  }).format(data.open_khmer_riel)}` || "$ 0"
+                  }).format(data?.open_khmer_riel)}` || "$ 0"
                 }
                 className="w-[180px]"
               />
@@ -196,7 +196,7 @@ const OpenShift = ({ setShift }) => {
                     style: "decimal",
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
-                  }).format(data.open_us_dollar)}` || ""
+                  }).format(data?.open_us_dollar)}` || ""
                 }
                 className="w-[180px]"
               />
@@ -226,7 +226,7 @@ const OpenShift = ({ setShift }) => {
           <div className="flex flex-col gap-2">
             <Label>Shift code*</Label>
             <Input
-              value={`SHIRFT-00${data.shift_code}`}
+              value={`SHIRFT-00${data?.shift_code}`}
               name="shift_code"
               className="w-[225px]"
             />
