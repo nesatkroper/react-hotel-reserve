@@ -16,7 +16,9 @@ import AppLoading from "@/components/app/app-loading";
 const POS = () => {
   const dispatch = useDispatch();
   const local = apiUrl.split("/api").join("");
-  const { data, loading, error } = useSelector((state) => state?.products);
+  const { proData, proLoading, proError } = useSelector(
+    (state) => state?.products
+  );
   const [isOpenShift, setOpenShift] = useState(
     sessionStorage.getItem("shiftcode") ? true : false
   );
@@ -41,10 +43,10 @@ const POS = () => {
           <Separator className="my-2" />
           {isOpenShift ? (
             <div className="grid lg:grid-cols-4 md:grid-cols-5 gap-3">
-              {!loading ? (
+              {!proLoading ? (
                 <ScrollArea className="w-full h-[80vh] col-span-3 rounded-2xl">
                   <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-3">
-                    {data?.map((item) => (
+                    {proData?.map((item) => (
                       <Card
                         key={item.product_id}
                         onClick={() => handleAddToCart(item)}
@@ -82,7 +84,10 @@ const POS = () => {
               ) : (
                 <div className="w-full h-[80vh] col-span-3 rounded-2xl flex  justify-center">
                   <AppLoading />
-                  <p className="text-red-500 text-lg"> {error ? error : ""}</p>
+                  <p className="text-red-500 text-lg">
+                    {" "}
+                    {proError ? proError : ""}
+                  </p>
                 </div>
               )}
               <POSCart />

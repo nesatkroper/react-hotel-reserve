@@ -13,6 +13,7 @@ import POS from "@/pages/pos/pos";
 import Product from "@/pages/product/product";
 import ProductCategory from "@/pages/product-category/product-category";
 import RoomPicture from "./../pages/room-picture/room-picture";
+import Authentication from "./../pages/authentication/authentication";
 
 const Routes = () => {
   const { token } = useAuth();
@@ -65,6 +66,10 @@ const Routes = () => {
     {
       path: "/rpicture",
       element: <RoomPicture />,
+    },
+    {
+      path: "/authentication",
+      element: <Authentication />,
     },
   ];
 

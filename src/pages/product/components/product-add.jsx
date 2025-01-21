@@ -34,16 +34,18 @@ import {
   resizeCropImage,
 } from "@/utils/resize-crop-image";
 
-const ProductAdd = () => {
+const ProductAdd = ({ lastPCode }) => {
+  console.log(lastPCode);
+
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
   const [imagePreview, setImagePreview] = useState(defimg);
-  const pcategories = useSelector((state) => state?.pcategories?.data);
+  const { data, loading, error } = useSelector((state) => state?.pcategories);
 
-  const [data, setData] = useState({
+  const [formData, setFormData] = useState({
     product_name: "",
-    product_code: "",
+    product_code: parseInt(lastPCode, 10) + 1,
     product_category_id: 1,
     picture: "",
     price: 0,
@@ -52,18 +54,11 @@ const ProductAdd = () => {
   });
 
   useEffect(() => {
-    if (!pcategories) dispatch(getPcategory());
-  }, pcategories);
-
-  const filtedCate = pcategories?.map(
-    ({ product_category_id, category_name }) => ({
-      product_category_id,
-      category_name,
-    })
-  );
+    dispatch(getPcategory());
+  }, [dispatch]);
 
   const handleChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleImageChange = async (e) => {
@@ -75,7 +70,7 @@ const ProductAdd = () => {
           setImagePreview,
           3 / 2
         );
-        setData({ ...data, picture: resizedImage });
+        setFormData({ ...formData, picture: resizedImage });
       } catch (error) {
         console.error("Image processing error:", error);
       }
@@ -86,8 +81,9 @@ const ProductAdd = () => {
     e.preventDefault();
 
     await axios
-      .post("/products", imgFormData(data))
-      .then(() => {
+      .post("/products", imgFormData(formData))
+      .then((res) => {
+        console.log(res);
         dispatch(getProduct());
       })
       .catch((error) => {
@@ -117,10 +113,9 @@ const ProductAdd = () => {
             <div className="flex flex-col gap-2">
               <Label>Product Category Code</Label>
               <Input
-                onChange={handleChange}
                 name="product_code"
-                type="number"
-                placeholder="PROD-001"
+                value={`PROD-${(lastPCode + 1).toString().padStart(5, "0")}`}
+                readOnly
                 className="w-[250px]"
               />
             </div>
@@ -137,8 +132,8 @@ const ProductAdd = () => {
                     className="w-[250px] justify-between"
                   >
                     {value
-                      ? filtedCate?.find(
-                          (room) => String(room.product_category_id) === value
+                      ? data?.find(
+                          (cate) => String(cate.product_category_id) === value
                         )?.category_name
                       : "Select Product Category..."}
                     <ChevronsUpDown className="opacity-50" />
@@ -153,24 +148,24 @@ const ProductAdd = () => {
                     <CommandList>
                       <CommandEmpty>No Product Category found.</CommandEmpty>
                       <CommandGroup>
-                        {filtedCate?.map((room) => (
+                        {data?.map((cate) => (
                           <CommandItem
-                            key={room.product_category_id}
-                            value={String(room.product_category_id)}
+                            key={cate.product_category_id}
+                            value={String(cate.product_category_id)}
                             onSelect={(currentValue) => {
                               setValue(currentValue);
                               setOpen(false);
-                              setData((prevData) => ({
+                              setFormData((prevData) => ({
                                 ...prevData,
                                 product_category_id: Number(currentValue),
                               }));
                             }}
                           >
-                            {room.category_name}
+                            {cate.category_name}
                             <Check
                               className={cn(
                                 "ml-auto",
-                                value === room.product_category_id
+                                value === cate.product_category_id
                                   ? "opacity-100"
                                   : "opacity-0"
                               )}

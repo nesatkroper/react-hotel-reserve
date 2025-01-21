@@ -39,7 +39,7 @@ import { Separator } from "@/components/ui/separator";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Plus, Ellipsis, ListCollapse, Pen, Trash } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { apiUrl } from "@/providers/api-url";
 import { getProduct } from "@/app/reducer/productSlicce.jsx";
 import { defimg } from "@/utils/resize-crop-image.js";
@@ -51,11 +51,17 @@ import AppLoading from "@/components/app/app-loading.jsx";
 const Product = () => {
   const dispatch = useDispatch();
   const local = apiUrl.split("/api").join("");
-  const { data, loading, error } = useSelector((state) => state?.products);
+  const [lastcode, setLastCode] = useState(0);
+  const { proData, proLoading, proError } = useSelector(
+    (state) => state?.products
+  );
 
   useEffect(() => {
     dispatch(getProduct());
-  }, [dispatch]);
+    setLastCode(parseInt(proData[0]?.product_code.split("-")[1]), 10);
+  }, [dispatch, lastcode]);
+
+  console.log(proData[0]?.product_code);
 
   const handleDelete = async (id) => {
     await axios
@@ -73,7 +79,7 @@ const Product = () => {
       <Layout>
         <Card>
           <Dialog>
-            <ProductAdd />
+            <ProductAdd lastPCode={lastcode} />
             <CardHeader className="pb-0">
               <div className="flex flex-row justify-between">
                 <div>
@@ -105,9 +111,9 @@ const Product = () => {
                     <TableHead></TableHead>
                   </TableRow>
                 </TableHeader>
-                {!loading ? (
+                {!proLoading ? (
                   <TableBody>
-                    {data?.map((item, index) => (
+                    {proData?.map((item, index) => (
                       <TableRow key={index}>
                         <AlertDialog>
                           <AlertDialogContent>
@@ -194,9 +200,7 @@ const Product = () => {
                     ))}
                   </TableBody>
                 ) : (
-                  <TableBody>
-                    <AppLoading className="h-[200px]" />
-                  </TableBody>
+                  <AppLoading className="h-[200px]" />
                 )}
               </ScrollArea>
             </Table>

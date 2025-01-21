@@ -74,15 +74,29 @@ const data = {
       title: "Category",
       url: "#",
       icon: BookOpen,
-
       items: [
         {
-          title: "Employee",
-          url: "/employee",
+          title: "Customer",
+          url: "/customer",
+        },
+        {
+          title: "Supplier",
+          url: "/supplier",
         },
         {
           title: "Customer",
           url: "/customer",
+        },
+      ],
+    },
+    {
+      title: "Human Resource",
+      url: "#",
+      icon: Bot,
+      items: [
+        {
+          title: "Employee",
+          url: "/employee",
         },
         {
           title: "Department",
@@ -92,24 +106,9 @@ const data = {
           title: "Position",
           url: "/position",
         },
-      ],
-    },
-    {
-      title: "Models",
-      url: "#",
-      icon: Bot,
-      items: [
         {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
+          title: "Authentication",
+          url: "/authentication",
         },
       ],
     },
