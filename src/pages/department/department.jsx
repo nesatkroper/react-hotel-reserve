@@ -35,15 +35,15 @@ const Department = () => {
     dispatch(getDepartments());
   }, [dispatch]);
 
-  console.log(depData);
+  // console.log(depData[0]?.department_code);
 
   return (
     <>
       <Layout>
         <Dialog>
-          <DepartmentAdd />
+          <DepartmentAdd lastCode={depData[0]?.department_code} />
           <Card>
-            <CardHeader className="p-4">
+            <CardHeader className="pb-0">
               <div className="flex flex-row justify-between">
                 <div>
                   <CardTitle>Department Tables</CardTitle>

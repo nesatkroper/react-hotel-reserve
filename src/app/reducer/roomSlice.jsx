@@ -9,24 +9,24 @@ export const getRooms = createAsyncThunk("getRooms", async () => {
 const roomSlice = createSlice({
   name: "rooms",
   initialState: {
-    data: [],
-    loading: false,
-    error: null,
+    rooData: [],
+    rooLoading: false,
+    rooError: null,
   },
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getRooms.pending, (state) => {
-        state.loading = true;
-        state.error = null;
+        state.rooLoading = true;
+        state.rooError = null;
       })
       .addCase(getRooms.fulfilled, (state, action) => {
-        state.loading = false;
-        state.data = action.payload;
+        state.rooLoading = false;
+        state.rooData = action.payload;
       })
       .addCase(getRooms.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
+        state.rooLoading = false;
+        state.rooError = action.payload;
       });
   },
 });

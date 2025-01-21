@@ -14,13 +14,16 @@ import axiosInstance from "@/providers/axiosInstance";
 import { useDispatch } from "react-redux";
 import { getDepartments } from "@/app/reducer/departmentSlice";
 
-const DepartmentDialog = () => {
+const DepartmentDialog = ({ lastCode }) => {
   const dispatch = useDispatch();
+  let _lastCode = parseInt(lastCode?.split("-")[1], 10) + 1;
   const [formData, setFormData] = useState({
     department_name: "",
-    department_code: 0,
+    department_code: _lastCode,
     memo: "",
   });
+
+  console.log(_lastCode);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -38,6 +41,7 @@ const DepartmentDialog = () => {
         console.log(err);
       });
     console.log(formData);
+    _lastCode = 0;
   };
   return (
     <>
@@ -62,10 +66,8 @@ const DepartmentDialog = () => {
             <div className="flex flex-col gap-2 ">
               <Label>Department Code*</Label>
               <Input
-                onChange={handleChange}
-                name="department_code"
+                value={formData.department_code}
                 type="text"
-                placeholder="DEP-001"
                 className="w-[250px]"
                 required
               />

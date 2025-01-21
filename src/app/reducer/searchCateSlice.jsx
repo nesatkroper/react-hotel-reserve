@@ -3,17 +3,31 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const getSearchCate = createAsyncThunk("getSearchCate", async (id) => {
   const res = await axios.get(`/product-category/${id}`);
-  return res?.data;
+  return res?.data?.data;
 });
 
 const searchCateSlice = createSlice({
   name: "searchCate",
-  initialState: [],
+  initialState: {
+    seaData: [],
+    seaLoading: false,
+    seaError: null,
+  },
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(getSearchCate.fulfilled, (state, action) => {
-      return action.payload;
-    });
+    builder
+      .addCase(getSearchCate.pending, (state) => {
+        state.seaLoading = true;
+        state.seaError = null;
+      })
+      .addCase(getSearchCate.fulfilled, (state, action) => {
+        state.seaLoading = false;
+        state.seaData = action.payload;
+      })
+      .addCase(getSearchCate.rejected, (state, action) => {
+        state.seaLoading = false;
+        state.seaError = action.payload;
+      });
   },
 });
 

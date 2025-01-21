@@ -9,24 +9,24 @@ export const getPcategory = createAsyncThunk("getPcategory", async () => {
 const pcategorySlice = createSlice({
   name: "pcategory",
   initialState: {
-    data: [],
-    loading: false,
-    error: null,
+    pcaData: [],
+    pcaLoading: false,
+    pcaError: null,
   },
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getPcategory.pending, (state) => {
-        state.loading = true;
-        state.error = null;
+        state.pcaLoading = true;
+        state.pcaError = null;
       })
       .addCase(getPcategory.fulfilled, (state, action) => {
-        state.loading = false;
-        state.data = action.payload;
+        state.pcaLoading = false;
+        state.pcaData = action.payload;
       })
       .addCase(getPcategory.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
+        state.pcaLoading = false;
+        state.pcaError = action.payload;
       });
   },
 });
