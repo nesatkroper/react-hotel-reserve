@@ -42,7 +42,9 @@ import RoomUpdate from "./components/room-update";
 const Room = () => {
   const dispatch = useDispatch();
   const local = apiUrl.split("/api").join("");
-  const { data, loading, error } = useSelector((state) => state?.rooms);
+  const { rooData, rooLoading, rooError } = useSelector(
+    (state) => state?.rooms
+  );
 
   useEffect(() => {
     dispatch(getRooms());
@@ -98,9 +100,9 @@ const Room = () => {
                     <TableHead></TableHead>
                   </TableRow>
                 </TableHeader>
-                {!loading ? (
+                {!rooLoading ? (
                   <TableBody>
-                    {data?.map((item, index) => (
+                    {rooData?.map((item, index) => (
                       <TableRow key={index}>
                         <TableCell className="font-bold">{index + 1}</TableCell>
                         <TableCell>
@@ -177,7 +179,7 @@ const Room = () => {
                         </Dialog>
                       </TableRow>
                     ))}
-                    {!data ? <NoData cols={10} /> : ""}
+                    {!rooData ? <NoData cols={10} /> : ""}
                   </TableBody>
                 ) : (
                   <AppLoading cols={7} />

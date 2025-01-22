@@ -27,25 +27,24 @@ import { useEffect, useState } from "react";
 import axios from "@/providers/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { getPcategory } from "@/app/reducer/pcategorySlicce";
-import { getProduct } from "@/app/reducer/productSlicce";
 import {
   defimg,
   imgFormData,
   resizeCropImage,
 } from "@/utils/resize-crop-image";
 
-const ProductAdd = ({ lastPCode }) => {
-  console.log(lastPCode);
+const ProductAdd = ({ lastCode }) => {
+  console.log(lastCode);
 
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
   const [imagePreview, setImagePreview] = useState(defimg);
-  const { data, loading, error } = useSelector((state) => state?.pcategories);
+  const { pcaData } = useSelector((state) => state?.pcategories);
 
   const [formData, setFormData] = useState({
     product_name: "",
-    product_code: parseInt(lastPCode, 10) + 1,
+    product_code: 0,
     product_category_id: 1,
     picture: "",
     price: 0,
@@ -58,7 +57,11 @@ const ProductAdd = ({ lastPCode }) => {
   }, [dispatch]);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+      product_code: lastCode + 1,
+    });
   };
 
   const handleImageChange = async (e) => {
@@ -89,6 +92,7 @@ const ProductAdd = ({ lastPCode }) => {
       .catch((error) => {
         console.log("Error submitting form:", error);
       });
+    console.log(formData);
   };
 
   return (
@@ -113,8 +117,7 @@ const ProductAdd = ({ lastPCode }) => {
             <div className="flex flex-col gap-2">
               <Label>Product Category Code</Label>
               <Input
-                name="product_code"
-                value={`PROD-${(lastPCode + 1).toString().padStart(5, "0")}`}
+                value={`PROD-${(lastCode + 1).toString().padStart(5, "0")}`}
                 readOnly
                 className="w-[250px]"
               />
@@ -132,7 +135,7 @@ const ProductAdd = ({ lastPCode }) => {
                     className="w-[250px] justify-between"
                   >
                     {value
-                      ? data?.find(
+                      ? pcaData?.find(
                           (cate) => String(cate.product_category_id) === value
                         )?.category_name
                       : "Select Product Category..."}
@@ -148,7 +151,7 @@ const ProductAdd = ({ lastPCode }) => {
                     <CommandList>
                       <CommandEmpty>No Product Category found.</CommandEmpty>
                       <CommandGroup>
-                        {data?.map((cate) => (
+                        {pcaData?.map((cate) => (
                           <CommandItem
                             key={cate.product_category_id}
                             value={String(cate.product_category_id)}

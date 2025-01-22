@@ -14,38 +14,27 @@ import {
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Check, ChevronsUpDown, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getPcategory } from "@/app/reducer/pcategorySlicce";
 import { getSearchCate } from "@/app/reducer/searchCateSlice";
 import OpenShift from "./open-shift";
 import CloseShift from "./close-shift";
-import { getOpenShift } from "@/app/reducer/openShiftSlicce";
 
 const POSSearch = ({ shift, setShift }) => {
-  const pcategories = useSelector((state) => state?.pcategories?.data);
+  const { pcaData } = useSelector((state) => state?.pcategories);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [data, setData] = useState();
-  const searchByCate = useSelector(
-    (state) => state?.searchCates?.data?.products
-  );
+  const [formData, setFormData] = useState();
 
   useEffect(() => {
-    if (!pcategories) dispatch(getPcategory());
-  }, pcategories);
-
-  const filtedCate = pcategories?.map(
-    ({ product_category_id, category_name }) => ({
-      product_category_id,
-      category_name,
-    })
-  );
+    dispatch(getPcategory());
+  }, [dispatch]);
 
   return (
     <div className="flex justify-between">
@@ -61,7 +50,7 @@ const POSSearch = ({ shift, setShift }) => {
                 className="w-[250px] justify-between"
               >
                 {value
-                  ? filtedCate?.find(
+                  ? pcaData?.find(
                       (room) => String(room.product_category_id) === value
                     )?.category_name
                   : "All Category"}
@@ -78,7 +67,7 @@ const POSSearch = ({ shift, setShift }) => {
                   <CommandEmpty>No Product Category found.</CommandEmpty>
 
                   <CommandGroup>
-                    {filtedCate?.map((cate) => (
+                    {pcaData?.map((cate) => (
                       <CommandItem
                         key={cate.product_category_id}
                         onClick={() =>

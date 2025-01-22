@@ -19,18 +19,22 @@ import {
   defimg,
 } from "@/utils/resize-crop-image";
 
-const ProductCategoryAdd = () => {
+const ProductCategoryAdd = ({ lastCode }) => {
   const dispatch = useDispatch();
   const [imagePreview, setImagePreview] = useState(defimg);
-  const [data, setData] = useState({
+  const [formData, setFormData] = useState({
     picture: "",
     category_name: "",
-    category_code: "",
+    category_code: 0,
     memo: "",
   });
 
   const handleChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value });
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+      category_code: lastCode + 1,
+    });
   };
 
   const handleImageChange = async (e) => {
@@ -42,7 +46,7 @@ const ProductCategoryAdd = () => {
           setImagePreview,
           3 / 2
         );
-        setData({ ...data, picture: resizedImage });
+        setFormData({ ...formData, picture: resizedImage });
       } catch (error) {
         console.error("Image processing error:", error);
       }
@@ -53,7 +57,7 @@ const ProductCategoryAdd = () => {
     e.preventDefault();
 
     await axios
-      .post("/product-category", imgFormData(data))
+      .post("/product-category", imgFormData(formData))
       .then(() => {
         dispatch(getPcategory());
       })
@@ -61,7 +65,7 @@ const ProductCategoryAdd = () => {
         console.log("Error submitting form:", error);
       });
 
-    return imgFormData(data);
+    return imgFormData(formData);
   };
 
   return (
@@ -86,10 +90,8 @@ const ProductCategoryAdd = () => {
             <div className="flex flex-col gap-2">
               <Label>Product Category Code</Label>
               <Input
-                onChange={handleChange}
-                name="category_code"
-                type="number"
-                placeholder="CAT-001"
+                value={`CATE-${(lastCode + 1).toString().padStart(3, "0")}`}
+                readOnly
                 className="w-[250px]"
               />
             </div>

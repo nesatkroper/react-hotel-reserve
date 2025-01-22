@@ -9,16 +9,16 @@ import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
 import axiosInstance from "@/providers/axiosInstance";
+import { getPositions } from "@/app/reducer/positionSlice";
 import { useDispatch } from "react-redux";
-import { getDepartments } from "@/app/reducer/departmentSlice";
+import { useState } from "react";
 
-const DepartmentAdd = ({ lastCode }) => {
+const PositionDialog = ({ lastCode }) => {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
-    department_name: "",
-    department_code: 0,
+    position_name: "",
+    position_code: 0,
     memo: "",
   });
 
@@ -26,30 +26,28 @@ const DepartmentAdd = ({ lastCode }) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
-      department_code: lastCode + 1,
+      position_code: lastCode + 1,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     await axiosInstance
-      .post("/department", formData)
+      .post("/positions", formData)
       .then((res) => {
         console.log(res);
-        dispatch(getDepartments());
+        dispatch(getPositions());
       })
       .catch((err) => {
         console.log(err);
       });
   };
-
-  console.log(formData);
   return (
     <>
       <DialogContent>
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Department Details Information.</DialogTitle>
+            <DialogTitle>Position Details Information.</DialogTitle>
           </DialogHeader>
           <Separator className="my-3" />
           <div className="flex justify-between mb-3">
@@ -89,4 +87,4 @@ const DepartmentAdd = ({ lastCode }) => {
   );
 };
 
-export default DepartmentAdd;
+export default PositionDialog;

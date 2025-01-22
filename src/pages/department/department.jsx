@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/table";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import DepartmentAdd from "./components/department-add";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -35,13 +36,13 @@ const Department = () => {
     dispatch(getDepartments());
   }, [dispatch]);
 
-  // console.log(depData[0]?.department_code);
-
   return (
     <>
       <Layout>
         <Dialog>
-          <DepartmentAdd lastCode={depData[0]?.department_code} />
+          <DepartmentAdd
+            lastCode={parseInt(depData[0]?.department_code.split("-")[1], 10)}
+          />
           <Card>
             <CardHeader className="pb-0">
               <div className="flex flex-row justify-between">
@@ -59,30 +60,32 @@ const Department = () => {
             </CardHeader>
             <CardContent className="p-1">
               <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-[60px]">No.</TableHead>
-                    <TableHead>Department Name</TableHead>
-                    <TableHead>Department Code</TableHead>
-                    <TableHead>Description</TableHead>
-                    <TableHead></TableHead>
-                  </TableRow>
-                </TableHeader>
-                {depLoading ? (
-                  <AppLoading cols={4} />
-                ) : (
-                  <TableBody>
-                    {depData?.map((row, index) => (
-                      <TableRow key={index}>
-                        <TableCell>{index + 1}</TableCell>
-                        <TableCell>{row.department_name}</TableCell>
-                        <TableCell>{row.department_code}</TableCell>
-                        <TableCell> {row.memo}</TableCell>
-                      </TableRow>
-                    ))}
-                    {depData ? "" : <NoData cols={4} />}
-                  </TableBody>
-                )}
+                <ScrollArea className="h-[80vh] w-full rounded-lg">
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="w-[60px]">No.</TableHead>
+                      <TableHead>Department Name</TableHead>
+                      <TableHead>Department Code</TableHead>
+                      <TableHead>Description</TableHead>
+                      <TableHead></TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  {depLoading ? (
+                    <AppLoading cols={4} />
+                  ) : (
+                    <TableBody>
+                      {depData?.map((row, index) => (
+                        <TableRow key={index}>
+                          <TableCell>{index + 1}</TableCell>
+                          <TableCell>{row.department_name}</TableCell>
+                          <TableCell>{row.department_code}</TableCell>
+                          <TableCell> {row.memo}</TableCell>
+                        </TableRow>
+                      ))}
+                      {depData ? "" : <NoData cols={4} />}
+                    </TableBody>
+                  )}
+                </ScrollArea>
               </Table>
             </CardContent>
           </Card>

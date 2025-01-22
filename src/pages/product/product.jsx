@@ -39,7 +39,7 @@ import { Separator } from "@/components/ui/separator";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Plus, Ellipsis, ListCollapse, Pen, Trash } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { apiUrl } from "@/providers/api-url";
 import { getProduct } from "@/app/reducer/productSlicce.jsx";
 import { defimg } from "@/utils/resize-crop-image.js";
@@ -51,17 +51,13 @@ import AppLoading from "@/components/app/app-loading.jsx";
 const Product = () => {
   const dispatch = useDispatch();
   const local = apiUrl.split("/api").join("");
-  const [lastcode, setLastCode] = useState(0);
   const { proData, proLoading, proError } = useSelector(
     (state) => state?.products
   );
 
   useEffect(() => {
     dispatch(getProduct());
-    setLastCode(parseInt(proData[0]?.product_code.split("-")[1]), 10);
-  }, [dispatch, lastcode]);
-
-  console.log(proData[0]?.product_code);
+  }, [dispatch]);
 
   const handleDelete = async (id) => {
     await axios
@@ -79,7 +75,9 @@ const Product = () => {
       <Layout>
         <Card>
           <Dialog>
-            <ProductAdd lastPCode={lastcode} />
+            <ProductAdd
+              lastCode={parseInt(proData[0]?.product_code.split("-")[1], 10)}
+            />
             <CardHeader className="pb-0">
               <div className="flex flex-row justify-between">
                 <div>

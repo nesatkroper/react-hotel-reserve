@@ -41,7 +41,9 @@ import AppLoading from "@/components/app/app-loading";
 const RoomPicture = () => {
   const dispatch = useDispatch();
   const local = apiUrl.split("/api").join("");
-  const { data, loading, error } = useSelector((state) => state?.rpictures);
+  const { rpiData, rpiLoading, rpiError } = useSelector(
+    (state) => state?.rpictures
+  );
 
   useEffect(() => {
     dispatch(getRpicture());
@@ -91,11 +93,11 @@ const RoomPicture = () => {
                     <TableHead className="w-[50px]"></TableHead>
                   </TableRow>
                 </TableHeader>
-                {loading ? (
+                {rpiLoading ? (
                   <AppLoading cols={1} />
                 ) : (
                   <TableBody>
-                    {data?.map((item, index) => (
+                    {rpiData?.map((item, index) => (
                       <TableRow key={index}>
                         <TableCell className="font-bold">{index + 1}</TableCell>
                         <TableCell>
@@ -144,7 +146,7 @@ const RoomPicture = () => {
                         </Dialog>
                       </TableRow>
                     ))}
-                    {data ? "" : <NoData cols={4} />}
+                    {rpiData ? "" : <NoData cols={4} />}
                   </TableBody>
                 )}
               </ScrollArea>

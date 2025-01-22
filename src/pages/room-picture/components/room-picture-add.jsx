@@ -32,7 +32,7 @@ import {
   defimg,
   imgFormData,
   resizeCropImage,
-} from "@/utils/resize-crop-image";
+} from "../../../../../react-ts/src/utils/resize-crop-image";
 
 const RoomPictureAdd = () => {
   const dispatch = useDispatch();

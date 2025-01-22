@@ -2,7 +2,7 @@ import axios from "@/providers/axiosInstance";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const getPositions = createAsyncThunk("getPositions", async () => {
-  const res = await axios.get("/positions");
+  const res = await axios.get("/position");
   return res?.data?.data;
 });
 

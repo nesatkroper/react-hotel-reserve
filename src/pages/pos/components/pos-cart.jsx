@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { updateCart } from "@/app/reducer/counter";
-import { defimg } from "@/utils/resize-crop-image";
+import { defimg } from "../../../../../react-ts/src/utils/resize-crop-image";
 import { apiUrl } from "@/providers/api-url";
 
 const POSCart = () => {
