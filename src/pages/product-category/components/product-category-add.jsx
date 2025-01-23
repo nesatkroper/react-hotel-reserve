@@ -13,59 +13,53 @@ import { useState } from "react";
 import axios from "@/providers/axiosInstance";
 import { useDispatch } from "react-redux";
 import { getPcategory } from "@/app/reducer/pcategorySlicce";
-import {
-  imgFormData,
-  resizeCropImage,
-  defimg,
-} from "@/utils/resize-crop-image";
+import { defimg } from "@/utils/resize-crop-image";
+import CropImageUploader from "@/components/app/crop-image-uploader";
 
 const ProductCategoryAdd = ({ lastCode }) => {
   const dispatch = useDispatch();
   const [imagePreview, setImagePreview] = useState(defimg);
-  const [formData, setFormData] = useState({
-    picture: "",
-    category_name: "",
-    category_code: 0,
-    memo: "",
+  const [formData, setFormData] = useState(() => {
+    const form = new FormData();
+    form.append("picture", "");
+    form.append("category_name", "");
+    form.append("category_code", lastCode + 1);
+    form.append("memo", "");
+    return form;
   });
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-      category_code: lastCode + 1,
-    });
+    const { name, value } = e.target;
+
+    formData.set(name, value);
+    formData.set("category_code", lastCode + 1);
   };
 
-  const handleImageChange = async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      try {
-        const resizedImage = await resizeCropImage(
-          file,
-          setImagePreview,
-          3 / 2
-        );
-        setFormData({ ...formData, picture: resizedImage });
-      } catch (error) {
-        console.error("Image processing error:", error);
-      }
+  const handleFormData = (data) => {
+    for (let [key, value] of data.entries()) {
+      formData.set(key, value);
     }
+
+    if (data.has("picture")) {
+      const file = data.get("picture");
+      const previewUrl = URL.createObjectURL(file);
+      setImagePreview(previewUrl);
+    }
+
+    return formData;
   };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
     await axios
-      .post("/product-category", imgFormData(formData))
+      .post("/product-category", formData)
       .then(() => {
         dispatch(getPcategory());
       })
       .catch((error) => {
         console.log("Error submitting form:", error);
       });
-
-    return imgFormData(formData);
   };
 
   return (
@@ -107,13 +101,7 @@ const ProductCategoryAdd = ({ lastCode }) => {
           <div className="flex justify-between my-3 ">
             <div className="flex flex-col gap-2">
               <Label>Choose Image*</Label>
-              <Input
-                onChange={handleImageChange}
-                name="picture"
-                type="file"
-                className="w-[250px]"
-                accept=".jpg,.jpeg,.png"
-              />
+              <CropImageUploader onCallbackFormData={handleFormData} />
             </div>
             <div className="flex flex-col gap-2">
               <Label>Picture Preview</Label>

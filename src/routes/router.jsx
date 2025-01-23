@@ -12,8 +12,9 @@ import Employee from "@/pages/employee/employee";
 import POS from "@/pages/pos/pos";
 import Product from "@/pages/product/product";
 import ProductCategory from "@/pages/product-category/product-category";
-import RoomPicture from "./../pages/room-picture/room-picture";
-import Authentication from "./../pages/authentication/authentication";
+import RoomPicture from "@/pages/room-picture/room-picture";
+import Authentication from "@/pages/authentication/authentication";
+import CropImageUploader from "@/components/app/crop-image-uploader";
 
 const Routes = () => {
   const { token } = useAuth();
@@ -26,6 +27,10 @@ const Routes = () => {
     {
       path: "/",
       element: <Dashboard />,
+    },
+    {
+      path: "/img",
+      element: <CropImageUploader />,
     },
     {
       path: "/reservation",

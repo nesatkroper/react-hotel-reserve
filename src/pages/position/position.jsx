@@ -36,12 +36,14 @@ const Position = () => {
     dispatch(getPositions());
   }, [dispatch]);
 
-  console.log(posData);
+  // console.log(posData);
   return (
     <>
       <Layout>
         <Dialog>
-          <PositionAdd />
+          <PositionAdd
+            lastCode={parseInt(posData[0]?.position_code.split("-")[1], 10)}
+          />
           <Card>
             <CardHeader className="pb-0">
               <div className="flex flex-row justify-between">

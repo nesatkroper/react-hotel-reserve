@@ -2,7 +2,7 @@ import axios from "@/providers/axiosInstance";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const getEmployees = createAsyncThunk("getEmployees", async () => {
-  const res = await axios.get("/employees");
+  const res = await axios.get("/employee");
   return res?.data?.data;
 });
 

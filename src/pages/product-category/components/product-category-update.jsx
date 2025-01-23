@@ -32,7 +32,7 @@ const ProductCategoryUpdate = ({ items }) => {
     memo: items.memo,
   });
 
-  console.log(items.product_category_id);
+  // console.log(items.product_category_id);
 
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));

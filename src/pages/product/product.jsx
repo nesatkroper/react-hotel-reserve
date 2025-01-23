@@ -71,141 +71,137 @@ const Product = () => {
   };
 
   return (
-    <>
-      <Layout>
-        <Card>
-          <Dialog>
-            <ProductAdd
-              lastCode={parseInt(proData[0]?.product_code.split("-")[1], 10)}
-            />
-            <CardHeader className="pb-0">
-              <div className="flex flex-row justify-between">
-                <div>
-                  <CardTitle>Product Tables</CardTitle>
-                  <CardDescription>Card Description</CardDescription>
-                </div>
-                <DialogTrigger>
-                  <Button className="h-[30px]">
-                    <Plus /> Add Product
-                  </Button>
-                </DialogTrigger>
+    <Layout>
+      <Card>
+        <Dialog>
+          <ProductAdd
+            lastCode={parseInt(proData[0]?.product_code.split("-")[1], 10)}
+          />
+          <CardHeader className="pb-0">
+            <div className="flex flex-row justify-between">
+              <div>
+                <CardTitle>Product Tables</CardTitle>
+                <CardDescription>Card Description</CardDescription>
               </div>
-              <Separator />
-            </CardHeader>
-          </Dialog>
-          <CardContent className="p-1">
-            <Table>
-              <ScrollArea className="h-[80vh] w-full rounded-lg">
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>No</TableHead>
-                    <TableHead>Picture</TableHead>
-                    <TableHead>Product Name</TableHead>
-                    <TableHead>Product Code</TableHead>
-                    <TableHead>Category</TableHead>
-                    <TableHead>Price</TableHead>
-                    <TableHead>Discount</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead></TableHead>
-                  </TableRow>
-                </TableHeader>
-                {!proLoading ? (
-                  <TableBody>
-                    {proData?.map((item, index) => (
-                      <TableRow key={index}>
-                        <AlertDialog>
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>
-                                Are you absolutely sure to Delete this?
-                              </AlertDialogTitle>
-                              <AlertDialogDescription>
-                                This action cannot be undone. This will
-                                permanently delete your data and remove your
-                                data from our servers.
-                              </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
-                              <AlertDialogAction
-                                onClick={() => handleDelete(item.product_id)}
-                                className="bg-red-500"
-                              >
-                                Continue
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                          <TableCell className="font-bold">
-                            {index + 1}
-                          </TableCell>
+              <DialogTrigger>
+                <Button className="h-[30px]">
+                  <Plus /> Add Product
+                </Button>
+              </DialogTrigger>
+            </div>
+            <Separator />
+          </CardHeader>
+        </Dialog>
+        <CardContent className="p-1">
+          <Table>
+            <ScrollArea className="h-[80vh] w-full rounded-lg">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>No</TableHead>
+                  <TableHead>Picture</TableHead>
+                  <TableHead>Product Name</TableHead>
+                  <TableHead>Product Code</TableHead>
+                  <TableHead>Category</TableHead>
+                  <TableHead>Price</TableHead>
+                  <TableHead>Discount</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead></TableHead>
+                </TableRow>
+              </TableHeader>
+              {!proLoading ? (
+                <TableBody>
+                  {proData?.map((item, index) => (
+                    <TableRow key={index}>
+                      <AlertDialog>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>
+                              Are you absolutely sure to Delete this?
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This action cannot be undone. This will
+                              permanently delete your data and remove your data
+                              from our servers.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => handleDelete(item.product_id)}
+                              className="bg-red-500"
+                            >
+                              Continue
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                        <TableCell className="font-bold">{index + 1}</TableCell>
+                        <TableCell>
+                          <img
+                            src={`${local}/images/product/${item?.picture}`}
+                            alt="product"
+                            onError={(e) => (e.target.src = defimg)}
+                            className="h-[80px] rounded-lg"
+                          />
+                        </TableCell>
+                        <TableCell>{item.product_name || "N/A"}</TableCell>
+                        <TableCell>{item.product_code || "N/A"}</TableCell>
+                        <TableCell>
+                          {item.categories?.category_name || "N/A"}
+                        </TableCell>
+                        <TableCell>$ {item.price || "0.99"}</TableCell>
+                        <TableCell>{item.discount || "0"} %</TableCell>
+                        <TableCell>
+                          {item.status == "true" ? (
+                            <Checkbox checked disabled />
+                          ) : (
+                            <Checkbox disabled />
+                          )}
+                        </TableCell>
+                        <Dialog>
                           <TableCell>
-                            <img
-                              src={`${local}/images/product/${item?.picture}`}
-                              alt="product"
-                              onError={(e) => (e.target.src = defimg)}
-                              className="h-[80px] rounded-lg"
-                            />
-                          </TableCell>
-                          <TableCell>{item.product_name || "N/A"}</TableCell>
-                          <TableCell>{item.product_code || "N/A"}</TableCell>
-                          <TableCell>
-                            {item.categories?.category_name || "N/A"}
-                          </TableCell>
-                          <TableCell>$ {item.price || "0.99"}</TableCell>
-                          <TableCell>{item.discount || "0"} %</TableCell>
-                          <TableCell>
-                            {item.status == "true" ? (
-                              <Checkbox checked disabled />
-                            ) : (
-                              <Checkbox disabled />
-                            )}
-                          </TableCell>
-                          <Dialog>
-                            <TableCell>
-                              {/* THIS IS UPDATE PAGES */}
-                              {/* <RoomUpdate optionID={item.room_id} /> */}
-                              <DropdownMenu>
-                                <DropdownMenuTrigger>
-                                  <Ellipsis />
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent>
-                                  <DropdownMenuLabel className="text-center">
-                                    Options
-                                  </DropdownMenuLabel>
-                                  <DropdownMenuSeparator />
-                                  <DropdownMenuItem className="text-blue-600">
-                                    <ListCollapse />
-                                    Detail
+                            {/* THIS IS UPDATE PAGES */}
+                            {/* <RoomUpdate optionID={item.room_id} /> */}
+                            <DropdownMenu>
+                              <DropdownMenuTrigger>
+                                <Ellipsis />
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent>
+                                <DropdownMenuLabel className="text-center">
+                                  Options
+                                </DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem className="text-blue-600">
+                                  <ListCollapse />
+                                  Detail
+                                </DropdownMenuItem>
+                                <DialogTrigger className="w-full">
+                                  <DropdownMenuItem className="text-yellow-600">
+                                    <Pen />
+                                    Update
                                   </DropdownMenuItem>
-                                  <DialogTrigger className="w-full">
-                                    <DropdownMenuItem className="text-yellow-600">
-                                      <Pen />
-                                      Update
-                                    </DropdownMenuItem>
-                                  </DialogTrigger>
-                                  <AlertDialogTrigger className="w-full">
-                                    <DropdownMenuItem className="text-red-600">
-                                      <Trash />
-                                      Delete
-                                    </DropdownMenuItem>
-                                  </AlertDialogTrigger>
-                                </DropdownMenuContent>
-                              </DropdownMenu>
-                            </TableCell>
-                          </Dialog>
-                        </AlertDialog>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                ) : (
-                  <AppLoading className="h-[200px]" />
-                )}
-              </ScrollArea>
-            </Table>
-          </CardContent>
-        </Card>
-      </Layout>
-    </>
+                                </DialogTrigger>
+                                <AlertDialogTrigger className="w-full">
+                                  <DropdownMenuItem className="text-red-600">
+                                    <Trash />
+                                    Delete
+                                  </DropdownMenuItem>
+                                </AlertDialogTrigger>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </TableCell>
+                        </Dialog>
+                      </AlertDialog>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              ) : (
+                <AppLoading className="h-[200px]" />
+              )}
+            </ScrollArea>
+          </Table>
+        </CardContent>
+      </Card>
+    </Layout>
   );
 };
 
