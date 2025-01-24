@@ -26,9 +26,8 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, ChevronsUpDown, CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
@@ -38,9 +37,9 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { defimg } from "@/utils/resize-crop-image";
 import { getPositions } from "@/app/reducer/positionSlice";
+import { getEmployees } from "@/app/reducer/employeeSlice";
 import axiosInstance from "@/providers/axiosInstance";
 import CropImageUploader from "@/components/app/crop-image-uploader";
-import { getEmployees } from "@/app/reducer/employeeSlice";
 
 const EmployeeAdd = ({ lastCode }) => {
   const dispatch = useDispatch();

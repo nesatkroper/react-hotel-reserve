@@ -15,6 +15,9 @@ import { getPcategory } from "@/app/reducer/pcategorySlicce";
 import { defimg } from "@/utils/resize-crop-image";
 import CropImageUploader from "@/components/app/crop-image-uploader";
 import axiosInstance from "@/providers/axiosInstance";
+import FormTextInput from "@/components/app/form-text-input";
+import FormSelect from "@/components/app/form-select";
+import FormDatePicker from "@/components/app/form-date-picker";
 
 const ProductCategoryAdd = ({ lastCode }) => {
   const dispatch = useDispatch();
@@ -49,6 +52,11 @@ const ProductCategoryAdd = ({ lastCode }) => {
     return formData;
   };
 
+  const handleChangeInput = (data) => {
+    const { name, value } = data.target;
+    console.log(`${name}: ${value}`);
+  };
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
@@ -71,7 +79,12 @@ const ProductCategoryAdd = ({ lastCode }) => {
           </DialogHeader>
           <Separator />
           <div className="flex justify-between mb-2 mt-2">
-            <div className="flex flex-col gap-2">
+            <FormTextInput
+              onCallbackInput={handleChangeInput}
+              label="Product Category Name*"
+              name="category_name"
+            />
+            {/* <div className="flex flex-col gap-2">
               <Label>Product Category Name*</Label>
               <Input
                 onChange={handleChange}
@@ -80,7 +93,7 @@ const ProductCategoryAdd = ({ lastCode }) => {
                 placeholder="Food, Drink, ..."
                 className="w-[250px]"
               />
-            </div>
+            </div> */}
             <div className="flex flex-col gap-2">
               <Label>Product Category Code</Label>
               <Input
@@ -116,6 +129,8 @@ const ProductCategoryAdd = ({ lastCode }) => {
             <Button type="submit">Submit</Button>
           </DialogClose>
         </form>
+        {/* <FormSelect /> */}
+        <FormDatePicker />
       </DialogContent>
     </>
   );
