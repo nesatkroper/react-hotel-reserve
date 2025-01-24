@@ -10,11 +10,11 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import axios from "@/providers/axiosInstance";
 import { useDispatch } from "react-redux";
 import { getPcategory } from "@/app/reducer/pcategorySlicce";
 import { defimg } from "@/utils/resize-crop-image";
 import CropImageUploader from "@/components/app/crop-image-uploader";
+import axiosInstance from "@/providers/axiosInstance";
 
 const ProductCategoryAdd = ({ lastCode }) => {
   const dispatch = useDispatch();
@@ -52,7 +52,7 @@ const ProductCategoryAdd = ({ lastCode }) => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    await axios
+    await axiosInstance
       .post("/product-category", formData)
       .then(() => {
         dispatch(getPcategory());

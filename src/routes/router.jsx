@@ -14,7 +14,7 @@ import Product from "@/pages/product/product";
 import ProductCategory from "@/pages/product-category/product-category";
 import RoomPicture from "@/pages/room-picture/room-picture";
 import Authentication from "@/pages/authentication/authentication";
-import CropImageUploader from "@/components/app/crop-image-uploader";
+import Home from "@/pages/home/home";
 
 const Routes = () => {
   const { token } = useAuth();
@@ -26,11 +26,11 @@ const Routes = () => {
     },
     {
       path: "/",
-      element: <Dashboard />,
+      element: <Home />,
     },
     {
-      path: "/img",
-      element: <CropImageUploader />,
+      path: "/dashboard",
+      element: <Dashboard />,
     },
     {
       path: "/reservation",

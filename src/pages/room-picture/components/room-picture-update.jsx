@@ -17,7 +17,7 @@ import {
   imgFormData,
   local,
   resizeCropImage,
-} from "../../../../../react-ts/src/utils/resize-crop-image";
+} from "@/utils/resize-crop-image";
 
 const RoomPictureUpdate = ({ item }) => {
   const dispatch = useDispatch();
@@ -61,9 +61,6 @@ const RoomPictureUpdate = ({ item }) => {
         console.log(error);
       });
   };
-
-  console.log(imgFormData(formData));
-  console.log(formData);
 
   return (
     <>

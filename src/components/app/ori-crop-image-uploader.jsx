@@ -18,7 +18,7 @@ import { defimg } from "@/utils/resize-crop-image";
 import { Button } from "@/components/ui/button";
 import Cropper from "react-easy-crop";
 
-const CropImageUploader = ({ onCallbackFormData }) => {
+const OriCropImageUploader = ({ onCallbackFormData }) => {
   const [imageSrc, setImageSrc] = useState(defimg);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
@@ -68,37 +68,37 @@ const CropImageUploader = ({ onCallbackFormData }) => {
       const original = new Image();
       original.src = imageSrc;
 
-      let outputWidth = 600;
-      let outputHeight = 600;
+      await new Promise((resolve, reject) => {
+        original.onload = resolve;
+        original.onerror = reject;
+      });
 
-      switch (aspect) {
-        case 1 / 1:
-          outputWidth = 600;
-          outputHeight = 600;
-          break;
-        case 2 / 3:
-          outputWidth = 400;
-          outputHeight = 600;
-          break;
-        case 3 / 2:
-          outputWidth = 600;
-          outputHeight = 400;
-          break;
-        case 16 / 9:
-          outputWidth = 600;
-          outputHeight = 340;
-          break;
-        case 20 / 10:
-          outputWidth = 600;
-          outputHeight = 300;
-          break;
-        case 21 / 9:
-          outputWidth = 600;
-          outputHeight = 260;
-          break;
-        default:
-          outputWidth = 600;
-          outputHeight = 600;
+      const originalWidth = original.naturalWidth;
+      const originalHeight = original.naturalHeight;
+
+      let outputWidth = originalWidth;
+      let outputHeight = originalHeight;
+
+      if (aspect === 1 / 1) {
+        const size = Math.min(originalWidth, originalHeight);
+        outputWidth = size;
+        outputHeight = size;
+      } else if (aspect === 2 / 3) {
+        if (originalWidth / originalHeight > 2 / 3) {
+          outputHeight = originalHeight;
+          outputWidth = (originalHeight * 2) / 3;
+        } else {
+          outputWidth = originalWidth;
+          outputHeight = (originalWidth * 3) / 2;
+        }
+      } else if (aspect === 3 / 2) {
+        if (originalWidth / originalHeight > 3 / 2) {
+          outputHeight = originalHeight;
+          outputWidth = (originalHeight * 3) / 2;
+        } else {
+          outputWidth = originalWidth;
+          outputHeight = (originalWidth * 2) / 3;
+        }
       }
 
       const cropped = await getCroppedImg(
@@ -149,21 +149,15 @@ const CropImageUploader = ({ onCallbackFormData }) => {
           >
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="1x1" id="1x1" />
-              <Label htmlFor="1x1" className="font-bold">
-                1 : 1
-              </Label>
+              <Label htmlFor="1x1">1 : 1</Label>
             </div>
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="3x2" id="3x2" />
-              <Label htmlFor="3x2" className="font-bold">
-                3 : 2
-              </Label>
+              <Label htmlFor="3x2">3 : 2</Label>
             </div>
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="2x3" id="2x3" />
-              <Label htmlFor="2x3" className="font-bold">
-                2 : 3
-              </Label>
+              <Label htmlFor="2x3">2 : 3</Label>
             </div>
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="16x9" id="16x9" />
@@ -217,4 +211,4 @@ const CropImageUploader = ({ onCallbackFormData }) => {
   );
 };
 
-export default CropImageUploader;
+export default OriCropImageUploader;

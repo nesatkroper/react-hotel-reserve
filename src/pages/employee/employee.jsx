@@ -46,6 +46,7 @@ import { getEmployees } from "@/app/reducer/employeeSlice";
 import { useEffect } from "react";
 import { defimg, local } from "@/utils/resize-crop-image";
 import NoData from "@/components/app/no-data";
+import EmployeeAdd from "./components/employee-add";
 
 const Employee = () => {
   const dispatch = useDispatch();
@@ -61,7 +62,7 @@ const Employee = () => {
 
   const handleDelete = async (id) => {
     await axiosInstance
-      .delete(`/products/${id}`)
+      .delete(`/employee/${id}`)
       .then(() => {
         dispatch(getEmployees());
       })
@@ -73,9 +74,9 @@ const Employee = () => {
     <Layout>
       <Card>
         <Dialog>
-          {/* <ProductAdd
-            lastCode={parseInt(proData[0]?.product_code.split("-")[1], 10)}
-          /> */}
+          <EmployeeAdd
+            lastCode={parseInt(empData.employee_code?.split("-")[1], 10) || 0}
+          />
           <CardHeader className="pb-0">
             <div className="flex flex-row justify-between">
               <div>

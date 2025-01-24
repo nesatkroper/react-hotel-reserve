@@ -66,8 +66,5 @@ export const imgFormData = (data) => {
     else formData.append(key, data[key]);
   });
 
-  for (let pair of formData.entries()) {
-    console.log(pair[0], pair[1]);
-  }
   return formData;
 };

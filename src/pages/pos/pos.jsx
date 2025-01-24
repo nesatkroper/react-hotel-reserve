@@ -13,19 +13,24 @@ import { addItem } from "@/app/reducer/counter";
 import { defimg } from "@/utils/resize-crop-image";
 import AppLoading from "@/components/app/app-loading";
 
+const SHIFT = sessionStorage.getItem("shiftcode");
+
 const POS = () => {
   const dispatch = useDispatch();
   const local = apiUrl.split("/api").join("");
   const { proData, proLoading, proError } = useSelector(
     (state) => state?.products
   );
-  const [isOpenShift, setOpenShift] = useState(
-    sessionStorage.getItem("shiftcode") ? true : false
-  );
+  const [isOpenShift, setOpenShift] = useState(false);
 
   useEffect(() => {
     dispatch(getProduct());
   }, [dispatch]);
+
+  // if (parseInt(SHIFT?.split("-")[1], 10) < 1 || !SHIFT) {
+  //   sessionStorage.removeItem("shiftcode");
+  //   setOpenShift(false);
+  // }
 
   const handleOpenShift = () => {
     setOpenShift(!isOpenShift);

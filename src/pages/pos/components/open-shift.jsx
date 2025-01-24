@@ -13,14 +13,14 @@ import { Separator } from "@/components/ui/separator";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getOpenShift } from "@/app/reducer/openShiftSlicce";
-import axios from "@/providers/axiosInstance";
 import { getBanknote } from "@/app/reducer/bankNoteSlicce";
+import axios from "@/providers/axiosInstance";
 
 const OpenShift = ({ setShift }) => {
   const dispatch = useDispatch();
   const [shiftCode, setShiftCode] = useState();
-  const openshifts = useSelector((state) => state?.openshifts?.data) || 0;
-  const banknotes = useSelector((state) => state?.banknotes?.data) || 0;
+  const { opeData } = useSelector((state) => state?.openshifts) || 0;
+  const { banData } = useSelector((state) => state?.banknotes) || 0;
   const [data, setData] = useState({
     open_khmer_riel: 0,
     open_us_dollar: 0,
@@ -74,9 +74,9 @@ const OpenShift = ({ setShift }) => {
   };
 
   useEffect(() => {
-    if (!openshifts) dispatch(getOpenShift());
-    if (!banknotes) dispatch(getBanknote());
-  }, [openshifts, banknotes]);
+    dispatch(getOpenShift());
+    dispatch(getBanknote());
+  }, [dispatch]);
 
   const calculateTotal = (notes, denominations) => {
     return Object.keys(denominations).reduce(
@@ -98,8 +98,8 @@ const OpenShift = ({ setShift }) => {
       setData({
         open_khmer_riel: totalKhmer,
         open_us_dollar: totalUS,
-        shift_code: openshifts[0]?.open_shift_id + 1,
-        bank_note_id: banknotes[0]?.bank_note_id + 1,
+        shift_code: opeData[0]?.open_shift_id + 1,
+        bank_note_id: banData[0]?.bank_note_id + 1,
         employee_id: 1,
       });
 
@@ -136,7 +136,7 @@ const OpenShift = ({ setShift }) => {
         console.log(err);
       });
 
-    handleAddShiftCode(openshifts[0]?.open_shift_id + 1);
+    handleAddShiftCode(opeData[0]?.open_shift_id + 1);
   };
 
   return (

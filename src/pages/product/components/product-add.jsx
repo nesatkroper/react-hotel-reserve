@@ -24,14 +24,12 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import axios from "@/providers/axiosInstance";
+import axiosInstance from "@/providers/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
+import { getProduct } from "@/app/reducer/productSlicce";
 import { getPcategory } from "@/app/reducer/pcategorySlicce";
-import {
-  defimg,
-  imgFormData,
-  resizeCropImage,
-} from "@/utils/resize-crop-image";
+import { defimg } from "@/utils/resize-crop-image";
+import CropImageUploader from "@/components/app/crop-image-uploader";
 
 const ProductAdd = ({ lastCode }) => {
   console.log(lastCode);
@@ -41,15 +39,16 @@ const ProductAdd = ({ lastCode }) => {
   const [value, setValue] = useState("");
   const [imagePreview, setImagePreview] = useState(defimg);
   const { pcaData } = useSelector((state) => state?.pcategories);
-
-  const [formData, setFormData] = useState({
-    product_name: "",
-    product_code: 0,
-    product_category_id: 1,
-    picture: "",
-    price: 0,
-    discount_rate: 0,
-    status: "true",
+  const [formData, setFormData] = useState(() => {
+    const form = new FormData();
+    form.append("product_name", "");
+    form.append("product_code", lastCode + 1);
+    form.append("product_category_id", 1);
+    form.append("picture", "");
+    form.append("price", 0);
+    form.append("discount_rate", 0);
+    form.append("status", "true");
+    return form;
   });
 
   useEffect(() => {
@@ -57,34 +56,31 @@ const ProductAdd = ({ lastCode }) => {
   }, [dispatch]);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-      product_code: lastCode + 1,
-    });
+    const { name, value } = e.target;
+
+    formData.set(name, value);
+    formData.set("product_code", lastCode + 1);
   };
 
-  const handleImageChange = async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      try {
-        const resizedImage = await resizeCropImage(
-          file,
-          setImagePreview,
-          3 / 2
-        );
-        setFormData({ ...formData, picture: resizedImage });
-      } catch (error) {
-        console.error("Image processing error:", error);
-      }
+  const handleFormData = (data) => {
+    for (let [key, value] of data.entries()) {
+      formData.set(key, value);
     }
+
+    if (data.has("picture")) {
+      const file = data.get("picture");
+      const previewUrl = URL.createObjectURL(file);
+      setImagePreview(previewUrl);
+    }
+
+    return formData;
   };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    await axios
-      .post("/products", imgFormData(formData))
+    await axiosInstance
+      .post("/products", formData)
       .then((res) => {
         console.log(res);
         dispatch(getProduct());
@@ -158,10 +154,7 @@ const ProductAdd = ({ lastCode }) => {
                             onSelect={(currentValue) => {
                               setValue(currentValue);
                               setOpen(false);
-                              setFormData((prevData) => ({
-                                ...prevData,
-                                product_category_id: Number(currentValue),
-                              }));
+                              formData.set("product_category_id", currentValue);
                             }}
                           >
                             {cate.category_name}
@@ -207,13 +200,7 @@ const ProductAdd = ({ lastCode }) => {
             </div>
             <div className="flex flex-col gap-2">
               <Label>Product Picture</Label>
-              <Input
-                onChange={handleImageChange}
-                name="picture"
-                type="file"
-                className="w-[250px]"
-                accept=".jpg,.jpeg,.png"
-              />
+              <CropImageUploader onCallbackFormData={handleFormData} />
             </div>
           </div>
           <div className="flex flex-col gap-2 my-3">

@@ -12,7 +12,7 @@ import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import { BellRing, Search } from "lucide-react";
 import { ModeToggle } from "../mode-toggle";
 import { useState } from "react";
-import NotificationSheet from "./notification-sheet";
+import NotificationSheet from "./components/notification-sheet";
 
 export default function Layout({ children }) {
   const [date, setDate] = useState(

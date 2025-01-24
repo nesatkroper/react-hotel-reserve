@@ -24,26 +24,25 @@ import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
-import axios from "@/providers/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { getRooms } from "@/app/reducer/roomSlice";
 import { getRpicture } from "@/app/reducer/rpictureSlice";
-import {
-  defimg,
-  imgFormData,
-  resizeCropImage,
-} from "../../../../../react-ts/src/utils/resize-crop-image";
+import { defimg } from "@/utils/resize-crop-image";
+import axios from "@/providers/axiosInstance";
+import OriCropImageUploader from "@/components/app/ori-crop-image-uploader";
 
 const RoomPictureAdd = () => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
   const [imagePreview, setImagePreview] = useState(defimg);
-  const { data, loading, error } = useSelector((state) => state?.rooms);
-  const [formData, setFormData] = useState({
-    room_id: 0,
-    picture_name: "",
-    picture: "true",
+  const { rooData } = useSelector((state) => state?.rooms);
+  const [formData, setFormData] = useState(() => {
+    const form = new FormData();
+    form.append("room_id", 0);
+    form.append("picture_name", 1);
+    form.append("picture", "");
+    return form;
   });
 
   useEffect(() => {
@@ -51,38 +50,37 @@ const RoomPictureAdd = () => {
   }, [dispatch]);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    formData.set(name, value);
   };
 
-  const handleImageChange = async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      try {
-        const resizedImage = await resizeCropImage(
-          file,
-          setImagePreview,
-          3 / 2
-        );
-        setFormData({ ...formData, picture: resizedImage });
-      } catch (error) {
-        console.error("Image processing error:", error);
-      }
+  const handleFormData = (data) => {
+    for (let [key, value] of data.entries()) {
+      formData.set(key, value);
     }
+
+    if (data.has("picture")) {
+      const file = data.get("picture");
+      const previewUrl = URL.createObjectURL(file);
+      setImagePreview(previewUrl);
+    }
+
+    return formData;
   };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    console.log("Form Data:", formData);
     await axios
-      .post("/room-picture", imgFormData(formData))
-      .then(() => {
+      .post("/room-picture", formData)
+      .then((res) => {
+        console.log(res);
         dispatch(getRpicture());
       })
       .catch((error) => {
-        console.error(error);
+        console.log(error);
       });
   };
-
-  console.log(imgFormData(formData));
 
   return (
     <>
@@ -104,7 +102,7 @@ const RoomPictureAdd = () => {
                     className="w-[250px] justify-between"
                   >
                     {value
-                      ? data?.find((room) => String(room?.room_id) === value)
+                      ? rooData?.find((room) => String(room?.room_id) === value)
                           ?.room_name
                       : "Select Room Number..."}
                     <ChevronsUpDown className="opacity-50" />
@@ -119,17 +117,14 @@ const RoomPictureAdd = () => {
                     <CommandList>
                       <CommandEmpty>No Room found.</CommandEmpty>
                       <CommandGroup>
-                        {data?.map((room) => (
+                        {rooData?.map((room) => (
                           <CommandItem
                             key={room.room_id}
                             value={String(room.room_id)}
                             onSelect={(currentValue) => {
                               setValue(currentValue);
                               setOpen(false);
-                              setFormData((prevData) => ({
-                                ...prevData,
-                                room_id: Number(currentValue),
-                              }));
+                              formData.set("room_id", Number(currentValue));
                             }}
                           >
                             {room.room_name}
@@ -163,13 +158,7 @@ const RoomPictureAdd = () => {
           <div className="flex justify-between mb-3">
             <div className="flex flex-col gap-2">
               <Label>Chosing Image*</Label>
-              <Input
-                onChange={handleImageChange}
-                name="picture"
-                type="file"
-                className="w-[250px]"
-                accept=".jpg,.jpeg,.png"
-              />
+              <OriCropImageUploader onCallbackFormData={handleFormData} />
             </div>
             <div className="flex flex-col gap-2">
               <Label>Picture Preview</Label>
