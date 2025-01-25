@@ -1,55 +1,51 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vite + React</title>
-  <style>
-    * {
-      user-select: none;
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-
-
-
-    *::-webkit-scrollbar {
-      display: none;
-    }
-
-    @media print {
-      body * {
-        visibility: hidden;
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + React</title>
+    <style>
+      * {
+        user-select: none;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
       }
 
-      #print-content,
-      #print-content * {
-        visibility: visible;
+      *::-webkit-scrollbar {
+        display: none;
       }
-    }
-  </style>
-</head>
 
-<body>
-  <div id="root"></div>
-  <script type="module" src="/src/main.jsx"></script>
-  <script>
-    document.addEventListener("contextmenu", (event) => {
-      event.preventDefault();
-    });
-    document.addEventListener("keydown", (event) => {
-      if (
-        (event.ctrlKey && event.key === "u") ||
-        (event.ctrlKey && event.key === "c") ||
-        (event.ctrlKey && event.key === "s") ||
-        (event.key === "F12")
-      ) {
+      @media print {
+        body * {
+          visibility: hidden;
+        }
+
+        #print-content,
+        #print-content * {
+          visibility: visible;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+    <!-- <script>
+      document.addEventListener("contextmenu", (event) => {
         event.preventDefault();
-      }
-    });
-  </script>
-</body>
-
+      });
+      document.addEventListener("keydown", (event) => {
+        if (
+          (event.ctrlKey && event.key === "u") ||
+          (event.ctrlKey && event.key === "c") ||
+          (event.ctrlKey && event.key === "s") ||
+          event.key === "F12"
+        ) {
+          event.preventDefault();
+        }
+      });
+    </script> -->
+  </body>
 </html>

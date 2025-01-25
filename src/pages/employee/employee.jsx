@@ -58,8 +58,6 @@ const Employee = () => {
     dispatch(getEmployees());
   }, [dispatch]);
 
-  console.log(empData);
-
   const handleDelete = async (id) => {
     await axiosInstance
       .delete(`/employee/${id}`)
@@ -75,7 +73,7 @@ const Employee = () => {
       <Card>
         <Dialog>
           <EmployeeAdd
-            lastCode={parseInt(empData.employee_code?.split("-")[1], 10) || 0}
+            lastCode={parseInt(empData?.employee_code?.split("-")[1], 10) || 0}
           />
           <CardHeader className="pb-0">
             <div className="flex flex-row justify-between">

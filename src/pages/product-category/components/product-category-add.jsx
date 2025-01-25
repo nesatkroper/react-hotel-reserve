@@ -9,8 +9,8 @@ import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { getPcategory } from "@/app/reducer/pcategorySlicce";
 import { defimg } from "@/utils/resize-crop-image";
 import CropImageUploader from "@/components/app/utils/crop-image-uploader";
@@ -20,10 +20,14 @@ import FormSelect from "@/components/app/form/form-select";
 import FormDatePicker from "@/components/app/form/form-date-picker";
 import { format } from "date-fns";
 import FormTextArea from "@/components/app/form/form-textarea";
+import FormComboBox from "@/components/app/form/form-combobox";
+import { getRooms } from "@/app/reducer/roomSlice";
+import FormImagePreview from "@/components/app/form/form-image-preview";
 
 const ProductCategoryAdd = ({ lastCode }) => {
   const dispatch = useDispatch();
   const [imagePreview, setImagePreview] = useState(defimg);
+  const { rooData } = useSelector((state) => state?.rooms);
   const [formData, setFormData] = useState(() => {
     const form = new FormData();
     form.append("picture", "");
@@ -32,6 +36,12 @@ const ProductCategoryAdd = ({ lastCode }) => {
     form.append("memo", "");
     return form;
   });
+
+  useEffect(() => {
+    dispatch(getRooms());
+  }, [dispatch]);
+
+  console.log(rooData);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -140,6 +150,7 @@ const ProductCategoryAdd = ({ lastCode }) => {
               <Label>Choose Image*</Label>
               <CropImageUploader onCallbackFormData={handleFormData} />
             </div>
+            <FormImagePreview imgSrc={imagePreview} />
             {/* <div className="flex flex-col gap-2">
               <Label>Picture Preview</Label>
               <img
@@ -153,8 +164,14 @@ const ProductCategoryAdd = ({ lastCode }) => {
             <Button type="submit">Submit</Button>
           </DialogClose>
         </form>
-        <FormSelect onCallbackSelect={handleSelectChange} item={demo} />
-        <FormDatePicker onCallbackPicker={handleDateChange} />
+        {/* <FormSelect onCallbackSelect={handleSelectChange} item={demo} /> */}
+        {/* <FormDatePicker onCallbackPicker={handleDateChange} /> */}
+        <FormComboBox
+          onCallbackSelect={handleSelectChange}
+          item={rooData}
+          optID="room_id"
+          optLabel="room_name"
+        />
       </DialogContent>
     </>
   );
