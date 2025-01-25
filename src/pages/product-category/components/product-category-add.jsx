@@ -41,8 +41,6 @@ const ProductCategoryAdd = ({ lastCode }) => {
     dispatch(getRooms());
   }, [dispatch]);
 
-  console.log(rooData);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -166,12 +164,12 @@ const ProductCategoryAdd = ({ lastCode }) => {
         </form>
         {/* <FormSelect onCallbackSelect={handleSelectChange} item={demo} /> */}
         {/* <FormDatePicker onCallbackPicker={handleDateChange} /> */}
-        <FormComboBox
+        {/* <FormComboBox
           onCallbackSelect={handleSelectChange}
           item={rooData}
           optID="room_id"
           optLabel="room_name"
-        />
+        /> */}
       </DialogContent>
     </>
   );

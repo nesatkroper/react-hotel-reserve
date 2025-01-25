@@ -15,6 +15,7 @@ import ProductCategory from "@/pages/product-category/product-category";
 import RoomPicture from "@/pages/room-picture/room-picture";
 import Authentication from "@/pages/authentication/authentication";
 import Home from "@/pages/home/home";
+import Test from "./../pages/test/test";
 
 const Routes = () => {
   const { token } = useAuth();
@@ -27,6 +28,10 @@ const Routes = () => {
     {
       path: "/",
       element: <Home />,
+    },
+    {
+      path: "/test",
+      element: <Test />,
     },
     {
       path: "/dashboard",

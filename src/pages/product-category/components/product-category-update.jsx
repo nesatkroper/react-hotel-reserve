@@ -23,7 +23,7 @@ import {
 const ProductCategoryUpdate = ({ items }) => {
   const dispatch = useDispatch();
   const [imagePreview, setImagePreview] = useState(
-    `${local}/images/category/${items.picture}` || defimg
+    `${local}/images/category/${items?.picture}` || defimg
   );
 
   const [formData, setFormData] = useState({
