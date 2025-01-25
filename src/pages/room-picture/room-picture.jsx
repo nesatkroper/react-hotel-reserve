@@ -35,8 +35,8 @@ import Layout from "@/components/app/layout";
 import RoomPictureAdd from "./components/room-picture-add";
 import axios from "@/providers/axiosInstance";
 import RoomPictureUpdate from "./components/room-picture-update";
-import NoData from "@/components/app/no-data";
-import AppLoading from "@/components/app/app-loading";
+import NoData from "@/components/app/components/no-data";
+import AppLoading from "@/components/app/components/app-loading";
 
 const RoomPicture = () => {
   const dispatch = useDispatch();

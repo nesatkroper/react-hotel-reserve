@@ -11,7 +11,7 @@ import { getProduct } from "@/app/reducer/productSlicce";
 import { apiUrl } from "@/providers/api-url";
 import { addItem } from "@/app/reducer/counter";
 import { defimg } from "@/utils/resize-crop-image";
-import AppLoading from "@/components/app/app-loading";
+import AppLoading from "@/components/app/components/app-loading";
 
 const SHIFT = sessionStorage.getItem("shiftcode");
 

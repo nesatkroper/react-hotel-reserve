@@ -13,16 +13,19 @@ import { useState } from "react";
 
 const FormDatePicker = (props) => {
   const {
-    onCallbackInput,
+    onCallbackPicker,
     mainClass,
     labelClass,
     size = "w-[250px] ",
     label = "Date of Birth*",
   } = props;
-  const [date, setDate] = useState();
+  const [date, setDate] = useState(null);
 
-  const handlePicker = () => {
-    onCallbackInput(date);
+  const handlePicker = (event) => {
+    setDate(event);
+    if (onCallbackPicker) {
+      onCallbackPicker(event);
+    }
   };
   return (
     <div className={`flex flex-col gap-2 ${mainClass}`}>
@@ -44,7 +47,7 @@ const FormDatePicker = (props) => {
           <Calendar
             mode="single"
             selected={date}
-            onSelect={setDate}
+            onSelect={handlePicker}
             initialFocus
           />
         </PopoverContent>

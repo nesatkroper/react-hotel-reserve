@@ -1,11 +1,12 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
-const FormTextInput = (props) => {
+const FormInput = (props) => {
   const {
     onCallbackInput,
     name,
     value,
+    type,
     mainClass,
     inputClass,
     labelClass,
@@ -15,7 +16,7 @@ const FormTextInput = (props) => {
   } = props;
 
   const handleChange = (event) => {
-    onCallbackInput(event);
+    onCallbackInput(event.target);
   };
   return (
     <div className={`flex flex-col gap-2 ${mainClass}`}>
@@ -24,7 +25,7 @@ const FormTextInput = (props) => {
         onChange={handleChange}
         value={value}
         name={name}
-        type="text"
+        type={type}
         placeholder={placeholder}
         className={`${inputClass} ${size}`}
       />
@@ -32,4 +33,4 @@ const FormTextInput = (props) => {
   );
 };
 
-export default FormTextInput;
+export default FormInput;

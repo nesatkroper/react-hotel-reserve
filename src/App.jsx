@@ -1,4 +1,4 @@
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/components/app/theme/theme-provider";
 import AuthProvider from "./providers/auth-provider";
 import Routes from "./routes/router";
 import { useEffect } from "react";

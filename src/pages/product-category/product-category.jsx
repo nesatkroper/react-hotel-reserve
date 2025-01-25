@@ -40,12 +40,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getPcategory } from "@/app/reducer/pcategorySlicce.jsx";
 import { apiUrl } from "@/providers/api-url";
-import { defimg } from "../../../../react-ts/src/utils/resize-crop-image.js";
+import { defimg } from "@/utils/resize-crop-image.js";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import axios from "@/providers/axiosInstance.js";
 import Layout from "@/components/app/layout";
 import ProductCategoryAdd from "./components/product-category-add.jsx";
-import AppLoading from "@/components/app/app-loading.jsx";
+import AppLoading from "@/components/app/components/app-loading.jsx";
 import ProductCategoryUpdate from "./components/product-category-update.jsx";
 
 const ProductCategory = () => {

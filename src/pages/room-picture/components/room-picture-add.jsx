@@ -29,7 +29,7 @@ import { getRooms } from "@/app/reducer/roomSlice";
 import { getRpicture } from "@/app/reducer/rpictureSlice";
 import { defimg } from "@/utils/resize-crop-image";
 import axios from "@/providers/axiosInstance";
-import OriCropImageUploader from "@/components/app/ori-crop-image-uploader";
+import OriCropImageUploader from "@/components/app/utils/ori-crop-image-uploader";
 
 const RoomPictureAdd = () => {
   const dispatch = useDispatch();

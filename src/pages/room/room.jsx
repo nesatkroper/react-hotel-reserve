@@ -35,8 +35,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import Layout from "@/components/app/layout";
 import RoomAdd from "./components/room-add";
 import axios from "@/providers/axiosInstance";
-import AppLoading from "@/components/app/app-loading";
-import NoData from "@/components/app/no-data";
+import AppLoading from "@/components/app/components/app-loading";
+import NoData from "@/components/app/components/no-data";
 import RoomUpdate from "./components/room-update";
 
 const Room = () => {

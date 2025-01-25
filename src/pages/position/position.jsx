@@ -17,8 +17,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import PositionAdd from "./components/position-add";
-import AppLoading from "@/components/app/app-loading";
-import NoData from "@/components/app/no-data";
+import AppLoading from "@/components/app/components/app-loading";
+import NoData from "@/components/app/components/no-data";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";

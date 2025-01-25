@@ -29,7 +29,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getProduct } from "@/app/reducer/productSlicce";
 import { getPcategory } from "@/app/reducer/pcategorySlicce";
 import { defimg } from "@/utils/resize-crop-image";
-import CropImageUploader from "@/components/app/crop-image-uploader";
+import CropImageUploader from "@/components/app/utils/crop-image-uploader";
 
 const ProductAdd = ({ lastCode }) => {
   console.log(lastCode);

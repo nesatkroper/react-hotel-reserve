@@ -11,10 +11,10 @@ import {
   BedDouble,
 } from "lucide-react";
 
-import { NavMain } from "@/components/nav-main";
-import { NavProjects } from "@/components/nav-projects";
-import { NavUser } from "@/components/nav-user";
-import { TeamSwitcher } from "@/components/team-switcher";
+import { NavMain } from "@/components/app/sidebar/nav-main";
+import { NavProjects } from "@/components/app/sidebar/nav-projects";
+import { NavUser } from "@/components/app/sidebar/nav-user";
+import { TeamSwitcher } from "@/components/app/sidebar/team-switcher";
 import {
   Sidebar,
   SidebarContent,

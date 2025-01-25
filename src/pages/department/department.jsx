@@ -23,8 +23,8 @@ import DepartmentAdd from "./components/department-add";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getDepartments } from "@/app/reducer/departmentSlice";
-import NoData from "@/components/app/no-data";
-import AppLoading from "@/components/app/app-loading";
+import NoData from "@/components/app/components/no-data";
+import AppLoading from "@/components/app/components/app-loading";
 
 const Department = () => {
   const dispatch = useDispatch();

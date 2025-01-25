@@ -13,11 +13,13 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { getPcategory } from "@/app/reducer/pcategorySlicce";
 import { defimg } from "@/utils/resize-crop-image";
-import CropImageUploader from "@/components/app/crop-image-uploader";
+import CropImageUploader from "@/components/app/utils/crop-image-uploader";
 import axiosInstance from "@/providers/axiosInstance";
-import FormTextInput from "@/components/app/form-text-input";
-import FormSelect from "@/components/app/form-select";
-import FormDatePicker from "@/components/app/form-date-picker";
+import FormInput from "@/components/app/form/form-input";
+import FormSelect from "@/components/app/form/form-select";
+import FormDatePicker from "@/components/app/form/form-date-picker";
+import { format } from "date-fns";
+import FormTextArea from "@/components/app/form/form-textarea";
 
 const ProductCategoryAdd = ({ lastCode }) => {
   const dispatch = useDispatch();
@@ -52,9 +54,18 @@ const ProductCategoryAdd = ({ lastCode }) => {
     return formData;
   };
 
-  const handleChangeInput = (data) => {
-    const { name, value } = data.target;
+  const handleInputChange = (data) => {
+    const { name, value } = data;
     console.log(`${name}: ${value}`);
+  };
+
+  const handleSelectChange = (data) => {
+    const value = data;
+    console.log(`${value}`);
+  };
+
+  const handleDateChange = (date) => {
+    console.log(format(date, "yyyy-MM-dd"));
   };
 
   const handleFormSubmit = async (e) => {
@@ -70,6 +81,17 @@ const ProductCategoryAdd = ({ lastCode }) => {
       });
   };
 
+  const demo = [
+    {
+      value: "male",
+      data: "Male",
+    },
+    {
+      value: "female",
+      data: "Female",
+    },
+  ];
+
   return (
     <>
       <DialogContent>
@@ -79,10 +101,11 @@ const ProductCategoryAdd = ({ lastCode }) => {
           </DialogHeader>
           <Separator />
           <div className="flex justify-between mb-2 mt-2">
-            <FormTextInput
-              onCallbackInput={handleChangeInput}
+            <FormInput
+              onCallbackInput={handleInputChange}
               label="Product Category Name*"
               name="category_name"
+              type="text"
             />
             {/* <div className="flex flex-col gap-2">
               <Label>Product Category Name*</Label>
@@ -103,34 +126,35 @@ const ProductCategoryAdd = ({ lastCode }) => {
               />
             </div>
           </div>
-          <div className="flex flex-col gap-2 justify-between mb-2">
+          {/* <div className="flex flex-col gap-2 justify-between mb-2">
             <Label>Description</Label>
             <Textarea
               onChange={handleChange}
               name="memo"
               placeholder="Something ..."
             />
-          </div>
+          </div> */}
+          <FormTextArea onCallbackInput={handleInputChange} />
           <div className="flex justify-between my-3 ">
             <div className="flex flex-col gap-2">
               <Label>Choose Image*</Label>
               <CropImageUploader onCallbackFormData={handleFormData} />
             </div>
-            <div className="flex flex-col gap-2">
+            {/* <div className="flex flex-col gap-2">
               <Label>Picture Preview</Label>
               <img
                 src={imagePreview}
                 alt="picture preview"
                 className="w-[250px] rounded-xl shadow"
               />
-            </div>
+            </div> */}
           </div>
           <DialogClose className="mt-2">
             <Button type="submit">Submit</Button>
           </DialogClose>
         </form>
-        {/* <FormSelect /> */}
-        <FormDatePicker />
+        <FormSelect onCallbackSelect={handleSelectChange} item={demo} />
+        <FormDatePicker onCallbackPicker={handleDateChange} />
       </DialogContent>
     </>
   );

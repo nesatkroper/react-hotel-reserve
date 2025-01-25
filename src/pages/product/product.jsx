@@ -46,7 +46,7 @@ import { defimg } from "@/utils/resize-crop-image.js";
 import Layout from "@/components/app/layout";
 import ProductAdd from "./components/product-add.jsx";
 import axios from "@/providers/axiosInstance.js";
-import AppLoading from "@/components/app/app-loading.jsx";
+import AppLoading from "@/components/app/components/app-loading.jsx";
 
 const Product = () => {
   const dispatch = useDispatch();

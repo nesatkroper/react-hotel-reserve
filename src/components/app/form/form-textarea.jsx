@@ -1,35 +1,35 @@
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
-const FormNumberInput = (props) => {
+const FormTextArea = (props) => {
   const {
     onCallbackInput,
     name,
     value,
+    type,
     mainClass,
     inputClass,
     labelClass,
     placeholder = "Food, Drink, ...",
-    size = "w-[250px] ",
     label = "Email*",
   } = props;
 
   const handleChange = (event) => {
-    onCallbackInput(event);
+    onCallbackInput(event.target);
   };
   return (
-    <div className={`flex flex-col gap-2 ${mainClass}`}>
+    <div className={`lex flex-col gap-2 justify-between mb-2 ${mainClass}`}>
       <Label className={`${labelClass}`}>{label}</Label>
-      <Input
+      <Textarea
         onChange={handleChange}
         value={value}
         name={name}
-        type="number"
+        type={type}
         placeholder={placeholder}
-        className={`${inputClass} ${size}`}
+        className={`${inputClass}`}
       />
     </div>
   );
 };
 
-export default FormNumberInput;
+export default FormTextArea;

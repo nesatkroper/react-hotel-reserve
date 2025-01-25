@@ -39,7 +39,7 @@ import { defimg } from "@/utils/resize-crop-image";
 import { getPositions } from "@/app/reducer/positionSlice";
 import { getEmployees } from "@/app/reducer/employeeSlice";
 import axiosInstance from "@/providers/axiosInstance";
-import CropImageUploader from "@/components/app/crop-image-uploader";
+import CropImageUploader from "@/components/app/utils/crop-image-uploader";
 
 const EmployeeAdd = ({ lastCode }) => {
   const dispatch = useDispatch();

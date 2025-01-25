@@ -38,14 +38,14 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import Layout from "@/components/app/layout";
-import AppLoading from "@/components/app/app-loading";
+import AppLoading from "@/components/app/components/app-loading";
 import { Trash, Plus, Pen, ListCollapse, Ellipsis } from "lucide-react";
 import axiosInstance from "@/providers/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { getEmployees } from "@/app/reducer/employeeSlice";
 import { useEffect } from "react";
 import { defimg, local } from "@/utils/resize-crop-image";
-import NoData from "@/components/app/no-data";
+import NoData from "@/components/app/components/no-data";
 import EmployeeAdd from "./components/employee-add";
 
 const Employee = () => {

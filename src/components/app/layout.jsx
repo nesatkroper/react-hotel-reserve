@@ -1,4 +1,4 @@
-import { AppSidebar } from "@/components/app-sidebar";
+import { AppSidebar } from "@/components/app/sidebar/app-sidebar";
 import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import { BellRing, Search } from "lucide-react";
-import { ModeToggle } from "../mode-toggle";
+import { ModeToggle } from "./theme/mode-toggle";
 import { useState } from "react";
 import NotificationSheet from "./components/notification-sheet";
 
