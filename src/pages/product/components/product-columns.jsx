@@ -31,18 +31,17 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { defimg, local } from "@/utils/resize-crop-image";
 import { useDispatch } from "react-redux";
-import { getPcategory } from "@/app/reducer/pcategorySlicce";
-import ProductCategoryUpdate from "./product-category-update";
+import { getProduct } from "@/app/reducer/productSlicce";
 
-export const ProductCategoryActions = () => {
+export const ProductActions = () => {
   const dispatch = useDispatch();
 
   const handleDelete = async (id) => {
     try {
       await axiosInstance
-        .delete(`/product-category/${id}`)
+        .delete(`/products/${id}`)
         .then(() => {
-          dispatch(getPcategory());
+          dispatch(getProduct());
         })
         .catch((error) => {
           console.log(error);
@@ -55,7 +54,7 @@ export const ProductCategoryActions = () => {
   return { handleDelete };
 };
 
-export const ProductCategoryColumns = [
+export const ProductColumns = [
   {
     id: "select",
     header: ({ table }) => (
@@ -79,12 +78,27 @@ export const ProductCategoryColumns = [
     enableHiding: false,
   },
   {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => {
+      const status = row.original.status;
+      console.log(status);
+      return (
+        <div
+          className={`capitalize ${status ? "text-green-600" : "text-red-600"}`}
+        >
+          {row.getValue("status")}
+        </div>
+      );
+    },
+  },
+  {
     accessorKey: "picture",
     header: () => <div className="text-start">Picture</div>,
     cell: ({ row }) => {
       return (
         <img
-          src={`${local}/images/category/${row.getValue("picture")}`}
+          src={`${local}/images/product/${row.getValue("picture")}`}
           alt="product"
           onError={(e) => (e.target.src = defimg)}
           className="h-[80px] rounded-lg"
@@ -93,7 +107,7 @@ export const ProductCategoryColumns = [
     },
   },
   {
-    accessorKey: "category_name",
+    accessorKey: "product_name",
     header: ({ column }) => {
       return (
         <Button
@@ -101,33 +115,53 @@ export const ProductCategoryColumns = [
           className="font-bold"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Category Name
+          Product Name
           <ArrowUpDown />
         </Button>
       );
     },
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("category_name")}</div>
+      <div className="capitalize">{row.getValue("product_name")}</div>
     ),
   },
   {
-    accessorKey: "category_code",
-    header: () => <div className="text-center">Category Code</div>,
+    accessorKey: "product_code",
+    header: () => <div className="text-center">Product Code</div>,
     cell: ({ row }) => {
       return (
-        <div className="text-center capitalize">
-          {row.getValue("category_code")}
+        <div className="text-start capitalize">
+          {row.getValue("product_code")}
         </div>
       );
     },
   },
   {
-    accessorKey: "memo",
-    header: () => <div className="text-center">Description</div>,
+    accessorKey: "product_category_id",
+    header: () => <div className="text-center">Category</div>,
+    cell: ({ row }) => {
+      const categoryName = row.original.categories?.category_name || "N/A";
+
+      return <div className="text-center capitalize">{categoryName}</div>;
+    },
+  },
+  {
+    accessorKey: "price",
+    header: () => <div className="text-start">Price</div>,
+    cell: ({ row }) => {
+      return (
+        <div className="text-start capitalize">
+          $ {row.getValue("price") || "N/A"}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "discount_rate",
+    header: () => <div className="text-center">Discount Rate</div>,
     cell: ({ row }) => {
       return (
         <div className="text-center capitalize">
-          {row.getValue("memo") || "N/A"}
+          {row.getValue("discount_rate") || "0 %"} %
         </div>
       );
     },
@@ -137,7 +171,7 @@ export const ProductCategoryColumns = [
     enableHiding: false,
     cell: ({ row }) => {
       const item = row.original;
-      const { handleDelete } = ProductCategoryActions();
+      const { handleDelete } = ProductActions();
 
       return (
         <DropdownMenu>
@@ -149,7 +183,7 @@ export const ProductCategoryColumns = [
           </DropdownMenuTrigger>
           <Dialog>
             {/* // */}
-            <ProductCategoryUpdate items={item} />
+            {/* <ProductCategoryUpdate items={item} /> */}
             <AlertDialog>
               <AlertDialogContent>
                 <AlertDialogHeader>
@@ -164,7 +198,7 @@ export const ProductCategoryColumns = [
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <AlertDialogAction
-                    onClick={() => handleDelete(item.product_category_id)}
+                    onClick={() => handleDelete(item.product_id)}
                     className="bg-red-500"
                   >
                     Continue

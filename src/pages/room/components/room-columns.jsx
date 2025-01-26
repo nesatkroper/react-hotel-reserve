@@ -25,24 +25,23 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import axiosInstance from "@/providers/axiosInstance";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { defimg, local } from "@/utils/resize-crop-image";
 import { useDispatch } from "react-redux";
-import { getPcategory } from "@/app/reducer/pcategorySlicce";
-import ProductCategoryUpdate from "./product-category-update";
+import { getProduct } from "@/app/reducer/productSlicce";
 
-export const ProductCategoryActions = () => {
+export const RoomActions = () => {
   const dispatch = useDispatch();
 
   const handleDelete = async (id) => {
     try {
       await axiosInstance
-        .delete(`/product-category/${id}`)
+        .delete(`/room/${id}`)
         .then(() => {
-          dispatch(getPcategory());
+          dispatch(getProduct());
         })
         .catch((error) => {
           console.log(error);
@@ -55,7 +54,7 @@ export const ProductCategoryActions = () => {
   return { handleDelete };
 };
 
-export const ProductCategoryColumns = [
+export const RoomColumns = [
   {
     id: "select",
     header: ({ table }) => (
@@ -79,12 +78,33 @@ export const ProductCategoryColumns = [
     enableHiding: false,
   },
   {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => {
+      const status = row.original.status;
+      return (
+        <div
+          className={`capitalize ${
+            status == "available"
+              ? "text-green-600"
+              : status == "maintenance"
+              ? "text-yellow-600"
+              : "text-red-600"
+          }`}
+        >
+          {row.getValue("status")}
+        </div>
+      );
+    },
+  },
+  {
     accessorKey: "picture",
     header: () => <div className="text-start">Picture</div>,
     cell: ({ row }) => {
+      const img = row.original.room_pictures[0]?.picture;
       return (
         <img
-          src={`${local}/images/category/${row.getValue("picture")}`}
+          src={`${local}/images/rooms/${img}`}
           alt="product"
           onError={(e) => (e.target.src = defimg)}
           className="h-[80px] rounded-lg"
@@ -93,7 +113,7 @@ export const ProductCategoryColumns = [
     },
   },
   {
-    accessorKey: "category_name",
+    accessorKey: "room_name",
     header: ({ column }) => {
       return (
         <Button
@@ -101,33 +121,88 @@ export const ProductCategoryColumns = [
           className="font-bold"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Category Name
+          Room Name
           <ArrowUpDown />
         </Button>
       );
     },
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("category_name")}</div>
+      <div className="capitalize">{row.getValue("room_name")}</div>
     ),
   },
   {
-    accessorKey: "category_code",
-    header: () => <div className="text-center">Category Code</div>,
+    accessorKey: "room_type",
+    header: () => <div className="text-center">Room Type</div>,
     cell: ({ row }) => {
       return (
-        <div className="text-center capitalize">
-          {row.getValue("category_code")}
+        <div className="text-start capitalize">{row.getValue("room_type")}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "is_ac",
+    header: () => <div className="text-center">AC</div>,
+    cell: ({ row }) => {
+      const check = row.original.is_ac || false;
+
+      return (
+        <div className="flex justify-center">
+          <Checkbox checked={check} />
         </div>
       );
     },
   },
   {
-    accessorKey: "memo",
-    header: () => <div className="text-center">Description</div>,
+    accessorKey: "is_booked",
+    header: () => <div className="text-center">Book</div>,
+    cell: ({ row }) => {
+      const book = row.original.is_booked || false;
+
+      return (
+        <div className="flex justify-center">
+          <Checkbox checked={book} />
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "size",
+    header: () => <div className="text-center">Size</div>,
+    cell: ({ row }) => {
+      return (
+        <div className="text-center capitalize">{row.getValue("size")} m²</div>
+      );
+    },
+  },
+  {
+    accessorKey: "capacity",
+    header: () => <div className="text-center">Capacity</div>,
     cell: ({ row }) => {
       return (
         <div className="text-center capitalize">
-          {row.getValue("memo") || "N/A"}
+          {row.getValue("capacity")} p
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "price",
+    header: () => <div className="text-start">Price</div>,
+    cell: ({ row }) => {
+      return (
+        <div className="text-start capitalize">
+          $ {row.getValue("price") || "N/A"}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "discount_rate",
+    header: () => <div className="text-center">Discount Rate</div>,
+    cell: ({ row }) => {
+      return (
+        <div className="text-center capitalize">
+          {row.getValue("discount_rate") || "0"} %
         </div>
       );
     },
@@ -137,7 +212,7 @@ export const ProductCategoryColumns = [
     enableHiding: false,
     cell: ({ row }) => {
       const item = row.original;
-      const { handleDelete } = ProductCategoryActions();
+      const { handleDelete } = RoomActions();
 
       return (
         <DropdownMenu>
@@ -149,7 +224,7 @@ export const ProductCategoryColumns = [
           </DropdownMenuTrigger>
           <Dialog>
             {/* // */}
-            <ProductCategoryUpdate items={item} />
+            {/* <ProductCategoryUpdate items={item} /> */}
             <AlertDialog>
               <AlertDialogContent>
                 <AlertDialogHeader>
@@ -164,7 +239,7 @@ export const ProductCategoryColumns = [
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <AlertDialogAction
-                    onClick={() => handleDelete(item.product_category_id)}
+                    onClick={() => handleDelete(item.room_id)}
                     className="bg-red-500"
                   >
                     Continue

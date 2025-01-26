@@ -1,22 +1,26 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import PropTypes from "prop-types";
 
 const FormInput = (props) => {
   const {
     onCallbackInput,
     name,
     value,
-    type,
+    type = "text",
     mainClass,
     inputClass,
     labelClass,
     placeholder = "Food, Drink, ...",
-    size = "w-[250px] ",
+    size = 250,
     label = "Email*",
+    readonly = false,
+    min = 0,
+    step = 0.01,
   } = props;
 
   const handleChange = (event) => {
-    onCallbackInput(event.target);
+    onCallbackInput(event);
   };
   return (
     <div className={`flex flex-col gap-2 ${mainClass}`}>
@@ -27,10 +31,29 @@ const FormInput = (props) => {
         name={name}
         type={type}
         placeholder={placeholder}
-        className={`${inputClass} ${size}`}
+        className={`${inputClass} w-[${size}px]`}
+        readOnly={readonly}
+        min={min}
+        step={step}
       />
     </div>
   );
+};
+
+FormInput.propTypes = {
+  onCallbackInput: PropTypes.func,
+  name: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  type: PropTypes.string,
+  mainClass: PropTypes.string,
+  inputClass: PropTypes.string,
+  labelClass: PropTypes.string,
+  placeholder: PropTypes.string,
+  size: PropTypes.number,
+  label: PropTypes.string,
+  readonly: PropTypes.bool,
+  min: PropTypes.number,
+  step: PropTypes.number,
 };
 
 export default FormInput;

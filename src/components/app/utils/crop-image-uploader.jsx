@@ -17,8 +17,10 @@ import { getCroppedImg } from "@/utils/crop-image";
 import { defimg } from "@/utils/resize-crop-image";
 import { Button } from "@/components/ui/button";
 import Cropper from "react-easy-crop";
+import PropTypes from "prop-types";
 
-const CropImageUploader = ({ onCallbackFormData }) => {
+const CropImageUploader = (props) => {
+  const { onCallbackFormData, resolution = 600 } = props;
   const [imageSrc, setImageSrc] = useState(defimg);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
@@ -68,37 +70,37 @@ const CropImageUploader = ({ onCallbackFormData }) => {
       const original = new Image();
       original.src = imageSrc;
 
-      let outputWidth = 600;
-      let outputHeight = 600;
+      let outputWidth = resolution;
+      let outputHeight = resolution;
 
       switch (aspect) {
         case 1 / 1:
-          outputWidth = 600;
-          outputHeight = 600;
+          outputWidth = resolution;
+          outputHeight = resolution;
           break;
         case 2 / 3:
-          outputWidth = 400;
-          outputHeight = 600;
+          outputWidth = (resolution * 2) / 3;
+          outputHeight = resolution;
           break;
         case 3 / 2:
-          outputWidth = 600;
-          outputHeight = 400;
+          outputWidth = resolution;
+          outputHeight = (resolution * 2) / 3;
           break;
         case 16 / 9:
-          outputWidth = 600;
-          outputHeight = 340;
+          outputWidth = resolution;
+          outputHeight = (resolution * 9) / 16;
           break;
         case 20 / 10:
-          outputWidth = 600;
-          outputHeight = 300;
+          outputWidth = resolution;
+          outputHeight = resolution / 2;
           break;
         case 21 / 9:
-          outputWidth = 600;
-          outputHeight = 260;
+          outputWidth = resolution;
+          outputHeight = (resolution * 9) / 21;
           break;
         default:
-          outputWidth = 600;
-          outputHeight = 600;
+          outputWidth = resolution;
+          outputHeight = resolution;
       }
 
       const cropped = await getCroppedImg(
@@ -112,7 +114,7 @@ const CropImageUploader = ({ onCallbackFormData }) => {
       console.log("Error generating cropped image:", e);
       throw e;
     }
-  }, [imageSrc, croppedAreaPixels, aspect]);
+  }, [imageSrc, croppedAreaPixels, aspect, resolution]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -215,6 +217,11 @@ const CropImageUploader = ({ onCallbackFormData }) => {
       </AlertDialog>
     </form>
   );
+};
+
+CropImageUploader.propTypes = {
+  onCallbackFormData: PropTypes.func,
+  resolution: PropTypes.number,
 };
 
 export default CropImageUploader;

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 import {
   flexRender,
   getCoreRowModel,
@@ -36,25 +37,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { ChevronDown, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { demo } from "./demo";
 import { column } from "./column";
+import AppLoading from "../components/app-loading";
 
 const AppDataTable = (props) => {
-  const {
-    data = demo,
-    columns = column,
-    main = "email",
-    btnSize = 200,
-    addElement,
-    editElement,
-    title,
-    des,
-    add,
-  } = props;
+  const { data, columns, main, btnSize, addElement, title, des, add, loading } =
+    props;
 
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
@@ -96,7 +88,7 @@ const AppDataTable = (props) => {
             </div>
             <DialogTrigger>
               <Button className={`w-[${btnSize}px]`}>
-                <Plus /> {add || "Add Product Category"}
+                <Plus /> {add || "Add Items"}
               </Button>
             </DialogTrigger>
           </div>
@@ -188,34 +180,38 @@ const AppDataTable = (props) => {
                   </TableRow>
                 ))}
               </TableHeader>
-              <TableBody>
-                {table.getRowModel().rows?.length ? (
-                  table.getRowModel().rows.map((row) => (
-                    <TableRow
-                      key={row.id}
-                      data-state={row.getIsSelected() && "selected"}
-                    >
-                      {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id}>
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </TableCell>
-                      ))}
+              {loading ? (
+                <AppLoading />
+              ) : (
+                <TableBody>
+                  {table.getRowModel().rows?.length ? (
+                    table.getRowModel().rows.map((row) => (
+                      <TableRow
+                        key={row.id}
+                        data-state={row.getIsSelected() && "selected"}
+                      >
+                        {row.getVisibleCells().map((cell) => (
+                          <TableCell key={cell.id}>
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext()
+                            )}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell
+                        colSpan={columns.length}
+                        className="h-24 text-center"
+                      >
+                        No results.
+                      </TableCell>
                     </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell
-                      colSpan={columns.length}
-                      className="h-24 text-center"
-                    >
-                      No results.
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
+                  )}
+                </TableBody>
+              )}
             </Table>
           </div>
           <div className="flex items-center justify-end space-x-2 pt-4">
@@ -247,6 +243,30 @@ const AppDataTable = (props) => {
       </CardContent>
     </Card>
   );
+};
+
+AppDataTable.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.object),
+  columns: PropTypes.arrayOf(PropTypes.object),
+  main: PropTypes.string,
+  btnSize: PropTypes.number,
+  addElement: PropTypes.oneOfType([PropTypes.node, PropTypes.element]),
+  title: PropTypes.string,
+  des: PropTypes.string,
+  add: PropTypes.string,
+  loading: PropTypes.bool,
+};
+
+AppDataTable.defaultProps = {
+  data: demo,
+  columns: column,
+  main: "name",
+  btnSize: 200,
+  addElement: null,
+  editElement: null,
+  title: "Default Title",
+  des: "Default Description",
+  loading: false,
 };
 
 export default AppDataTable;

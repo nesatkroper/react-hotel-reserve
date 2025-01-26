@@ -16,29 +16,19 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
-
-const demo = [
-  {
-    time: "next.js",
-    less: "Next.js",
-  },
-  {
-    time: "sveltekit",
-    less: "SvelteKit",
-  },
-];
+import PropTypes from "prop-types";
 
 const FormComboBox = (props) => {
   const {
     onCallbackSelect,
-    optID = "time",
-    optLabel = "less",
+    optID,
+    optLabel,
     labelClass,
-    placeholder = "Search position category...",
-    size = 250,
-    label = "Email*",
-    item = demo,
-    defaultValue = "",
+    placeholder,
+    size,
+    label,
+    item,
+    defaultValue,
   } = props;
 
   const [open, setOpen] = useState(false);
@@ -103,6 +93,43 @@ const FormComboBox = (props) => {
       </Popover>
     </div>
   );
+};
+
+FormComboBox.propTypes = {
+  onCallbackSelect: PropTypes.func,
+  optID: PropTypes.string,
+  optLabel: PropTypes.string,
+  labelClass: PropTypes.string,
+  placeholder: PropTypes.string,
+  size: PropTypes.number,
+  label: PropTypes.string,
+  item: PropTypes.arrayOf(
+    PropTypes.shape({
+      [PropTypes.string]: PropTypes.any,
+    })
+  ),
+  defaultValue: PropTypes.string,
+};
+
+FormComboBox.defaultProps = {
+  onCallbackSelect: null,
+  optID: "time",
+  optLabel: "less",
+  labelClass: "",
+  placeholder: "Search category...",
+  size: 250,
+  label: "Email*",
+  item: [
+    {
+      time: "next.js",
+      less: "Next.js",
+    },
+    {
+      time: "sveltekit",
+      less: "SvelteKit",
+    },
+  ],
+  defaultValue: "",
 };
 
 export default FormComboBox;

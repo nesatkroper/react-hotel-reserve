@@ -8,7 +8,7 @@ import { ProductCategoryColumns } from "./components/product-category-columns.js
 
 const ProductCategory = () => {
   const dispatch = useDispatch();
-  const { pcaData } = useSelector((state) => state?.pcategories);
+  const { pcaData, pcaLoading } = useSelector((state) => state?.pcategories);
 
   useEffect(() => {
     dispatch(getPcategory());
@@ -21,13 +21,14 @@ const ProductCategory = () => {
         columns={ProductCategoryColumns}
         title="Product Category Tables"
         main="category_name"
+        loading={pcaLoading}
+        add="Add Category"
         addElement={
           <ProductCategoryAdd
             lastCode={parseInt(pcaData[0]?.category_code.split("-")[1], 10)}
           />
         }
-        x
-      ></AppDataTable>
+      />
     </Layout>
   );
 };

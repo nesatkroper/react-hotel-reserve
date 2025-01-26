@@ -6,6 +6,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
+import PropTypes from "prop-types";
 
 const demo = [
   {
@@ -28,7 +29,7 @@ const FormSelect = (props) => {
     mainClass,
     labelClass,
     placeholder = "Select gender",
-    size = "w-[250px] ",
+    size = 250,
     label = "Gender",
     item = demo,
   } = props;
@@ -40,7 +41,7 @@ const FormSelect = (props) => {
     <div className={`flex flex-col gap-2 ${mainClass}`}>
       <Label className={labelClass}>{label}</Label>
       <Select onValueChange={handleSelect}>
-        <SelectTrigger className={size}>
+        <SelectTrigger className={`w-[${size}px]`}>
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>
@@ -53,6 +54,21 @@ const FormSelect = (props) => {
       </Select>
     </div>
   );
+};
+
+FormSelect.propTypes = {
+  onCallbackSelect: PropTypes.func,
+  mainClass: PropTypes.string,
+  labelClass: PropTypes.string,
+  placeholder: PropTypes.string,
+  size: PropTypes.number,
+  label: PropTypes.string,
+  item: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.string.isRequired,
+      data: PropTypes.string.isRequired,
+    })
+  ),
 };
 
 export default FormSelect;
