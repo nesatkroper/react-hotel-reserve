@@ -4,72 +4,88 @@ import {
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog";
-import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import axios from "@/providers/axiosInstance";
 import { useDispatch } from "react-redux";
 import { getPcategory } from "@/app/reducer/pcategorySlicce";
-import {
-  resizeCropImage,
-  defimg,
-  local,
-  imgFormData,
-} from "@/utils/resize-crop-image";
+import { local } from "@/utils/resize-crop-image";
+import axiosInstance from "@/providers/axiosInstance";
+import FormInput from "@/components/app/form/form-input";
+import PropTypes from "prop-types";
+import FormTextArea from "@/components/app/form/form-textarea";
+import CropImageUploader from "@/components/app/utils/crop-image-uploader";
+import FormImagePreview from "@/components/app/form/form-image-preview";
 
 const ProductCategoryUpdate = ({ items }) => {
   const dispatch = useDispatch();
   const [imagePreview, setImagePreview] = useState(
-    `${local}/images/category/${items?.picture}` || defimg
+    `${local}/images/category/${items.picture}`
   );
 
-  const [formData, setFormData] = useState({
-    category_name: items.category_name,
-    category_code: items.category_code,
-    memo: items.memo,
+  const [formData, setFormData] = useState(() => {
+    const form = new FormData();
+    form.append("picture", items.picture);
+    form.append("category_name", items.category_name);
+    form.append("category_code", items.category_code);
+    form.append("memo", items.memo);
+    return form;
   });
 
-  // console.log(items.product_category_id);
+  const handleFormData = (event) => {
+    if (event instanceof FormData) {
+      for (let [key, value] of event.entries()) {
+        formData.set(key, value);
+      }
 
-  const handleChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+      if (event.has("picture")) {
+        const file = event.get("picture");
+        const previewUrl = URL.createObjectURL(file);
+        setImagePreview(previewUrl);
+      }
+    } else if (event?.target) {
+      const { name, value } = event.target;
+      formData.set(name, value);
+
+      const newFormData = new FormData();
+      formData.forEach((val, key) => {
+        newFormData.set(key, val);
+      });
+
+      setFormData(newFormData);
+    } else {
+      console.log("Unexpected event structure:", event);
+    }
+    debugFormData(formData);
+    return formData;
   };
 
-  const handleImageChange = async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      try {
-        const resizedImage = await resizeCropImage(
-          file,
-          setImagePreview,
-          3 / 2
-        );
-        setFormData({ ...formData, picture: resizedImage });
-      } catch (error) {
-        console.error("Image processing error:", error);
-      }
+  const debugFormData = (formData) => {
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
     }
   };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    debugFormData(formData);
 
-    await axios
-      .put(
-        `/product-category/${items.product_category_id}`,
-        imgFormData(formData)
-      )
-      .then((response) => {
-        console.log(response);
-        dispatch(getPcategory());
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    console.log(formData);
+    try {
+      await axiosInstance
+        .put(`/product-category/${items.product_category_id}`, {
+          category_name: "ford",
+        })
+        .then((res) => {
+          console.log(res);
+          dispatch(getPcategory());
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -80,55 +96,35 @@ const ProductCategoryUpdate = ({ items }) => {
         </DialogHeader>
         <Separator />
         <div className="flex justify-between mb-2 mt-2">
-          <div className="flex flex-col gap-2">
-            <Label>Product Category Name*</Label>
-            <Input
-              onChange={handleChange}
-              name="category_name"
-              type="text"
-              value={formData.category_name}
-              className="w-[250px]"
-            />
-          </div>
-          <div className="flex flex-col gap-2">
-            <Label>Product Category Code</Label>
-            <Input
-              onChange={handleChange}
-              name="category_code"
-              type="text"
-              value={formData.category_code}
-              className="w-[250px]"
-            />
-          </div>
-        </div>
-        <div className="flex flex-col gap-2 justify-between mb-2">
-          <Label>Description</Label>
-          <Textarea
-            onChange={handleChange}
-            name="memo"
-            value={formData.memo}
-            placeholder="Something ..."
+          <FormInput
+            onCallbackInput={handleFormData}
+            name="category_name"
+            value={formData.get("category_name")}
+            label="Product Category Name"
+          />
+          <FormInput
+            onCallbackInput={handleFormData}
+            name="category_code"
+            value={formData.get("category_code")}
+            label="Product Category Code"
+            readonly={true}
           />
         </div>
+        <FormTextArea
+          onCallbackInput={handleFormData}
+          label="Description"
+          name="memo"
+          value={formData.get("memo")}
+        />
         <div className="flex justify-between my-3">
           <div className="flex flex-col gap-2">
             <Label>Choose Image*</Label>
-            <Input
-              onChange={handleImageChange}
-              name="picture"
-              type="file"
-              className="w-[250px]"
-              accept=".jpg,.jpeg,.png"
+            <CropImageUploader
+              onCallbackFormData={handleFormData}
+              resolution={600}
             />
           </div>
-          <div className="flex flex-col gap-2">
-            <Label>Picture Preview</Label>
-            <img
-              src={imagePreview}
-              alt="picture preview"
-              className="w-[250px] rounded-xl shadow"
-            />
-          </div>
+          <FormImagePreview imgSrc={imagePreview} />
         </div>
         <DialogClose className="mt-2">
           <Button type="submit">Submit</Button>
@@ -136,6 +132,10 @@ const ProductCategoryUpdate = ({ items }) => {
       </form>
     </DialogContent>
   );
+};
+
+ProductCategoryUpdate.propTypes = {
+  items: PropTypes.object,
 };
 
 export default ProductCategoryUpdate;

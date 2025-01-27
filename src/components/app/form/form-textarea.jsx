@@ -6,6 +6,7 @@ const FormTextArea = (props) => {
   const {
     onCallbackInput,
     name,
+    value,
     mainClass,
     inputClass,
     labelClass,
@@ -22,6 +23,7 @@ const FormTextArea = (props) => {
       <Textarea
         onChange={handleChange}
         name={name}
+        value={value}
         placeholder={placeholder}
         className={`${inputClass}`}
       />
@@ -32,6 +34,7 @@ const FormTextArea = (props) => {
 FormTextArea.propTypes = {
   onCallbackInput: PropTypes.func,
   name: PropTypes.string.isRequired,
+  value: PropTypes.string,
   mainClass: PropTypes.string,
   inputClass: PropTypes.string,
   labelClass: PropTypes.string,

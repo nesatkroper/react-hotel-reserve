@@ -1,16 +1,22 @@
+import { datetimeNow } from "@/utils/dec-format";
 import PropTypes from "prop-types";
 
 const InvoiceContent = (props) => {
-  const { table, ref, optD, optT, date, payment } = props;
+  const { room, table, ref, optD, optT, payment = "Cash" } = props;
+
   return (
     <div className="flex flex-col px-1 mb-2">
+      <div className="flex justify-between">
+        <p>ROOM :</p>
+        <p className="font-bold">{room || "Room-101"}</p>
+      </div>
       <div className="flex justify-between">
         <p>TABLE :</p>
         <p className="font-bold">{table || "Z6 T06"}</p>
       </div>
       <div className="flex justify-between">
         <p>INVNUM :</p>
-        <p className="font-bold">{ref || "REF.SR-000-0001"}</p>
+        <p className="font-bold">{ref || "REF.S-000-0001"}</p>
       </div>
       <div className="flex justify-between">
         <p>OPE-D :</p>
@@ -22,20 +28,11 @@ const InvoiceContent = (props) => {
       </div>
       <div className="flex justify-between">
         <p>DATATIME :</p>
-        <p className="font-bold">
-          {date ||
-            new Date().toLocaleDateString("en-GB", {
-              day: "2-digit",
-              month: "short",
-              year: "numeric",
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
-        </p>
+        <p className="font-bold">{datetimeNow(true, true)}</p>
       </div>
       <div className="flex justify-between">
         <p>PAYMENT METHOD :</p>
-        <p className="font-bold">{payment || "Cash"}</p>
+        <p className="font-bold">{payment}</p>
       </div>
     </div>
   );
@@ -49,7 +46,7 @@ InvoiceContent.propTypes = {
   ]),
   optD: PropTypes.string.isRequired,
   optT: PropTypes.string.isRequired,
-  date: PropTypes.any,
+  room: PropTypes.string,
   payment: PropTypes.string,
 };
 

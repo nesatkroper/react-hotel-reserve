@@ -8,7 +8,12 @@ const InvoiceHeader = (props) => {
     <CardHeader className="pb-2">
       <CardTitle className=" flex flex-col items-center gap-3">
         <p className="text-xl">{brand}</p>
-        <img src={logo || defimg} alt="logo" className="w-[150px] rounded-xl" />
+        <img
+          src={logo || defimg}
+          onError={defimg}
+          alt="logo"
+          className="w-[120px] rounded-xl"
+        />
         <p className="text-lg underline">INVOICE</p>
       </CardTitle>
     </CardHeader>
