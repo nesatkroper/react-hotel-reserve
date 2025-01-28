@@ -1,5 +1,6 @@
 import Loading from "@/assets/mp4/Loading.mp4";
 import { TableBody, TableCell, TableRow } from "@/components/ui/table";
+import { PropTypes } from "prop-types";
 
 const AppLoading = ({ cols }) => {
   return (
@@ -16,6 +17,10 @@ const AppLoading = ({ cols }) => {
       </TableBody>
     </>
   );
+};
+
+AppLoading.propTypes = {
+  cols: PropTypes.number,
 };
 
 export default AppLoading;

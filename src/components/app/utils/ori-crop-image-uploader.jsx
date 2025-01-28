@@ -17,6 +17,7 @@ import { getCroppedImg } from "@/utils/crop-image";
 import { defimg } from "@/utils/resize-crop-image";
 import { Button } from "@/components/ui/button";
 import Cropper from "react-easy-crop";
+import PropTypes from "prop-types";
 
 const OriCropImageUploader = ({ onCallbackFormData }) => {
   const [imageSrc, setImageSrc] = useState(defimg);
@@ -209,6 +210,10 @@ const OriCropImageUploader = ({ onCallbackFormData }) => {
       </AlertDialog>
     </form>
   );
+};
+
+OriCropImageUploader.propTypes = {
+  onCallbackFormData: PropTypes.func,
 };
 
 export default OriCropImageUploader;

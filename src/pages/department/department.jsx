@@ -1,97 +1,30 @@
-import Layout from "@/components/app/layout";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import { Plus } from "lucide-react";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import DepartmentAdd from "./components/department-add";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getDepartments } from "@/app/reducer/departmentSlice";
-import NoData from "@/components/app/components/no-data";
-import AppLoading from "@/components/app/components/app-loading";
+import Layout from "@/components/app/layout";
+import AppDataTable from "@/components/app/table/app-data-table";
+import DepartmentAdd from "./components/department-add";
+import { DepartmentColumns } from "./components/department-columns";
 
 const Department = () => {
   const dispatch = useDispatch();
-  const { depData, depLoading, depError } = useSelector(
-    (state) => state?.departments
-  );
+  const { depData, depLoading } = useSelector((state) => state?.departments);
 
   useEffect(() => {
     dispatch(getDepartments());
   }, [dispatch]);
 
   return (
-    <>
-      <Layout>
-        <Dialog>
-          <DepartmentAdd
-            lastCode={parseInt(depData[0]?.department_code.split("-")[1], 10)}
-          />
-          <Card>
-            <CardHeader className="pb-0">
-              <div className="flex flex-row justify-between">
-                <div>
-                  <CardTitle>Department Tables</CardTitle>
-                  <CardDescription>Card Description</CardDescription>
-                </div>
-                <DialogTrigger>
-                  <Button className="h-[30px]">
-                    <Plus /> Add Department
-                  </Button>
-                </DialogTrigger>
-              </div>
-              <Separator />
-            </CardHeader>
-            <CardContent className="p-1">
-              <Table>
-                <ScrollArea className="h-[80vh] w-full rounded-lg">
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="w-[60px]">No.</TableHead>
-                      <TableHead>Department Name</TableHead>
-                      <TableHead>Department Code</TableHead>
-                      <TableHead>Description</TableHead>
-                      <TableHead></TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  {depLoading ? (
-                    <AppLoading cols={4} />
-                  ) : (
-                    <TableBody>
-                      {depData?.map((row, index) => (
-                        <TableRow key={index}>
-                          <TableCell>{index + 1}</TableCell>
-                          <TableCell>{row.department_name}</TableCell>
-                          <TableCell>{row.department_code}</TableCell>
-                          <TableCell> {row.memo}</TableCell>
-                        </TableRow>
-                      ))}
-                      {depData ? "" : <NoData cols={4} />}
-                    </TableBody>
-                  )}
-                </ScrollArea>
-              </Table>
-            </CardContent>
-          </Card>
-        </Dialog>
-      </Layout>
-    </>
+    <Layout>
+      <AppDataTable
+        data={depData}
+        columns={DepartmentColumns}
+        loading={depLoading}
+        addElement={<DepartmentAdd />}
+        title="Departments"
+        main="department_name"
+      />
+    </Layout>
   );
 };
 

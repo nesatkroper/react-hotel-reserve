@@ -4,16 +4,12 @@ import {
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog";
-
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import axios from "@/providers/axiosInstance";
 import { useDispatch } from "react-redux";
 import { getRooms } from "@/app/reducer/roomSlice";
+import axiosInstance from "@/providers/axiosInstance";
 import FormInput from "@/components/app/form/form-input";
 import FormSelect from "@/components/app/form/form-select";
 import FormRatio from "@/components/app/form/form-ratio";
@@ -60,7 +56,7 @@ const RoomAdd = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    await axios
+    await axiosInstance
       .post("/room", formData)
       .then(() => {
         dispatch(getRooms());

@@ -10,13 +10,14 @@ import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { useState } from "react";
+import PropTypes from "prop-types";
 
 const FormDatePicker = (props) => {
   const {
     onCallbackPicker,
     mainClass,
     labelClass,
-    size = "w-[250px] ",
+    size = 250,
     label = "Date of Birth*",
   } = props;
   const [date, setDate] = useState(null);
@@ -35,7 +36,7 @@ const FormDatePicker = (props) => {
           <Button
             variant={"outline"}
             className={cn(
-              `${size} justify-start text-left font-normal`,
+              `w-[${size}px] justify-start text-left font-normal`,
               !date && "text-muted-foreground"
             )}
           >
@@ -54,6 +55,14 @@ const FormDatePicker = (props) => {
       </Popover>
     </div>
   );
+};
+
+FormDatePicker.propTypes = {
+  onCallbackPicker: PropTypes.func,
+  mainClass: PropTypes.string,
+  labelClass: PropTypes.string,
+  size: PropTypes.number,
+  label: PropTypes.string,
 };
 
 export default FormDatePicker;

@@ -10,6 +10,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { PropTypes } from "prop-types";
 import {
   SidebarMenu,
   SidebarMenuButton,
@@ -77,3 +78,7 @@ export function TeamSwitcher({ teams }) {
     </SidebarMenu>
   );
 }
+
+TeamSwitcher.propTypes = {
+  teams: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+};

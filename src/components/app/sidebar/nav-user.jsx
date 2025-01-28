@@ -17,6 +17,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { PropTypes } from "prop-types";
 import {
   SidebarMenu,
   SidebarMenuButton,
@@ -98,3 +99,7 @@ export function NavUser({ user }) {
     </SidebarMenu>
   );
 }
+
+NavUser.propTypes = {
+  user: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+};

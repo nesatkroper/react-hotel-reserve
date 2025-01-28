@@ -17,6 +17,7 @@ import { getCroppedImg } from "@/utils/crop-image";
 import { defimg } from "@/utils/resize-crop-image";
 import { Button } from "@/components/ui/button";
 import Cropper from "react-easy-crop";
+import { PropTypes } from "prop-types";
 
 const FormImageResize = ({ onCallbackFormData }) => {
   const [imageSrc, setImageSrc] = useState(defimg);
@@ -215,6 +216,10 @@ const FormImageResize = ({ onCallbackFormData }) => {
       </AlertDialog>
     </form>
   );
+};
+
+FormImageResize.propTypes = {
+  onCallbackFormData: PropTypes.func,
 };
 
 export default FormImageResize;

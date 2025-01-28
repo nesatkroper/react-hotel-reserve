@@ -45,7 +45,7 @@ import { column } from "./column";
 import AppLoading from "../components/app-loading";
 
 const AppDataTable = (props) => {
-  const { data, columns, main, btnSize, addElement, title, des, add, loading } =
+  const { data, columns, main, btnSize, addElement, title, des, loading } =
     props;
 
   const [sorting, setSorting] = useState([]);
@@ -83,12 +83,12 @@ const AppDataTable = (props) => {
         <CardHeader className="p-4">
           <div className="flex flex-row justify-between">
             <div>
-              <CardTitle>{title || "Card Title"}</CardTitle>
+              <CardTitle>{`${title} Table`}</CardTitle>
               <CardDescription>{des || "Card Description"}</CardDescription>
             </div>
             <DialogTrigger>
               <Button className={`w-[${btnSize}px]`}>
-                <Plus /> {add || "Add Items"}
+                <Plus /> {`Add ${title}`}
               </Button>
             </DialogTrigger>
           </div>
@@ -253,7 +253,6 @@ AppDataTable.propTypes = {
   addElement: PropTypes.oneOfType([PropTypes.node, PropTypes.element]),
   title: PropTypes.string,
   des: PropTypes.string,
-  add: PropTypes.string,
   loading: PropTypes.bool,
 };
 

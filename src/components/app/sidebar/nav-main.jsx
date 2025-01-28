@@ -15,13 +15,14 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
+import PropTypes from "prop-types";
 
 export function NavMain({ items }) {
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
       <SidebarMenu>
-        {items.map((item) => (
+        {items?.map((item) => (
           <Collapsible
             key={item.title}
             asChild
@@ -56,3 +57,7 @@ export function NavMain({ items }) {
     </SidebarGroup>
   );
 }
+
+NavMain.propTypes = {
+  items: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+};

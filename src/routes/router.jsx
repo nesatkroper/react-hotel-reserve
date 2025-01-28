@@ -1,4 +1,8 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+  Navigate,
+  RouterProvider,
+  createBrowserRouter,
+} from "react-router-dom";
 import { useAuth } from "@/providers/auth-provider";
 import { ProtectedRoute } from "@/routes/protect-route";
 import Dashboard from "@/pages/dashboard/dashboard";
@@ -15,6 +19,7 @@ import ProductCategory from "@/pages/product-category/product-category";
 import RoomPicture from "@/pages/room-picture/room-picture";
 import Authentication from "@/pages/authentication/authentication";
 import Home from "@/pages/home/home";
+import Auth from "@/pages/auth/auth";
 import Test from "./../pages/test/test";
 
 const Routes = () => {
@@ -26,7 +31,7 @@ const Routes = () => {
       element: <NotFound />,
     },
     {
-      path: "/",
+      path: "/home",
       element: <Home />,
     },
     {
@@ -89,13 +94,17 @@ const Routes = () => {
       element: <ProtectedRoute />,
       children: [
         {
+          path: "",
+          element: <Home />,
+        },
+        {
+          path: "auth",
+          element: <Navigate to="/" />,
+        },
+        {
           path: "*",
           element: <NotFound />,
         },
-        // {
-        //   path: "admin",
-        //   element: <Dashboard />,
-        // },
       ],
     },
   ];
@@ -103,7 +112,7 @@ const Routes = () => {
   const routesForNotAuthenticatedOnly = [
     {
       path: "/auth",
-      element: <p>auth</p>,
+      element: <Auth />,
     },
   ];
 

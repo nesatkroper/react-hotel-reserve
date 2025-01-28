@@ -57,7 +57,6 @@ const ProductCategoryUpdate = ({ items }) => {
     } else {
       console.log("Unexpected event structure:", event);
     }
-    debugFormData(formData);
     return formData;
   };
 
@@ -71,11 +70,15 @@ const ProductCategoryUpdate = ({ items }) => {
     e.preventDefault();
     debugFormData(formData);
 
+    const categoryName = formData.get("category_name");
+    if (!categoryName) {
+      console.error("Category name is missing!");
+      return;
+    }
+
     try {
       await axiosInstance
-        .put(`/product-category/${items.product_category_id}`, {
-          category_name: "ford",
-        })
+        .put(`/product-category/${items.product_category_id}`, formData)
         .then((res) => {
           console.log(res);
           dispatch(getPcategory());

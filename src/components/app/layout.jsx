@@ -13,6 +13,7 @@ import { BellRing, Search } from "lucide-react";
 import { ModeToggle } from "./theme/mode-toggle";
 import { useState } from "react";
 import NotificationSheet from "./components/notification-sheet";
+import PropTypes from "prop-types";
 
 export default function Layout({ children }) {
   const [date, setDate] = useState(
@@ -73,3 +74,7 @@ export default function Layout({ children }) {
     </SidebarProvider>
   );
 }
+
+Layout.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.node]),
+};

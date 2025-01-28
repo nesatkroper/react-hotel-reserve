@@ -6,6 +6,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { PropTypes } from "prop-types";
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -23,7 +24,7 @@ export function NavProjects({ projects }) {
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>Projects</SidebarGroupLabel>
       <SidebarMenu>
-        {projects.map((item) => (
+        {projects?.map((item) => (
           <SidebarMenuItem key={item.name}>
             <SidebarMenuButton asChild>
               <a href={item.url}>
@@ -64,3 +65,7 @@ export function NavProjects({ projects }) {
     </SidebarGroup>
   );
 }
+
+NavProjects.propTypes = {
+  projects: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+};

@@ -24,7 +24,6 @@ const FormComboBox = (props) => {
     optID,
     optLabel,
     labelClass,
-    placeholder,
     size,
     label,
     item,
@@ -60,7 +59,7 @@ const FormComboBox = (props) => {
         <PopoverContent style={{ width: `${size}px` }} className="p-0">
           <Command>
             <CommandInput
-              placeholder={placeholder}
+              placeholder={label}
               className="h-9"
               aria-label={`Search for ${label}`}
             />
@@ -100,7 +99,6 @@ FormComboBox.propTypes = {
   optID: PropTypes.string,
   optLabel: PropTypes.string,
   labelClass: PropTypes.string,
-  placeholder: PropTypes.string,
   size: PropTypes.number,
   label: PropTypes.string,
   item: PropTypes.arrayOf(
@@ -116,7 +114,6 @@ FormComboBox.defaultProps = {
   optID: "time",
   optLabel: "less",
   labelClass: "",
-  placeholder: "Search category...",
   size: 250,
   label: "Email*",
   item: [

@@ -15,6 +15,7 @@ const FormInput = (props) => {
     size = 250,
     label = "Email*",
     readonly = false,
+    required = false,
     min = 0,
     step = 0.01,
   } = props;
@@ -35,6 +36,7 @@ const FormInput = (props) => {
         readOnly={readonly}
         min={min}
         step={step}
+        required={required}
       />
     </div>
   );
@@ -54,6 +56,7 @@ FormInput.propTypes = {
   readonly: PropTypes.bool,
   min: PropTypes.number,
   step: PropTypes.number,
+  required: PropTypes.bool,
 };
 
 export default FormInput;

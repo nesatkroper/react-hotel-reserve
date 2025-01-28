@@ -17,7 +17,7 @@ import PropTypes from "prop-types";
 import FormInput from "@/components/app/form/form-input";
 import FormComboBox from "@/components/app/form/form-combobox";
 import FormImagePreview from "@/components/app/form/form-image-preview";
-import axiosInstance from "./../../../providers/axiosInstance";
+import axiosInstance from "@/providers/axiosInstance";
 
 const ProductAdd = ({ lastCode }) => {
   const dispatch = useDispatch();
