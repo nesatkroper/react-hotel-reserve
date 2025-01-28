@@ -100,7 +100,7 @@ const AppDataTable = (props) => {
             <Input
               placeholder={`Filter ${main
                 .split("_")
-                .map(
+                ?.map(
                   (m) => m.charAt(0).toUpperCase() + m.slice(1).toLowerCase()
                 )
                 .join(" ")}s...`}
@@ -136,7 +136,7 @@ const AppDataTable = (props) => {
                 {table
                   .getAllColumns()
                   .filter((column) => column.getCanHide())
-                  .map((column) => {
+                  ?.map((column) => {
                     return (
                       <DropdownMenuCheckboxItem
                         key={column.id}
@@ -148,7 +148,7 @@ const AppDataTable = (props) => {
                       >
                         {column.id
                           .split("_")
-                          .map(
+                          ?.map(
                             (m) =>
                               m.charAt(0).toUpperCase() +
                               m.slice(1).toLowerCase()
@@ -163,9 +163,9 @@ const AppDataTable = (props) => {
           <div className="rounded-md border">
             <Table>
               <TableHeader>
-                {table.getHeaderGroups().map((headerGroup) => (
+                {table.getHeaderGroups()?.map((headerGroup) => (
                   <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => {
+                    {headerGroup.headers?.map((header) => {
                       return (
                         <TableHead key={header.id} className="font-bold">
                           {header.isPlaceholder
@@ -185,12 +185,12 @@ const AppDataTable = (props) => {
               ) : (
                 <TableBody>
                   {table.getRowModel().rows?.length ? (
-                    table.getRowModel().rows.map((row) => (
+                    table?.getRowModel()?.rows?.map((row) => (
                       <TableRow
                         key={row.id}
                         data-state={row.getIsSelected() && "selected"}
                       >
-                        {row.getVisibleCells().map((cell) => (
+                        {row.getVisibleCells()?.map((cell) => (
                           <TableCell key={cell.id}>
                             {flexRender(
                               cell.column.columnDef.cell,
