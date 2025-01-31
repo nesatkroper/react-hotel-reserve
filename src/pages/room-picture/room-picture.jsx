@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getRpicture } from "@/app/reducer/rpictureSlice";
+import { getRpicture } from "@/app/reducer/room-picture-slice";
 import Layout from "@/components/app/layout";
 import RoomPictureAdd from "./components/room-picture-add";
 import AppDataTable from "@/components/app/table/app-data-table";

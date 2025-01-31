@@ -8,7 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { getRooms } from "@/app/reducer/roomSlice";
+import { getRooms } from "@/app/reducer/room-slice";
 import axiosInstance from "@/providers/axiosInstance";
 import FormInput from "@/components/app/form/form-input";
 import FormSelect from "@/components/app/form/form-select";

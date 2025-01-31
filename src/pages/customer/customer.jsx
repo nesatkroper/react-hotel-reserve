@@ -3,7 +3,7 @@ import AppDataTable from "@/components/app/table/app-data-table";
 import { useDispatch, useSelector } from "react-redux";
 import { CustomerColumns } from "./components/customer-columns";
 import { useEffect } from "react";
-import { getCustomers } from "@/app/reducer/customerSlice";
+import { getCustomers } from "@/app/reducer/customer-slice";
 
 const Customer = () => {
   const dispatch = useDispatch();

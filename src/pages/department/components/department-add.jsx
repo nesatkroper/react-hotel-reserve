@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import axiosInstance from "@/providers/axiosInstance";
 import { useDispatch } from "react-redux";
-import { getDepartments } from "@/app/reducer/departmentSlice";
+import { getDepartments } from "@/app/reducer/department-slice";
 
 const DepartmentAdd = ({ lastCode }) => {
   const dispatch = useDispatch();

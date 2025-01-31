@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { getPcategory } from "@/app/reducer/pcategorySlicce";
+import { getPcategory } from "@/app/reducer/product-category-slice";
 import { local } from "@/utils/resize-crop-image";
 import axiosInstance from "@/providers/axiosInstance";
 import FormInput from "@/components/app/form/form-input";
@@ -21,7 +21,7 @@ import FormImagePreview from "@/components/app/form/form-image-preview";
 const ProductCategoryUpdate = ({ items }) => {
   const dispatch = useDispatch();
   const [imagePreview, setImagePreview] = useState(
-    `${local}/images/category/${items.picture}`
+    `${local}/uploads/category/${items.picture}`
   );
 
   const [formData, setFormData] = useState(() => {
@@ -46,6 +46,7 @@ const ProductCategoryUpdate = ({ items }) => {
       }
     } else if (event?.target) {
       const { name, value } = event.target;
+      console.log(`Setting ${name} to:`, value);
       formData.set(name, value);
 
       const newFormData = new FormData();
@@ -60,25 +61,13 @@ const ProductCategoryUpdate = ({ items }) => {
     return formData;
   };
 
-  const debugFormData = (formData) => {
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
-    }
-  };
-
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    debugFormData(formData);
-
-    const categoryName = formData.get("category_name");
-    if (!categoryName) {
-      console.error("Category name is missing!");
-      return;
-    }
+    console.log(items);
 
     try {
       await axiosInstance
-        .put(`/product-category/${items.product_category_id}`, formData)
+        .put(`/category/${items.product_category_id}`, formData)
         .then((res) => {
           console.log(res);
           dispatch(getPcategory());
@@ -102,7 +91,7 @@ const ProductCategoryUpdate = ({ items }) => {
           <FormInput
             onCallbackInput={handleFormData}
             name="category_name"
-            value={formData.get("category_name")}
+            value={formData.get("category_name") || ""}
             label="Product Category Name"
           />
           <FormInput

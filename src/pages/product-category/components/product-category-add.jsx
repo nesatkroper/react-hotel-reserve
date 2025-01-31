@@ -9,13 +9,13 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { getPcategory } from "@/app/reducer/pcategorySlicce";
+import { getPcategory } from "@/app/reducer/product-category-slice";
 import { defimg } from "@/utils/resize-crop-image";
 import CropImageUploader from "@/components/app/utils/crop-image-uploader";
 import axiosInstance from "@/providers/axiosInstance";
 import FormInput from "@/components/app/form/form-input";
 import FormTextArea from "@/components/app/form/form-textarea";
-import { getRooms } from "@/app/reducer/roomSlice";
+import { getRooms } from "@/app/reducer/room-slice";
 import FormImagePreview from "@/components/app/form/form-image-preview";
 import PropTypes from "prop-types";
 
@@ -49,7 +49,10 @@ const ProductCategoryAdd = ({ lastCode }) => {
     } else if (event?.target) {
       const { name, value } = event.target;
       formData.set(name, value);
-      formData.set("category_code", Number(lastCode) + 1);
+      formData.set(
+        "category_code",
+        !isNaN(lastCode) ? Number(lastCode) + 1 : 1
+      );
     } else {
       console.log("Unexpected event structure:", event);
     }
@@ -65,7 +68,7 @@ const ProductCategoryAdd = ({ lastCode }) => {
 
     try {
       await axiosInstance
-        .post("/product-category", formData)
+        .post("/category", formData)
         .then((res) => {
           console.log(res);
           dispatch(getPcategory());
@@ -97,7 +100,11 @@ const ProductCategoryAdd = ({ lastCode }) => {
             <FormInput
               label="Product Category Code"
               readonly={true}
-              value={`CATE-${(lastCode + 1).toString().padStart(3, "0")}`}
+              value={
+                !isNaN(lastCode)
+                  ? `CATE-${(lastCode + 1).toString().padStart(3, "0")}`
+                  : 1
+              }
             />
           </div>
           <FormTextArea onCallbackInput={handleFormData} name="memo" />

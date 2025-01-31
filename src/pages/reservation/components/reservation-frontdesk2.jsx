@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import ReservationDetails from "./reservation-detail";
 import { useDispatch, useSelector } from "react-redux";
-import { getRooms } from "@/app/reducer/roomSlice";
+import { getRooms } from "@/app/reducer/room-slice";
 
 //! FUNCTION TO FORMAT NUMBERS WITH LEADING ZERO
 const F_NUM = (num) => {

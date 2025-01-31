@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getRooms } from "@/app/reducer/roomSlice";
+import { getRooms } from "@/app/reducer/room-slice";
 import Layout from "@/components/app/layout";
 import RoomAdd from "./components/room-add";
 import AppDataTable from "@/components/app/table/app-data-table";

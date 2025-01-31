@@ -23,12 +23,12 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import axiosInstance from "@/providers/axiosInstance";
-import { getPositions } from "@/app/reducer/positionSlice";
+import { getPositions } from "@/app/reducer/position-slice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { getDepartments } from "@/app/reducer/departmentSlice";
+import { getDepartments } from "@/app/reducer/department-slice";
 
 const PositionDialog = ({ lastCode }) => {
   const dispatch = useDispatch();

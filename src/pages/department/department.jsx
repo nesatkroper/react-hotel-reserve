@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getDepartments } from "@/app/reducer/departmentSlice";
+import { getDepartments } from "@/app/reducer/department-slice";
 import Layout from "@/components/app/layout";
 import AppDataTable from "@/components/app/table/app-data-table";
 import DepartmentAdd from "./components/department-add";

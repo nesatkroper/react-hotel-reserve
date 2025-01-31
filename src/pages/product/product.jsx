@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getProduct } from "@/app/reducer/productSlicce.jsx";
+import { getProduct } from "@/app/reducer/product-slice.jsx";
 import { ProductColumns } from "./components/product-columns.jsx";
 import Layout from "@/components/app/layout";
 import ProductAdd from "./components/product-add.jsx";

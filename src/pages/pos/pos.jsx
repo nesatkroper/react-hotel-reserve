@@ -7,7 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProduct } from "@/app/reducer/productSlicce";
+import { getProduct } from "@/app/reducer/product-slice";
 import { apiUrl } from "@/providers/api-url";
 import { addItem } from "@/app/reducer/counter";
 import { defimg } from "@/utils/resize-crop-image";

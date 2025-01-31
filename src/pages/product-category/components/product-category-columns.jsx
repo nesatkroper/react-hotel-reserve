@@ -31,7 +31,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { defimg, local } from "@/utils/resize-crop-image";
 import { useDispatch } from "react-redux";
-import { getPcategory } from "@/app/reducer/pcategorySlicce";
+import { getPcategory } from "@/app/reducer/product-category-slice";
 import ProductCategoryUpdate from "./product-category-update";
 
 export const ProductCategoryActions = () => {
@@ -40,7 +40,7 @@ export const ProductCategoryActions = () => {
   const handleDelete = async (id) => {
     try {
       await axiosInstance
-        .delete(`/product-category/${id}`)
+        .delete(`/category/${id}`)
         .then(() => {
           dispatch(getPcategory());
         })
@@ -84,7 +84,7 @@ export const ProductCategoryColumns = [
     cell: ({ row }) => {
       return (
         <img
-          src={`${local}/images/category/${row.getValue("picture")}`}
+          src={`${local}/uploads/category/${row.getValue("picture")}`}
           alt="product"
           onError={(e) => (e.target.src = defimg)}
           className="h-[80px] rounded-lg"

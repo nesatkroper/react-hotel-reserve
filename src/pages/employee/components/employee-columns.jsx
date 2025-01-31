@@ -31,7 +31,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { defimg, local } from "@/utils/resize-crop-image";
 import { useDispatch } from "react-redux";
-import { getProduct } from "@/app/reducer/productSlicce";
+import { getProduct } from "@/app/reducer/product-slice";
 
 export const EmployeeActions = () => {
   const dispatch = useDispatch();

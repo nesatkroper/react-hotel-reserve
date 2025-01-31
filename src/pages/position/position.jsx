@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getPositions } from "@/app/reducer/positionSlice";
+import { getPositions } from "@/app/reducer/position-slice";
 import { DepartmentColumns } from "../department/components/department-columns";
 import Layout from "@/components/app/layout";
 import AppDataTable from "@/components/app/table/app-data-table";

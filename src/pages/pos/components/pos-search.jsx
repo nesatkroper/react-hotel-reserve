@@ -19,8 +19,8 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useSelector, useDispatch } from "react-redux";
-import { getPcategory } from "@/app/reducer/pcategorySlicce";
-import { getSearchCate } from "@/app/reducer/searchCateSlice";
+import { getPcategory } from "@/app/reducer/product-category-slice";
+import { getSearchCate } from "@/app/reducer/search-category-slice";
 import OpenShift from "./open-shift";
 import CloseShift from "./close-shift";
 

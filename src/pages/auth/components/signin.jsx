@@ -3,15 +3,19 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/providers/auth-provider";
-import axiosInstance from "@/providers/axiosInstance";
+import { useDispatch, useSelector } from "react-redux";
+import { getUser } from "@/app/reducer/user-slice";
 import FormInput from "@/components/app/form/form-input";
+import axiosAuth from "@/providers/axios-auth";
 
 const Signin = () => {
-  const [show, setShow] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { usrData } = useSelector((state) => state.users);
+  const [show, setShow] = useState(true);
   const { setToken } = useAuth();
   const [auth, setAuth] = useState({
-    username: "",
+    email: "",
     password: "",
   });
 
@@ -23,17 +27,20 @@ const Signin = () => {
     e.preventDefault();
 
     try {
-      await axiosInstance
+      await axiosAuth
         .post("/login", auth)
         .then((res) => {
-          console.log(auth);
           if (res.data.status) {
-            setToken(res.data.token);
-            sessionStorage.setItem("baseUrl", "http://localhost:8000/");
-            sessionStorage.setItem("id", res.data.user.usr_id);
+            setToken(res.data.data.token);
+            sessionStorage.setItem("token", res.data.data.token);
+            sessionStorage.setItem("role", res.data.data.user.auth.role_id);
+
             navigate("/", { replace: true });
           }
           console.log(res);
+        })
+        .then(() => {
+          dispatch(getUser());
         })
         .catch((err) => {
           console.log(err);
@@ -42,14 +49,15 @@ const Signin = () => {
       console.log(err);
     }
   };
+  console.log(usrData);
 
   return (
     <form onSubmit={handleSubmit}>
       <FormInput
         onCallbackInput={handleChange}
-        name="username"
-        label="Username*"
-        type="text"
+        name="email"
+        label="Email*"
+        type="email"
         placeholder="devnun"
         size={300}
         required={true}
@@ -57,8 +65,8 @@ const Signin = () => {
       <FormInput
         onCallbackInput={handleChange}
         name="password"
-        label="Password"
-        type={show ? "password" : "text"}
+        label="Password*"
+        type={show ? "text" : "password"}
         placeholder="1234"
         size={300}
         mainClass="my-3"

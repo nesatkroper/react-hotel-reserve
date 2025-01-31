@@ -1,10 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getPcategory } from "@/app/reducer/pcategorySlicce.jsx";
+import { getPcategory } from "@/app/reducer/product-category-slice.jsx";
 import Layout from "@/components/app/layout";
 import ProductCategoryAdd from "./components/product-category-add.jsx";
 import AppDataTable from "@/components/app/table/app-data-table.jsx";
 import { ProductCategoryColumns } from "./components/product-category-columns.jsx";
+import { toNumber } from "@/utils/dec-format.js";
 
 const ProductCategory = () => {
   const dispatch = useDispatch();
@@ -19,13 +20,13 @@ const ProductCategory = () => {
       <AppDataTable
         data={pcaData}
         columns={ProductCategoryColumns}
-        title="Product Category Tables"
+        title="Product Category"
         main="category_name"
         loading={pcaLoading}
         add="Add Category"
         addElement={
           <ProductCategoryAdd
-            lastCode={parseInt(pcaData[0]?.category_code.split("-")[1], 10)}
+            lastCode={toNumber(pcaData[0]?.category_code, "-")}
           />
         }
       />

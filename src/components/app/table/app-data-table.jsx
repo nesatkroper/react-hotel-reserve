@@ -88,7 +88,7 @@ const AppDataTable = (props) => {
             </div>
             <DialogTrigger>
               <Button className={`w-[${btnSize}px]`}>
-                <Plus /> {`Add ${title}`}
+                <Plus /> {title}
               </Button>
             </DialogTrigger>
           </div>

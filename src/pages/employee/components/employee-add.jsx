@@ -36,8 +36,8 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { defimg } from "@/utils/resize-crop-image";
-import { getPositions } from "@/app/reducer/positionSlice";
-import { getEmployees } from "@/app/reducer/employeeSlice";
+import { getPositions } from "@/app/reducer/position-slice";
+import { getEmployees } from "@/app/reducer/employee-slice";
 import axiosInstance from "@/providers/axiosInstance";
 import CropImageUploader from "@/components/app/utils/crop-image-uploader";
 

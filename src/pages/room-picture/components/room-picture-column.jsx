@@ -30,7 +30,7 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { defimg, local } from "@/utils/resize-crop-image";
 import { useDispatch } from "react-redux";
-import { getProduct } from "@/app/reducer/productSlicce";
+import { getProduct } from "@/app/reducer/product-slice";
 import axiosInstance from "@/providers/axiosInstance";
 
 export const RoomPictureActions = () => {

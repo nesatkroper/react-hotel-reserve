@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import axios from "@/providers/axiosInstance";
 import { useDispatch } from "react-redux";
-import { getRpicture } from "@/app/reducer/rpictureSlice";
+import { getRpicture } from "@/app/reducer/room-picture-slice";
 import {
   defimg,
   imgFormData,

@@ -12,8 +12,8 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getOpenShift } from "@/app/reducer/openShiftSlicce";
-import { getBanknote } from "@/app/reducer/bankNoteSlicce";
+import { getOpenShift } from "@/app/reducer/open-shift-slice";
+import { getBanknote } from "@/app/reducer/bank-note-slice";
 import axios from "@/providers/axiosInstance";
 
 const OpenShift = ({ setShift }) => {

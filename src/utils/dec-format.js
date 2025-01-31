@@ -54,7 +54,7 @@ export const toUnit = (value, fixed = 0, unit = "pcs") => {
 };
 
 export const toNumber = (last, char = "-") => {
-  return parseInt(last.split(char)[1], 10);
+  return parseInt(last?.split(char)[1], 10);
 };
 
 export const datetimeNow = (
