@@ -6,6 +6,15 @@ export const getRooms = createAsyncThunk("getRooms", async () => {
   return res?.data?.data;
 });
 
+// const count = async () => {
+//   const res = await axios.get("/room-count");
+//   console.log(res.data?.count);
+// };
+
+// setInterval(() => {
+//   count();
+// }, 1000);
+
 const roomSlice = createSlice({
   name: "rooms",
   initialState: {
